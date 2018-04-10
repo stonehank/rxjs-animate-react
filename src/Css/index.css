@@ -1,0 +1,153 @@
+html{
+    overflow: hidden;
+}
+.sectionContents{
+    position:relative
+}
+section{
+    transform:translate3d(0,0,0)
+}
+.sections{
+    height: 33.3rem;
+    height:88vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+.secwap{
+    width:100%;
+}
+.secweb{
+    width:80%;
+}
+.sections li:last-child{
+    margin-bottom:5rem;
+}
+
+.section-title{
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-left: 0.8rem;
+    padding: 1rem 1rem 0.5rem 1rem;
+    display: inline-block;
+    position: relative;
+    -webkit-perspective: 200;
+    transform-style: preserve-3d;
+}
+.section-title:before{
+    content: '';
+    background: #d7d7d7;
+    position: absolute;
+    top: 0;  left: 0;  right: 0;  bottom: 0;
+    transform: rotateX(30deg);
+    transition: all 1s linear;
+    transform-origin: bottom;
+    border-radius: 4px 4px 0 0;
+}
+
+pre{
+    word-break: break-all;
+    white-space: pre-wrap;
+    padding:1rem;
+    background:#d7d7d7;
+    font-family: Consolas,Inconsolata,Courier,monospace;
+}
+button{
+    width:5rem;
+    height:2.5rem;
+    border-radius:5px;
+    padding:0.5rem;
+    margin:0.5rem;
+}
+button:active{
+    outline:none;
+}
+button:focus{
+    outline:none;
+
+}
+.add{
+    background: #ffcb3b;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2.5rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    padding: 0;
+}
+.delete{
+    background:lightcoral;
+}
+.edit{
+    background:lightblue;
+}
+.save{
+    background:lightgreen;
+}
+.cancel{
+    background: #dadada;
+}
+
+.popInform{
+    width: 40%;
+    /*height: 2.5rem;*/
+    background: #ccc;
+    position: absolute;
+    z-index: 2;
+    left: 30%;
+    top: 15%;
+    line-height: 2.5rem;
+    opacity:0.8;
+    border-radius:5px;
+    text-align: center;
+}
+.popSuc {
+    background: lightgreen
+}
+.popErr{
+    background: #ff3724;
+    color:white;
+    font-weight:bold;
+}
+
+.promptModal{
+    width: 18em;
+    height: 6rem;
+    border-radius:10px;
+    position: absolute;
+    top: 0;left: 0;right: 0;bottom: 0;
+    color: #000;
+    z-index: 3;
+    text-align: center;
+    margin: auto;
+    background:#BDC0BA
+}
+.promptModal button{
+    margin: 1rem 1.5rem 0 1.5rem;
+}
+.promptModal p{
+    margin-top:0.5rem;
+}
+.mask{
+    position:absolute;
+    top:0;left:0;bottom:0;right:0;
+    background:#0C0C0C;
+    opacity:0.7;
+    z-index:3;
+}
+
+.overviewSection{
+    padding:0 0.5rem;
+    margin-bottom:5rem;
+    overflow:auto;
+    height:33.3rem;
+    height:88vh;
+}
+.overviewLi{
+    line-height:1.3rem;
+    padding:0.5rem;
+}
+.overviewLi:last-child{
+    margin-bottom:3rem;
+}
