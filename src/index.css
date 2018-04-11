@@ -54,6 +54,7 @@ button:hover{
     width: 50%;
     float: right;
     overflow: hidden;
+    background: #ccc;
     /*transition:all 0.3s linear;*/
 }
 #marble{
@@ -61,7 +62,6 @@ button:hover{
     width: 100%;
     padding-bottom: 2rem;
     opacity: 0.9;
-    background: #ccc;
     overflow:hidden;
 }
 #marble .hr{
@@ -147,3 +147,20 @@ button:hover{
     /*right: 0;*/
     /*border: 1px solid #fff;*/
 /*}*/
+
+.completeMarbleBall{
+    background: #008f0f;
+    color: lightgreen;
+    font-weight: bold;
+    position:static;
+    opacity:1;
+    display:inline-block;
+}
+.errorMarbleBall{
+    background: red;
+    color: #fff;
+    font-weight: bold;
+    position:static;
+    opacity:1;
+    display:inline-block;
+}

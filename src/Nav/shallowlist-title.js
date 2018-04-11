@@ -37,7 +37,6 @@ export default class ShallowListTitle extends React.Component {
                     <DeepListTitle
                         secondLi={secondLi}
                         secondUl={secondUl}
-                        deepListClick={this.shallowListClick}
                         sortDeepList={this.state.sortDeepList}/>
                     :
                     null}

@@ -1,6 +1,6 @@
 let state;
 
-export default state={
+ state={
     pageStatus:{
         showMarble:false,
         showCode:false,

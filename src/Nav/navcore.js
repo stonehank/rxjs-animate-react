@@ -8,12 +8,11 @@ export default class NavCore extends React.Component {
 
    constructor(){
        super()
-       const len=shallowList.length;
+       //const len=shallowList.length;
        //this.shallowListClick=this.shallowListClick.bind(this)
-       this.shallowListOver=this.shallowListOver.bind(this)
        this.state={
-           showDeepList:Array(len).fill(false),
-           navArr:[],
+           //showDeepList:Array(len).fill(false),
+           //navArr:[],
            isFetching:true
        }
    }
@@ -36,9 +35,7 @@ export default class NavCore extends React.Component {
     //    })
     //
     //}
-    shallowListOver(){
 
-    }
 
     render() {
         let {css,showChild}=this.props
@@ -62,7 +59,7 @@ export default class NavCore extends React.Component {
                                                           secondUl={secondUl}
                                                           //shallowListClick={this.shallowListClick}
                                                           //shallowListOver={this.shallowListOver}
-                                                          showDeepListNav={this.state.showDeepList[i]}
+                                                          //showDeepListNav={this.state.showDeepList[i]}
                                                           i={i}/>
                                         :
                                         <NavLink to={`/${e.shallowTitle}`}

@@ -1,5 +1,5 @@
 import {calcBallAttribute} from './calcballattribute';
-import {BALLWIDTH,BALLHEIGHT} from './mock-data'
+import {BALLWIDTH,BALLHEIGHT} from './../mock-data'
 const showMarble=(isShow)=>({
     type:'SHOW_MARBLE',
     isShow

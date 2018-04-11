@@ -1,42 +1,34 @@
 import {Data,notFoundData,deepList} from './mock-data'
+import Rx from 'rxjs/Rx';
+
+/**
+ * 模拟500毫秒延迟
+ * @param operatorName
+ * @returns {Promise}
+ */
 export function fetchData(operatorName){
     return new Promise((resolve)=>{
         setTimeout(()=>{
             let findData=Data.find(obj=>obj.name===operatorName)
             if(!findData){return resolve(notFoundData)}
-
             return resolve(findData)
-        },1000)
+        },500)
     })
 
 }
 
-
+/**
+ * 模拟200毫秒延迟
+ */
 export function fetchNav(){
     return new Promise((resolve)=>{
         setTimeout(()=>{
             return resolve(deepList)
-        },1000)
+        },200)
     })
 }
 
 
-export function getArgument(v,timeStamp){
-    let obj={};
-    let curTimeStamp=new Date().getTime();
-    let timeGap=250;
-    let distanceEachSec=50;
-    let curTimeGap=curTimeStamp-timeStamp;
-    //curTimeGap=curTimeGap<timeGap?timeGap:curTimeGap
-    //curTimeGap=needGap?(curTimeGap+timeGap):curTimeGap;
-    let left=curTimeGap/1000*distanceEachSec;
-    if(typeof v==='object' && Object.prototype.toString.call(v).indexOf("Event")!==-1){obj.timeStamp=curTimeStamp;obj.data=v;obj.text='ev';obj.background='yellow';obj.left=left;obj.top=50;obj.color='#000';}
-    if(typeof v==='object' && Object.prototype.toString.call(v)==='[object Object]'){obj.timeStamp=curTimeStamp;obj.data=v;obj.text='obj';obj.background='red';obj.left=left;obj.top=50;obj.color='#fff';}
-    if(typeof v==='object' && Object.prototype.toString.call(v)==='[object Array]'){obj.timeStamp=curTimeStamp;obj.data=v;obj.text='obj';obj.background='orange';obj.left=left;obj.top=50;obj.color='#fff';}
-    if(typeof v==='number'){obj.timeStamp=curTimeStamp;obj.data=v;obj.text=v;obj.background='blue';obj.left=left;obj.top=100;obj.color='#fff';}
-    if(typeof v==='string'){obj.timeStamp=curTimeStamp;obj.data=v;obj.text=v;obj.background='green';obj.left=left;obj.top=100;obj.color='#000';}
-    return obj
-}
 
 
 
@@ -67,7 +59,7 @@ export const sortMethod=(sort,navArr)=>{
 
 /*对code方法*/
 
-export function code2Arr(code){
+export function code2Obj(code){
     var curFuncStr=code+'',
         rawCodeStr=curFuncStr.replace(/;\s/g,';;').replace(/\B\s/g,''),
         rawArr=rawCodeStr.split(/\/\/cut\s*/),
@@ -84,20 +76,6 @@ export function unique(arr){
     }
     return unqiue
 }
-function createMinus(minus){
-    var minusArr=  minus && minus.length>0?
-        minus.map(function(e){
-            return `<p class="minus">${e}</p>`
-        }):''
-    return minusArr?minusArr.join(''):minusArr;
-}
-function createPlus(plus){
-    var plusArr=  plus && plus.length>0?
-        plus.map(function(e){
-            return `<p class="plus">${e}</p>`
-        }):'';
-    return plusArr?plusArr.join(''):plusArr;
-}
 
 
 function clearWhich(unSub){
@@ -106,11 +84,9 @@ function clearWhich(unSub){
 
 }
 export function clearFunc(unSubObj){
-    console.time('aaa')
         for(let i in unSubObj){
             clearWhich(unSubObj[i])
         }
-    console.timeEnd('aaa')
 }
 
 /**
@@ -120,12 +96,68 @@ export function clearFunc(unSubObj){
  * @returns {*}
  */
 export function checkIsUnSub(unSubObj){
-    for(let i in unSubObj){
-        if(unSubObj[i]){
-            if(unSubObj[i].isStopped!==unSubObj[i].closed){
-                console.error('isStopped和closed属性不一致，检查unSub当前状态')
+    var obj={}
+        for(let i in unSubObj){
+            if(unSubObj[i]){
+                if(unSubObj[i].isStopped!==unSubObj[i].closed){
+                    console.error('isStopped和closed属性不一致，检查unSub当前状态')
+                }
+                //setTimeout(()=>{obj[i]=unSubObj[i].isStopped},0)
+                obj[i]=unSubObj[i].closed
+                //console.log(window.i=obj[i],i)
             }
-           return unSubObj[i].isStopped
         }
+    //console.log(obj)
+    return obj
+}
+
+
+export function calcColorBallNewPosition(line,whichLine,v,curTimeGap){
+    let newObj;
+    let rightWhichLine=(+whichLine>0 && +whichLine<=line);
+    let lastLine=whichLine==='last';
+    let errorOrComplete=(v==='error'|| v==='complete');
+
+    if(rightWhichLine){
+        newObj = Object.assign(getArgument(v,curTimeGap), {top: whichLine * 50})
+    }else if(!rightWhichLine && !errorOrComplete &&!lastLine){
+        newObj=getArgument(v,curTimeGap)
+    }else{
+        newObj = Object.assign(getArgument(v,curTimeGap), {top: (line - 1) * 50 + 122})
     }
+
+    return newObj
+}
+
+function getArgument(v,curTimeGap){
+    let obj={};
+    let ts=Object.prototype.toString
+    let distanceEachSec=50;
+    let left=curTimeGap/1000*distanceEachSec;
+    if(v==="complete")
+    {obj.data=v;obj.text='com';obj.background='#008f0f';obj.left=left+20;obj.color='lightgreen';obj.fontWeight='bold';obj.letterSpacing='-1.5px';}
+    else if(v==="error")
+    {obj.data=v;obj.text='err';obj.background='red';obj.left=left+20;obj.color='#fff';obj.fontWeight='bold';}
+    else if(typeof v==='number')
+    {obj.data=v;obj.text=v;obj.background='blue';obj.left=left;obj.top=100;obj.color='#fff';}
+    else if(typeof v==='string')
+    {obj.data=v;obj.text=v;obj.background='green';obj.left=left;obj.top=100;obj.color='#000';}
+    else if(typeof v==='object' && ts.call(v).indexOf("Event")!==-1)
+    {obj.data=v;obj.text='ev';obj.background='yellow';obj.left=left;obj.top=50;obj.color='#000';}
+    else if(typeof v==='object' && ts.call(v)==='[object Object]')
+    {obj.data=v;obj.text='obj';obj.background='purple';obj.left=left;obj.top=50;obj.color='#fff';}
+    else if(typeof v==='object' && ts.call(v)==='[object Array]')
+    {obj.data=v;obj.text='obj';obj.background='orange';obj.left=left;obj.top=50;obj.color='#fff';}
+    return obj
+}
+
+export function calcCodeStrArrPlusMinus(code,prevCodeArr){
+    const codeObj=code2Obj(code),
+        str=codeObj.str,
+        arr=codeObj.arr,
+        curLen=codeObj.arr.length,
+        preLen=prevCodeArr.length,
+        minus=unique(arr.concat(prevCodeArr)).slice(curLen),
+        plus=unique(prevCodeArr.concat(arr)).slice(preLen);
+    return {str,arr,minus,plus}
 }
