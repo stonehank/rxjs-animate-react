@@ -12,6 +12,7 @@ export default class CustomCheckBox extends React.PureComponent{
         checkBoxChange()
     }
     render(){
+        console.log('CustomCheckBox')
         const {text,id,checkBoxStatus}=this.props
         return (
             <div>

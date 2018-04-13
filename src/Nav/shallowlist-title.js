@@ -1,7 +1,7 @@
 import React from 'react'
 import {sortMethod} from '../tools'
 import DeepListTitle from './deeplist-title'
-
+import {NavLink} from 'react-router-dom'
 export default class ShallowListTitle extends React.Component {
     constructor(){
         super()
@@ -26,12 +26,14 @@ export default class ShallowListTitle extends React.Component {
         })
     }
     render() {
-        let {name,secondLi,secondUl}=this.props
+        console.log('ShallowListTitle')
+        let {name,secondLi,secondUl,pathname}=this.props
         const {showDeepListNav}=this.state
         return (
             <div onMouseEnter={this.handleMouseEnter}
                  onMouseLeave={this.handleMouseLeave}>
-                <span>{name}</span>
+                <NavLink to={`/${pathname}`}
+                         activeStyle={{borderBottom:'3px solid #dadada'}} >{name}</NavLink>
                 {showDeepListNav
                     ?
                     <DeepListTitle

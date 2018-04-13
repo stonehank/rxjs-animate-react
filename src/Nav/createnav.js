@@ -5,14 +5,20 @@ import NavCore from './navcore'
 
 export default class CreateNav extends React.Component {
     render() {
-        const {type,orient,showChild}=this.props
+        console.log('CreateNav')
+        const {type,orient,showChild,deepList,shallowList}=this.props
         const _cssData = navCss[orient][type]
         return (
+
             type === 'webNav' ?
                 <WebNav showChild={showChild}
+                        shallowList={shallowList}
+                        deepList={deepList}
                         css={_cssData}/>
                 :
                 <WapNav showChild={showChild}
+                        shallowList={shallowList}
+                        deepList={deepList}
                         css={_cssData}/>
         )
     }
@@ -34,7 +40,8 @@ class WapNav extends React.Component {
         }))
     }
     render() {
-        const {showChild,css}=this.props
+        console.log('WapNav')
+        const {showChild,css,deepList,shallowList}=this.props
         return (
             <React.Fragment>
                 <div className={css.navButton} onClick={this.clickButton}>
@@ -44,6 +51,8 @@ class WapNav extends React.Component {
                 </div>
                 {this.state.showNav ?
                     <NavCore listTitleClick={this.clickButton}
+                             deepList={deepList}
+                             shallowList={shallowList}
                              showChild={showChild}
                              css={css}/> : null}
             </React.Fragment>
@@ -54,10 +63,12 @@ class WapNav extends React.Component {
 
 class WebNav extends React.Component {
     render() {
-        const {css,showChild}=this.props
+        console.log('WebNav')
+        const {css,showChild,deepList,shallowList}=this.props
         return (
             <React.Fragment>
-                <NavCore
+                <NavCore deepList={deepList}
+                         shallowList={shallowList}
                          showChild={showChild}
                          css={css}/>
             </React.Fragment>

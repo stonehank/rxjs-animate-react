@@ -1,9 +1,19 @@
 body{background: #262626;color: #d6d6d6;}
-body, p {margin:0;padding:0;}
-.section{ float: left;width: 50%;;margin:50px 0 50px 0; display: inline-block; }
-.section:first-of-type{  margin-top:80px;  }
+body, p,ul,li,pre {margin:0;padding:0;}
+.section{ float: left;width: 50%; display: inline-block; }
+/*.section:first-of-type{  margin-top:80px;  }*/
 .clearfix:before,.clearfix:after{content:'';display:table;clear:both;  }
-.result{float:right;width:50%;height:300px; overflow:hidden; user-select: none;background: #787878;}
+.result{
+    width: 50%;
+    position: relative;
+    right: 0;
+    margin-bottom: 1.5rem;
+    overflow: auto;
+    max-height:200px;
+    top: 0;
+    user-select: none;
+    background: #787878;
+}
 .content{float:left;margin:auto;  }
 .plus{background: #246b24;color: #b5b5b5;}
 .plus:before{  content:"+";  }
@@ -17,6 +27,7 @@ pre{  white-space: pre-line;  background: #111;  font-family: Consolas,Inconsola
 small{color: #181818;font-size:0.8rem;}
 button{
     background: #868686;
+    width:12rem;
     border: none;
     color: #000;
     padding: 0.5rem;
@@ -26,11 +37,17 @@ button{
 button:hover{
     background: #c6c6c6
 }
-.testRxjs{
+.testStartRxjs{
     background:lightgreen;
 }
-.testRxjs:hover{
+.testStartRxjs:hover{
     background:#bcfcbc;
+}
+.testStopRxjs{
+    background: #ee7f00;
+}
+.testStopRxjs:hover{
+    background: #ef9f33
 }
 
 .clearRxjs{
@@ -52,25 +69,28 @@ button:hover{
 
 #marbleWrap{
     width: 50%;
+    position: relative;
+    right: 0;
     float: right;
-    overflow: hidden;
+    overflow: auto;
     background: #ccc;
-    /*transition:all 0.3s linear;*/
+    transition: all 0.5s linear;
 }
 #marble{
     position: relative;
     width: 100%;
-    padding-bottom: 2rem;
+    padding-bottom: 3rem;
     opacity: 0.9;
-    overflow:hidden;
+    overflow:auto;
 }
 #marble .hr{
-    width: 100%;
-    margin-top: 50px;
+    transition:all 0.5s  linear;
+    min-width: 100%;
+    margin-top: 30px;
     border-bottom: 1px solid #000;
 }
 #marble .hr:nth-of-type(1){
-    margin-top:60px;
+    margin-top:40px;
 }
 
 #marble span{
@@ -96,16 +116,17 @@ button:hover{
 #popData{
     position:absolute;
     display:inline-block;
-    padding:0.5rem;
+    padding:0 0.5rem;
     background:lightgreen;
     text-align: center;
+    border-radius: 10px;
     top:0;left:0;
     color:#000;
-    z-index:3;
+    z-index:1;
     pointer-events:none;
 }
 
-
+/*checkBox*/
 
 .inputCheckBox{display:none;}
 .slide-checkbox{
@@ -155,6 +176,7 @@ button:hover{
     position:static;
     opacity:1;
     display:inline-block;
+    letter-spacing:-1.5px
 }
 .errorMarbleBall{
     background: red;

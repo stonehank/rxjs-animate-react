@@ -5,9 +5,9 @@ let count=0
 let _deepList=[];
 
 export  const shallowList=[
-    {shallowTitle:'最高点击',sort:'clicks'},
-    {shallowTitle:'常用操作符',sort:'useful'},
-    {shallowTitle:'全部(字母顺序)',sort:'name'}
+    {shallowTitle:'最高点击',sort:'clicks',pathname:'hits'},
+    {shallowTitle:'常用操作符',sort:'useful',pathname:'useful'}
+    //{shallowTitle:'全部(字母顺序)',sort:'name'}
 ];
 
 
@@ -26,20 +26,7 @@ export  const shallowList=[
 
 
 /*
- unSub[i]={}
- //cut
- let obs$,init=0,count;
- obs$ =  Rx.Observable.timer(0,1000);
- count = obs$.throttle(ev =>Rx.Observable.interval(Math.floor(Math.random()*5000)));
- unSub[i].a=count.subscribe(x => {log('此次间隔时间:'+(x-init)+'秒',i);init=x})
- //cut
- var clickEv=new ShowMarbleBall();
- var marb1=new ShowMarbleBall();
- unSub[i].clickEv=obs$.subscribe(v=>clickEv.execute(Object.assign(gA(v),{top:50})));
- unSub[i].marb1=count.subscribe(v=>marb1.execute(Object.assign(gA(v),{top:(line-1)*50+122})))
- };
- template(3,func[3],'4、audit,throttle,debounce:等待时间由另一个observable决定,这里等待时间为0-5秒' +
- '<br><br>注意：因为有随机数，这里marble和列表中数据不等');
+
 
 * */
 
@@ -62,15 +49,15 @@ export const Data=[
             //cut
          `,
         func:function(showRxjsInResult,showRxjsInMarble){
-            let RxTimer0_1000,RxClick,RxThrottle;
+            let RxTimer0_1000,RxClick,RxAudit;
             RxTimer0_1000 =  Rx.Observable.timer(0,1000).take(13);
             RxClick =Rx.Observable.fromEvent(document,'click');
-            RxThrottle = RxTimer0_1000.audit(()=>RxClick);
+            RxAudit = RxTimer0_1000.audit(()=>RxClick);
 
-            this.unSubResult.RxThrottle=RxThrottle.subscribe(NEC(showRxjsInResult))
+            this.unSubResult.RxAudit=RxAudit.subscribe(NEC(showRxjsInResult))
             this.unSubMarble.RxClick=RxClick.subscribe(NEC(showRxjsInMarble,1));
             this.unSubMarble.RxTimer0_1000=RxTimer0_1000.subscribe(NEC(showRxjsInMarble,2));
-            this.unSubMarble.RxThrottle=RxThrottle.subscribe(NEC(showRxjsInMarble,'last'));
+            this.unSubMarble.RxAudit=RxAudit.subscribe(NEC(showRxjsInMarble,'last'));
         }
     },
     {
@@ -90,15 +77,15 @@ export const Data=[
             //cut
          `,
         func:function(showRxjsInResult,showRxjsInMarble){
-            let RxTimer0_1000,RxClick,RxThrottle;
+            let RxTimer0_1000,RxClick,RxDebounce;
             RxTimer0_1000 =  Rx.Observable.timer(0,1000).take(13);
             RxClick =Rx.Observable.fromEvent(document,'click');
-            RxThrottle = RxTimer0_1000.debounce(()=>RxClick);
+            RxDebounce = RxTimer0_1000.debounce(()=>RxClick);
 
-            this.unSubResult.RxThrottle=RxThrottle.subscribe(NEC(showRxjsInResult))
+            this.unSubResult.RxDebounce=RxDebounce.subscribe(NEC(showRxjsInResult))
             this.unSubMarble.RxClick=RxClick.subscribe(NEC(showRxjsInMarble,1));
             this.unSubMarble.RxTimer0_1000=RxTimer0_1000.subscribe(NEC(showRxjsInMarble,2));
-            this.unSubMarble.RxThrottle=RxThrottle.subscribe(NEC(showRxjsInMarble,'last'));
+            this.unSubMarble.RxDebounce=RxDebounce.subscribe(NEC(showRxjsInMarble,'last'));
         }
     },
     {
@@ -144,12 +131,12 @@ export const Data=[
             //cut
          `,
         func:function(showRxjsInResult,showRxjsInMarble){
-            let RxClick,RxDebounceTime;
+            let RxClick,RxAuditTime;
             RxClick =Rx.Observable.fromEvent(document,'click');
-            RxDebounceTime = RxClick.auditTime(1000)
-            this.unSubResult.RxDebounceTime=RxDebounceTime.subscribe(NEC(showRxjsInResult))
+            RxAuditTime = RxClick.auditTime(1000)
+            this.unSubResult.RxAuditTime=RxAuditTime.subscribe(NEC(showRxjsInResult))
             this.unSubMarble.RxClick=RxClick.subscribe(NEC(showRxjsInMarble,1));
-            this.unSubMarble.RxDebounceTime=RxDebounceTime.subscribe(NEC(showRxjsInMarble,'last'));
+            this.unSubMarble.RxAuditTime=RxAuditTime.subscribe(NEC(showRxjsInMarble,'last'));
         }
     },
     {
@@ -167,12 +154,12 @@ export const Data=[
             //cut
          `,
         func:function(showRxjsInResult,showRxjsInMarble){
-            let RxClick,RxDebounceTime;
+            let RxClick,RxThrottleTime;
             RxClick =Rx.Observable.fromEvent(document,'click');
-            RxDebounceTime = RxClick.throttleTime(1000)
-            this.unSubResult.RxDebounceTime=RxDebounceTime.subscribe(NEC(showRxjsInResult))
+            RxThrottleTime = RxClick.throttleTime(1000)
+            this.unSubResult.RxThrottleTime=RxThrottleTime.subscribe(NEC(showRxjsInResult))
             this.unSubMarble.RxClick=RxClick.subscribe(NEC(showRxjsInMarble,1));
-            this.unSubMarble.RxDebounceTime=RxDebounceTime.subscribe(NEC(showRxjsInMarble,'last'));
+            this.unSubMarble.RxThrottleTime=RxThrottleTime.subscribe(NEC(showRxjsInMarble,'last'));
         }
     },
     {
@@ -299,6 +286,18 @@ function fillDeepList(){
     return _deepList;
 }
 _deepList=fillDeepList()
+
+/*
+* deepList=[
+*   {id:1,name:xxx,clicks:1,useful:1},
+*   {id:2,name:xxx,clicks:5,useful:21},
+*   {id:3,name:xxx,clicks:2341,useful:541}
+* ]
+*
+*
+*
+*/
+
 
 export let deepList=_deepList
 

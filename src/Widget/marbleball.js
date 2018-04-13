@@ -1,19 +1,30 @@
 import React from 'react';
-
+import PopText from './poptext'
 export default class MarbleBall extends React.Component{
     constructor(){
         super()
-        this.showData=this.showData.bind(this)
+        this.showPop=this.showPop.bind(this)
+        this.closePop=this.closePop.bind(this)
         this.state={
             curStyle:{},
-            curContent:{}
+            curContent:{},
+            showPopText:false
         }
         this.left=0
     }
-    showData(){
-        const {text,data}=this.state.curContent
-        const stringify=JSON.stringify(data)
-        console.log(text,'stringify:'+stringify)
+    closePop(){
+        this.setState({
+            showPopText:false
+        })
+    }
+    showPop(e){
+
+        const {offsetY,offsetX}=e.nativeEvent
+        const {left,top}=this.state.curStyle
+        this.setState({
+            position:{top:offsetY+top,left:offsetX+left},
+            showPopText:true
+        })
     }
 
     componentWillUnmount(){
@@ -32,9 +43,19 @@ export default class MarbleBall extends React.Component{
         },20)
     }
     render(){
-        const {text}=this.state.curContent
+        console.log('MarbleBall')
+        const {text,data}=this.state.curContent
         return(
-            <div className="colorBall" onMouseOver={this.showData} style={this.state.curStyle}>{text}</div>
+            <React.Fragment>
+                <div className="colorBall"
+                     onMouseOut={this.closePop}
+                     onMouseOver={this.showPop}
+                     style={this.state.curStyle}>{text}</div>
+                {this.state.showPopText?
+                <PopText data={data} position={this.state.position}/>:
+                    null
+                }
+            </React.Fragment>
         )
     }
 }

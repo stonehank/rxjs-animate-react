@@ -2,6 +2,7 @@ import React from 'react';
 
 export default class Plus extends React.Component{
     render(){
+        console.log('Plus')
         const {plus}=this.props
         return(
             plus

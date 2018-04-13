@@ -6,10 +6,17 @@ export default class SectionContent extends React.PureComponent{
     constructor(){
         super()
         this.toggleCode=this.toggleCode.bind(this)
+        this.togglePlusMinus=this.togglePlusMinus.bind(this)
         this.prevCodeArr=[]
         this.state={
             showCode:true,
+            showPlusMinus:false
         }
+    }
+    togglePlusMinus(){
+        this.setState(prevState=>({
+            showPlusMinus:!prevState.showPlusMinus
+        }))
     }
     toggleCode(){
         this.setState(prevState=>({
@@ -17,6 +24,7 @@ export default class SectionContent extends React.PureComponent{
         }))
     }
     render(){
+        console.log('SectionContent')
         const {title,caption,plus,minus,code}=this.props
         return (
             <div className="content">
@@ -24,8 +32,16 @@ export default class SectionContent extends React.PureComponent{
                 <p dangerouslySetInnerHTML={{__html: caption}}
                    style={{margin:'0.5rem 0',fontStyle:'italic',color:'#367f8d'}} />
                 <div>
-                    <Plus plus={plus}/>
-                    <Minus minus={minus}/>
+                    {this.state.showPlusMinus
+                        ?
+                        <React.Fragment>
+                            <button onClick={this.togglePlusMinus}>隐藏增减行</button>
+                            <Plus plus={plus}/>
+                            <Minus minus={minus}/>
+                        </React.Fragment>
+                        :
+                        <button onClick={this.togglePlusMinus}>显示增减行</button>
+                    }
                 </div>
                 {this.state.showCode
                     ?

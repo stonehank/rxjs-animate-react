@@ -1,10 +1,12 @@
 import React from 'react';
 import {CustomCheckBox} from '../Widget'
 import SectionContent from './sectioncontent'
+import {checkDidAllunSub} from '../tools'
 
 export default class SectionWrap extends React.PureComponent{
     render(){
-        const {isFetching,title,caption,code,minus,plus,
+        console.log('SectionWrap')
+        const {isFetching,title,caption,code,minus,plus,showStartButton,testStop,
             showResult,showMarble,testStart,clearStart,marbleCheckChange,resultCheckChange}=this.props
         return(
             <section className="section clearfix">
@@ -26,8 +28,13 @@ export default class SectionWrap extends React.PureComponent{
                         title={title} caption={caption} code={code} minus={minus} plus={plus}/>
                 }
                 <div className="clearfix">
-                    <button className="testRxjs" onClick={testStart} >开始(subscribe)</button>
-                    <button className="clearRxjs" onClick={clearStart}>清除(unsubscribe)</button>
+                    {showStartButton
+                        ?
+                        <button className="testStartRxjs" onClick={testStart} >开始(subscribe)</button>
+                        :
+                        <button className="testStopRxjs" onClick={testStop} >停止(unsubscribe)</button>
+                    }
+                    <button className="clearRxjs" onClick={clearStart}>清除(unsubscribe&clear)</button>
                 </div>
             </section>
         )

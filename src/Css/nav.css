@@ -1,8 +1,6 @@
 
 .navMain{
-    height: 5rem;
-    height: 12vh;
-    background-color:#69B0AC;
+    height: 4rem;
     position: relative;
     width: 100%;
     z-index: 1;
@@ -17,16 +15,10 @@ a{
 }
 .webNavHor{
     display: inline-block;
-    width: 50%;
     user-select: none;
-    position:absolute;
+    position:relative;
 }
-.search{
-    position:absolute;
-    right:2rem;
-    top:1rem;
-    cursor:pointer;
-}
+
 
 .wapNavButtonHor{
     width:3rem;
@@ -147,9 +139,14 @@ a{
     font-size:1rem;
     font-weight:lighter;
 }
-.navMain input{
-    width:100%;
-    line-height:2rem;
+
+
+.search{
+    position:absolute;
+    right:2rem;
+    cursor:pointer;
+    margin:0;
+    top: 0.5rem;
 }
 
 .searchInputWrap{
@@ -161,21 +158,46 @@ a{
     right: 1rem;
     top: 1rem;
 }
-.searchInputWrap ul{
-    line-height: 2rem;
-    background: #ccc;
+.searchInputUl{
+    background: #272926;
     text-indent: 1rem;
+    border-radius:5px;
+    font-size:1.2rem;
+}
+.searchInputLi{
+    cursor:pointer;
+    box-sizing:border-box;
+    line-height:2rem;
+    border:1px #B9BDB5 solid;
+    width:100%;
+    background: #272926;
+
+}
+.searchInputWrap a{
+    display:block;
+}
+.searchInputLi:first-child{
+    border-radius:5px 5px 0 0;
+}
+.searchInputLi:last-child{
+    border-radius:0 0 5px 5px;
+}
+.searchInputLi:not(:last-child){
+    border-bottom:0
 }
 
-.searchInputWrap li:not(:last-child){
-    border-bottom:2px #fff solid;
+.searchInputLi:hover{
+    background:#B9BDB5;
 }
-.searchInputWrap li{
-    cursor:pointer;
+.searchInputLi a:hover{
+    color:#272926;
 }
-.searchInputWrap li:hover,.searchInputWrap li:active{
-    background: #dfdfdf;
+.searchInputWrap input{
+    width:100%;
+    line-height:2rem;
+    box-sizing:border-box;
 }
+
 
 
 .wapNavVer{

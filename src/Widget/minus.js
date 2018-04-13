@@ -4,6 +4,7 @@ import React from 'react';
 
 export default class Minus extends React.Component{
     render(){
+        console.log('minus')
         const {minus}=this.props
         return(
             minus
