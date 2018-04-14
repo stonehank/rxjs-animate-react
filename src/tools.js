@@ -127,14 +127,14 @@ export function unique(arr){
 }
 
 
-function clearWhich(unSub){
+function clearWhich(unSub,force){
     if(!unSub){return}
-    unSub.unsubscribe? unSub.unsubscribe(): clearTimeout(unSub)
+    unSub.unsubscribe? unSub.unsubscribe(force): clearTimeout(unSub)
 
 }
-export function clearFunc(unSubObj){
+export function clearFunc(unSubObj,force){
         for(let i in unSubObj){
-            clearWhich(unSubObj[i])
+            clearWhich(unSubObj[i],force)
         }
 }
 
@@ -216,4 +216,34 @@ export function checkDidAllunSub(unSubMarble,unSubResult){
         }
     }
     return flagMarble && flagResult
+}
+
+
+Function.prototype.addBefore=function(addFunc,status){
+    let _thisFunc=this;
+    //let args=Array.prototype.slice.call(arguments,1)
+    return function(force){
+        //Array.prototype.push.call(status,force)
+        addFunc.call(this,status,force)
+        _thisFunc.call(this,status)
+    }
+}
+function changeStatus(status,force){
+    if(force || !this.isStopped){
+        this.status=status
+    }
+    //if(force){
+    //    this.ultimateStatus=status
+    //}
+}
+function addNECStatus(subscription){
+    subscription.complete=subscription.complete.addBefore(changeStatus,'complete')
+    subscription.error=subscription.error.addBefore(changeStatus,'error')
+    subscription.unsubscribe=subscription.unsubscribe.addBefore(changeStatus,'unsubscribe')
+}
+
+export function alladdNECStatus(unSubObj){
+    for(let i in unSubObj){
+        addNECStatus(unSubObj[i])
+    }
 }

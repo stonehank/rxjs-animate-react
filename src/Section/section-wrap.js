@@ -4,7 +4,7 @@ import SectionContent from './section-content'
 
 export default class SectionWrap extends React.PureComponent{
     render(){
-        console.log('SectionWrap')
+        //console.log('SectionWrap')
         const {isFetching,basicData,showStartButton,testStop,
             showResult,showMarble,testStart,clearStart,marbleCheckChange,resultCheckChange}=this.props
         return(

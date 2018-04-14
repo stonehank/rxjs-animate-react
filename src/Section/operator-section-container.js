@@ -1,9 +1,13 @@
 import React from 'react';
-import {clearFunc,calcColorBallNewPosition,calcCodeStrArrPlusMinus,checkDidAllunSub,_fetchData} from '../tools'
+import {clearFunc,calcColorBallNewPosition,calcCodeStrArrPlusMinus,checkDidAllunSub,_fetchData,alladdNECStatus} from '../tools'
 import SectionWrap from './section-wrap'
 import {Marble,Result} from '../Widget'
 //import PropTypes from 'prop-types';
 import Rx from 'rxjs/Rx'
+import * as Immutable from 'immutable';
+
+const {fromJS,is} =Immutable
+
 
 export default class OperatorSectionContainer extends React.Component{
     constructor(){
@@ -28,7 +32,7 @@ export default class OperatorSectionContainer extends React.Component{
             marbleText:'', func:null, line:0,
             isFetching:true,
             resultValue:'',
-            marbleArr:[],
+            marbleArr:false,
             showStartButton:true
         }
     }
@@ -56,7 +60,6 @@ export default class OperatorSectionContainer extends React.Component{
 
                 /*清空数据界面(非状态界面) 获取新值*/
                 this.newMarbleArr=[];
-                console.log(2)
                 this.setState({
                     marbleArr:this.newMarbleArr,
                     resultValue:'',
@@ -75,12 +78,17 @@ export default class OperatorSectionContainer extends React.Component{
         //}
         this.fetch$.unsubscribe()
     }
+    shouldComponentUpdate(nextProps,nextState){
+            //console.log(this.props,nextProps)
+        //console.log(this.state,nextState)
+        return !is(fromJS(this.props),fromJS(nextProps))
+             || !is(fromJS(this.state),fromJS(nextState))
+    }
     componentDidMount(){
         const operatorName=this.props.match.params.section;
         this.fetchDataSetState(operatorName)
     }
     componentWillReceiveProps(nextProps){
-
         const curOperatorName=this.props.match.params.section,
             nextOperatorName=nextProps.match.params.section;
         if(curOperatorName!==nextOperatorName){
@@ -94,7 +102,7 @@ export default class OperatorSectionContainer extends React.Component{
     refreshResultMarble(){
         this.newMarbleArr=[];
         this.setState({
-            marbleArr:this.newMarbleArr,
+            marbleArr:false,
             resultValue:''
         })
         //TODO:需要修正 强制刷新result
@@ -130,6 +138,8 @@ export default class OperatorSectionContainer extends React.Component{
         this.newMarbleArr=[];
         if(!this.state.func){alert('数据获取失败！刷新重试');return;}
         this.state.func.call(this,this.showRxjsInResult,this.showRxjsInMarble)
+        alladdNECStatus(this.unSubMarble)
+        alladdNECStatus(this.unSubResult)
         this.setState({
             showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult),
             marbleArr:this.newMarbleArr,
@@ -137,7 +147,7 @@ export default class OperatorSectionContainer extends React.Component{
         })
         //TODO:需要修正 强制刷新result
         this.resultRefreshTimeStamp=new Date().getTime()
-        this.refreshResultMarble()
+        //this.refreshResultMarble()
     }
 
     refreshStartStopButton(){
@@ -163,9 +173,10 @@ export default class OperatorSectionContainer extends React.Component{
      */
     clearStart(e){
         if(e)e.stopPropagation();
-        clearFunc(this.unSubMarble);
-        clearFunc(this.unSubResult);
+        clearFunc(this.unSubMarble,true);
+        clearFunc(this.unSubResult,true);
         this.refreshResultMarble()
+
     }
     /**
      * subscribe in marble方法
@@ -190,7 +201,7 @@ export default class OperatorSectionContainer extends React.Component{
         }))
     }
     render(){
-        console.log('OperatorSectionContainer')
+        //console.log('OperatorSectionContainer')
         const {isFetching,basicData,line,
             resultValue,showMarble,showResult,marbleArr,marbleText,showStartButton}=this.state
         return(

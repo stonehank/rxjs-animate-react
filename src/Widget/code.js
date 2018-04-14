@@ -2,9 +2,9 @@ import React from 'react';
 
 
 
-export default class Code extends React.Component{
+export default class Code extends React.PureComponent{
     render(){
-        console.log('Code')
+        //console.log('Code')
 
         return(
             <div>

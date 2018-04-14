@@ -16,7 +16,7 @@ export default class WapNav extends React.Component {
         }))
     }
     render() {
-        console.log('WapNav')
+        //console.log('WapNav')
         const {showChild,css,deepList,shallowList}=this.props
         return (
             <React.Fragment>

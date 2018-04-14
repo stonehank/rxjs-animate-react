@@ -2,9 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css'
 import CreateNav from './Nav/create-nav'
-import {BrowserRouter as Router}  from 'react-router-dom'
+import {BrowserRouter as Router,withRouter}  from 'react-router-dom'
 import {sortMethod,_fetchNav} from './tools'
-//import PropTypes from 'prop-types';
 import Routes from './Routes/routes'
 import Rx from 'rxjs/Rx'
 
@@ -34,31 +33,28 @@ class App extends React.Component{
                 isFetchingNav:false
             })
         })
-
     }
     render(){
-        console.log('app')
+        //console.log('app')
         const {isFetchingNav}=this.state
-        const {sortDeepList,shallowList,sortNavDeepList}=this
-        const contextProps={sortDeepList,shallowList}
+        const {sortDeepList,shallowList}=this
+        const curPathname=this.props.location.pathname.substr(1)
+        const contextProps={sortDeepList,shallowList,curPathname}
         return(
             isFetchingNav
                 ?
                 <p>loading..</p>
                 :
-                <React.Fragment>
+                <Provider value={contextProps}>
                     <CreateNav type="webNav"
                                orient="horizontal"
-                               showChild={true}
-                               sortDeepList={sortNavDeepList}
-                               shallowList={shallowList}/>
-                    <Provider value={contextProps}>
-                        <Routes shallowList={shallowList}/>
-                    </Provider>
-                </React.Fragment>
+                               showChild={true}/>
+                    <Routes shallowList={shallowList} curPathname={curPathname}/>
+                </Provider>
         )
     }
 }
+App=withRouter(App)
 
 ReactDOM.render(
     <Router >

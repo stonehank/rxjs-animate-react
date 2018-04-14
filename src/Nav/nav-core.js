@@ -1,33 +1,45 @@
 import React from 'react'
-import {NavLink} from 'react-router-dom'
 import ShallowListTitle from './shallowlist-title'
+import ReuseNavLink from './reuse-navlink'
+import {Search} from '../Widget'
+import {Consumer} from '../index'
 
+export default class NavCore extends React.PureComponent {
 
-export default class NavCore extends React.Component {
     render() {
-        console.log('NavCore')
-        let {css,showChild,sortDeepList,shallowList}=this.props
+        let {css,showChild}=this.props
         let {nav,firstLi,secondLi,firstUl,secondUl}=css
+        //console.log('NavCore')
         return (
-            <nav className={nav}>
-                <ul className={firstUl}>
-                    {shallowList.map((e, i)=>(
-                        <li key={i} className={firstLi}>
-                            {showChild && !e.notShowChild?
-                                <ShallowListTitle name={e.shallowTitle}
-                                                  pathname={e.pathname}
-                                                  sortDeepList={sortDeepList[e.pathname]}
-                                                  secondLi={secondLi}
-                                                  secondUl={secondUl}
-                                                  i={i}/>
-                                :
-                                <NavLink to={`/${e.pathname}`}
-                                         activeStyle={{borderBottom:'3px solid #dadada'}} >{e.shallowTitle}</NavLink>
-                            }
-                        </li>
-                    ))}
-                </ul>
-            </nav>
+        <Consumer>
+            {({sortDeepList,shallowList,curPathname})=>(
+                <React.Fragment>
+                <nav className={nav}>
+                    <ul className={firstUl}>
+                        {shallowList.map((e, i)=>(
+                            <li key={i} className={firstLi}>
+                                {showChild && !e.notShowChild
+                                    ?
+                                    <ShallowListTitle name={e.shallowTitle}
+                                                      pathname={e.pathname}
+                                                      sortDeepList={sortDeepList[e.pathname]}
+                                                      secondLi={secondLi}
+                                                      secondUl={secondUl}
+                                                      curPathname={curPathname}
+                                                      i={i}/>
+                                    :
+                                    <ReuseNavLink toPath={`/${e.pathname}`}
+                                                  activeStyle={{borderBottom:'3px solid #dadada'}}
+                                                  name={e.shallowTitle} />
+                                }
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+                <Search deepList={sortDeepList.operators}/>
+                </React.Fragment>
+            )}
+        </Consumer>
         )
     }
 }

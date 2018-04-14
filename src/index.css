@@ -13,7 +13,7 @@ body, p,ul,li,pre {margin:0;padding:0;}
     max-height:200px;
     top: 0;
     user-select: none;
-    background: #787878;
+    background: #9a9a9a;
 }
 .content{float:left;margin:auto;  }
 .plus{background: #246b24;color: #b5b5b5;}
@@ -189,4 +189,14 @@ button:hover{
     position:static;
     opacity:1;
     display:inline-block;
+}
+
+.unSubStatus .complete{
+    color:#00810e;
+}
+.unSubStatus .error{
+    color: #cd0002;
+}
+.unSubStatus .unsubscribe{
+    color:#aa4e4e;
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default class Plus extends React.Component{
+export default class Plus extends React.PureComponent{
     render(){
-        console.log('Plus')
+        //console.log('Plus')
         const {plus}=this.props
         return(
             plus

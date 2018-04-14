@@ -2,9 +2,9 @@ import React from 'react';
 
 
 
-export default class Minus extends React.Component{
+export default class Minus extends React.PureComponent{
     render(){
-        console.log('minus')
+        //console.log('minus')
         const {minus}=this.props
         return(
             minus

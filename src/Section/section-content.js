@@ -24,7 +24,7 @@ export default class SectionContent extends React.PureComponent{
         }))
     }
     render(){
-        console.log('SectionContent')
+        //console.log('SectionContent')
         const {title,caption,plus,minus,code}=this.props.basicData
         return (
             <div className="content">
