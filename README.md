@@ -4,6 +4,7 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 1. react
 2. react-router-dom v4
 3. rxjs
+4. 部分使用immutable
 
 #### 目的
 1. 首先是自己觉得rxjs操作符太多...有些特别容易混淆。
@@ -13,16 +14,19 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 这次用react做也加深自己对react的学习。
 
 #### 程序功能
-1. `开始(subscribe)`按钮会根据当前订阅情况(检测到所有subscription是否已经完成或者取消)变成`停止(unsubscribe)`。
-2. 点击`开始`按钮，有些直接开始运行，有些要等待事件触发(如click)，具体可见说明。
-3. 当想停止动画，可以点击`停止`，当前小球位置保留，但停止后无法继续，只能重新开始。
-4. 当想重新开始，可以点击`清除(unsubscribe&clear)`或者直接再次点击`开始`。
-5. 可以通过滑动条选择开启/关闭Marble界面和Result界面(保留当前小球位置)，变更后会自动`unsubscribe`对应的界面的`subscription`，
-如果不取消，多次开关会出现内存泄露。
-6. 增加行：增行/减行是根据当前操作符源码和上一个操作符源码进行对比计算出的，可选择开启关闭。
-7. 源码：只显示最核心的源码，关于`subscribe`部分的并未进行显示，但所有操作符都是订阅了`next,error,complete`。
-8. Marble界面，当发射源执行`complete`或者`error`时，都会有对应的小球紧随出现，代表一种状态的完成。
-9. 鼠标移动到小球上，会出现说明框，第一行为值(如果非基本类型则显示类型)，第二行对其值进行了`JSON.stringify`。
+
+1. 菜单：hover会显示当前排序的前10条，点击则显示全部。
+
+2. 开始动画：点击`开始(subscribe)`按钮，执行`subscribe`，按钮状态会根据当前订阅情况变更。
+3. 停止动画：点击`停止(unsubscribe)`，当前小球位置保留，但停止后无法继续，只能重新开始。
+4. 重新开始：可以点击`清除(unsubscribe&clear)`或者再次点击`开始`。
+5. Marble：每种数据类型都有对应颜色的小球。
+6. 当前状态：会精确显示当前订阅情况(包括complete,error,subscribe,unsubscribe)。
+7. 开启/关闭界面：开启/关闭Marble界面和Result界面(会保留当前数据)，但会自动`unsubscribe`。(如果不取消，多次开关会出现内存泄露)
+8. 增减行：增行/减行是根据当前操作符源码和上一个操作符源码进行对比计算出的，可选择开启关闭。
+9. 源码：只显示最核心的源码，关于`subscribe`部分的并未进行显示，但所有操作符都是订阅了`next,error,complete`。
+10. hover小球：出现说明框，第一行为值(如果非基本类型则显示类型)，第二行对其值进行了`JSON.stringify`。
+
 
 #### 问题
 1. marble球排序以时间戳排序，因此当遇到 例如`Observable.of(1,2,3,4,5)`的时候，

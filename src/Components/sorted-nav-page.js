@@ -7,7 +7,7 @@ import * as Immutable from 'immutable';
 const {fromJS,is} =Immutable
 
 
-export default class AllSortPages extends React.Component{
+export default class SortedNavPage extends React.Component{
 
     shouldComponentUpdate(nextProps){
         var {location,...curOtherProps}=this.props;

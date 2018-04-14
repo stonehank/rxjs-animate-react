@@ -1,9 +1,9 @@
 import Code from './code';
 import CustomCheckBox from './custom-checkbox';
-import Marble from './marble';
 import Minus from  './minus';
 import Plus from  './plus';
-import Result from  './result';
-import Search from './search'
+import SectionWrap from  './section-wrap';
+import ShowSubscribeStatus from './show-subscribe-status'
+import PopText from './poptext'
 
-export {Code,CustomCheckBox,Marble,Minus,Plus,Result,Search}
+export {Code,CustomCheckBox,Minus,Plus,SectionWrap,ShowSubscribeStatus,PopText}

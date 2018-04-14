@@ -1,15 +1,15 @@
 import React from 'react';
 import {clearFunc,calcColorBallNewPosition,calcCodeStrArrPlusMinus,checkDidAllunSub,_fetchData,alladdNECStatus} from '../tools'
-import SectionWrap from './section-wrap'
-import {Marble,Result} from '../Widget'
-//import PropTypes from 'prop-types';
+import {SectionWrap} from '../Widget'
+import Marble from '../Marble'
+import Result from '../Result'
 import Rx from 'rxjs/Rx'
 import * as Immutable from 'immutable';
 
 const {fromJS,is} =Immutable
 
 
-export default class OperatorSectionContainer extends React.Component{
+export default class OperatorsCoreContainer extends React.Component{
     constructor(){
         super()
         this.fetchDataSetState=this.fetchDataSetState.bind(this)
@@ -131,7 +131,10 @@ export default class OperatorSectionContainer extends React.Component{
      * @param e
      */
     testStart(e){
-        if(e)e.stopPropagation();
+        if(e){
+            e.stopPropagation()
+            e.nativeEvent.stopImmediatePropagation();
+        }
         clearFunc(this.unSubMarble);
         clearFunc(this.unSubResult);
         this.timeStamp=new Date().getTime()
@@ -157,7 +160,10 @@ export default class OperatorSectionContainer extends React.Component{
     }
 
     testStop(e){
-        if(e)e.stopPropagation();
+        if(e){
+            e.stopPropagation()
+            e.nativeEvent.stopImmediatePropagation();
+        }
         clearFunc(this.unSubMarble);
         clearFunc(this.unSubResult);
         this.refreshStartStopButton()
@@ -172,7 +178,10 @@ export default class OperatorSectionContainer extends React.Component{
      * @param e
      */
     clearStart(e){
-        if(e)e.stopPropagation();
+        if(e){
+            e.stopPropagation()
+            e.nativeEvent.stopImmediatePropagation();
+        }
         clearFunc(this.unSubMarble,true);
         clearFunc(this.unSubResult,true);
         this.refreshResultMarble()
@@ -201,7 +210,7 @@ export default class OperatorSectionContainer extends React.Component{
         }))
     }
     render(){
-        //console.log('OperatorSectionContainer')
+        //console.log('OperatorsCoreContainer')
         const {isFetching,basicData,line,
             resultValue,showMarble,showResult,marbleArr,marbleText,showStartButton}=this.state
         return(

@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css'
-import CreateNav from './Nav/create-nav'
 import {BrowserRouter as Router,withRouter}  from 'react-router-dom'
-import {sortMethod,_fetchNav} from './tools'
-import Routes from './Routes/routes'
 import Rx from 'rxjs/Rx'
+
+import './index.css'
+import CreateNav from './Nav'
+import Routes from './Routes/routes'
+import {sortMethod,_fetchNav} from './tools'
+
+
 
 export const {Provider,Consumer}=React.createContext()
 

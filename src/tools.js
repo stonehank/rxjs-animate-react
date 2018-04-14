@@ -161,20 +161,21 @@ function getArgument(v,curTimeGap){
     let ts=Object.prototype.toString
     let distanceEachSec=50;
     let left=curTimeGap/1000*distanceEachSec;
-    if(v==="complete")
-    {obj.data=v;obj.text='com';obj.background='#008f0f';obj.left=left+20;obj.color='lightgreen';obj.fontWeight='bold';obj.letterSpacing='-1.5px';}
-    else if(v==="error")
-    {obj.data=v;obj.text='err';obj.background='red';obj.left=left+20;obj.color='#fff';obj.fontWeight='bold';}
-    else if(typeof v==='number')
-    {obj.data=v;obj.text=v;obj.background='blue';obj.left=left;obj.top=LINETOP*2;obj.color='#fff';}
-    else if(typeof v==='string')
-    {obj.data=v;obj.text=v;obj.background='green';obj.left=left;obj.top=LINETOP*2;obj.color='#000';}
-    else if(typeof v==='object' && ts.call(v).indexOf("Event")!==-1)
-    {obj.data=v;obj.text='ev';obj.background='yellow';obj.left=left;obj.top=LINETOP;obj.color='#000';}
-    else if(typeof v==='object' && ts.call(v)==='[object Object]')
-    {obj.data=v;obj.text='obj';obj.background='purple';obj.left=left;obj.top=LINETOP;obj.color='#fff';}
-    else if(typeof v==='object' && ts.call(v)==='[object Array]')
-    {obj.data=v;obj.text='obj';obj.background='orange';obj.left=left;obj.top=LINETOP;obj.color='#fff';}
+    if(v==="complete") {
+        obj.data=v;obj.text='com';obj.background='#008f0f';obj.left=left+20;obj.color='lightgreen';obj.fontWeight='bold';obj.letterSpacing='-1.5px';
+    } else if(v==="error") {
+        obj.data=v;obj.text='err';obj.background='red';obj.left=left+20;obj.color='#fff';obj.fontWeight='bold';
+    } else if(typeof v==='number') {
+        obj.data=v;obj.text=v;obj.background='blue';obj.left=left;obj.top=LINETOP*2;obj.color='#fff';
+    } else if(typeof v==='string') {
+        obj.data=v;obj.text=v;obj.background='green';obj.left=left;obj.top=LINETOP*2;obj.color='#000';
+    } else if(typeof v==='object' && ts.call(v).indexOf("Event")!==-1) {
+        obj.data=v;obj.text='ev';obj.background='yellow';obj.left=left;obj.top=LINETOP;obj.color='#000';
+    } else if(typeof v==='object' && ts.call(v)==='[object Object]') {
+        obj.data=v;obj.text='obj';obj.background='purple';obj.left=left;obj.top=LINETOP;obj.color='#fff';
+    } else if(typeof v==='object' && ts.call(v)==='[object Array]') {
+        obj.data=v;obj.text='arr';obj.background='orange';obj.left=left;obj.top=LINETOP;obj.color='#fff';
+    }
     return obj
 }
 
@@ -221,9 +222,7 @@ export function checkDidAllunSub(unSubMarble,unSubResult){
 
 Function.prototype.addBefore=function(addFunc,status){
     let _thisFunc=this;
-    //let args=Array.prototype.slice.call(arguments,1)
     return function(force){
-        //Array.prototype.push.call(status,force)
         addFunc.call(this,status,force)
         _thisFunc.call(this,status)
     }
@@ -232,9 +231,6 @@ function changeStatus(status,force){
     if(force || !this.isStopped){
         this.status=status
     }
-    //if(force){
-    //    this.ultimateStatus=status
-    //}
 }
 function addNECStatus(subscription){
     subscription.complete=subscription.complete.addBefore(changeStatus,'complete')

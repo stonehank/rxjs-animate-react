@@ -13,12 +13,16 @@ export default class SectionContent extends React.PureComponent{
             showPlusMinus:false
         }
     }
-    togglePlusMinus(){
+    togglePlusMinus(e){
+        e.stopPropagation()
+        e.nativeEvent.stopImmediatePropagation();
         this.setState(prevState=>({
             showPlusMinus:!prevState.showPlusMinus
         }))
     }
-    toggleCode(){
+    toggleCode(e){
+        e.stopPropagation()
+        e.nativeEvent.stopImmediatePropagation();
         this.setState(prevState=>({
             showCode:!prevState.showCode
         }))

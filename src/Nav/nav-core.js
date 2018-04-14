@@ -1,7 +1,7 @@
 import React from 'react'
 import ShallowListTitle from './shallowlist-title'
 import ReuseNavLink from './reuse-navlink'
-import {Search} from '../Widget'
+import Search from '../Search'
 import {Consumer} from '../index'
 
 export default class NavCore extends React.PureComponent {

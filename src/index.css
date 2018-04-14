@@ -162,34 +162,49 @@ button:hover{
 .inputCheckBox:checked + .slide-checkbox{
     background: #88f782;
 }
-/*.full{*/
-    /*width:100%;*/
-/*}*/
-/*.marbleFullScreenButton{*/
-    /*position: absolute;*/
-    /*z-index: 1;*/
-    /*color: #000;*/
-    /*right: 0;*/
-    /*border: 1px solid #fff;*/
-/*}*/
+
+
+.colorBallExample{
+    width:20px;height:20px;
+    border-radius:50%;
+    text-align: center;
+    display:inline-block;
+    margin-left:0.5rem;
+}
 
 .completeMarbleBall{
     background: #008f0f;
     color: lightgreen;
     font-weight: bold;
-    position:static;
-    opacity:1;
-    display:inline-block;
     letter-spacing:-1.5px
 }
 .errorMarbleBall{
     background: red;
     color: #fff;
     font-weight: bold;
-    position:static;
-    opacity:1;
-    display:inline-block;
 }
+.blueMarbleBall{
+    background:blue;
+    color:#fff;
+}
+.greenMarbleBall{
+    background:green;
+    color:#000
+}
+.yellowMarbleBall {
+    background: yellow;
+    color: #000;
+}
+.purpleMarbleBall {
+    background:purple;
+    color:#fff;
+}
+.orangeMarbleBall {
+    background:orange;
+    color:#fff;
+}
+
+
 
 .unSubStatus .complete{
     color:#00810e;

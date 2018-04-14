@@ -1,7 +1,10 @@
 import React from 'react';
 import {clearFunc,checkDidAllunSub} from '../tools'
 import MarbleBall from './marbleball'
-import ShowSubscribeStatus from './show-subscribe-status';
+import ShowSubscribeStatus from './../Widget/show-subscribe-status';
+import ShowExampleMarbleBall from './show-example-marbleball';
+import MarbleCaption from './marble-caption'
+
 
 export default class Marble extends React.PureComponent{
 
@@ -30,14 +33,13 @@ export default class Marble extends React.PureComponent{
         return  (
             <div id="marbleWrap" >
                 <div style={{fontSize:"1.2rem",color:"#000"}}>
-                    <span style={{fontSize:"0.8rem"}}><div className="colorBall completeMarbleBall">com</div>：代表完成(complete)</span>
-                    <span style={{fontSize:"0.8rem"}}><div className="colorBall errorMarbleBall">err</div>：代表错误(error)</span>
+                    <ShowExampleMarbleBall />
                     <ShowSubscribeStatus unSubObj={unSubMarble} name="Marble"/>
                </div>
                 <div id="marble" ref={e=>this.marbleEle=e}>
                     {arr.map((e,i)=>
                         <React.Fragment key={i}>
-                            {i===line-1?<span>{marbleText}</span>:null}
+                            <MarbleCaption i={i} line={line} marbleText={marbleText}/>
                             <div  className="hr" style={_marbleArr[_marbleArr.length-1]?{width:_marbleArr[_marbleArr.length-1].left+'px'}:{}}></div>
                         </React.Fragment>
                     )}

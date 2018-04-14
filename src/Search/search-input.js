@@ -8,6 +8,8 @@ export default class SearchInput extends React.PureComponent{
         this.blur=this.blur.bind(this)
         this.valueChange=this.valueChange.bind(this)
         this.goToDetail=this.goToDetail.bind(this)
+        this.cancelBubble=this.cancelBubble.bind(this)
+
         this.state={
             value:'',
             searchList:false
@@ -29,8 +31,13 @@ export default class SearchInput extends React.PureComponent{
         if(v.trim()==="")this.props.blur()
     }
 
+    cancelBubble(e){
+        e.stopPropagation()
+        e.nativeEvent.stopImmediatePropagation();
+    }
     goToDetail(e){
         e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
         this.setState({
             searchList:false
         });
@@ -40,7 +47,7 @@ export default class SearchInput extends React.PureComponent{
         const {searchList}=this.state
         return(
             <div className="searchInputWrap">
-                <input type="text" autoFocus={true} placeholder="请输入搜索" onChange={this.valueChange} onBlur={this.blur} />
+                <input type="text" autoFocus={true} placeholder="请输入搜索" onChange={this.valueChange} onClick={this.cancelBubble} onBlur={this.blur} />
                 <ul className="searchInputUl">
                     {searchList
                         ?
@@ -54,7 +61,7 @@ export default class SearchInput extends React.PureComponent{
                                                />
                                 </li>))
                             :
-                            <p>无数据</p>
+                            <p onClick={this.cancelBubble}>无数据</p>
                         :
                         null}
                 </ul>

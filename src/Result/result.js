@@ -1,6 +1,6 @@
 import React from 'react';
 import {clearFunc,checkDidAllunSub} from '../tools'
-import ShowSubscribeStatus from './show-subscribe-status';
+import ShowSubscribeStatus from '../Widget/show-subscribe-status';
 
 
 /**

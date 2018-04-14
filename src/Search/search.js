@@ -11,7 +11,9 @@ export default class Search extends React.PureComponent{
     blur(){
         this.setState({searchInput:false})
     }
-    startSearch(){
+    startSearch(e){
+        e.stopPropagation()
+        e.nativeEvent.stopImmediatePropagation();
         this.setState({searchInput:true})
     }
     render(){

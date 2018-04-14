@@ -1,5 +1,5 @@
 import React from 'react';
-import PopText from './poptext'
+import PopText from './../Widget/poptext'
 export default class MarbleBall extends React.Component{
     constructor(){
         super()
@@ -42,7 +42,7 @@ export default class MarbleBall extends React.Component{
         },20)
     }
     render(){
-        //console.log('MarbleBall')
+        console.log('MarbleBall')
         const {text,data}=this.state.curContent
         return(
             <React.Fragment>
