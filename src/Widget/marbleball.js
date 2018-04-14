@@ -34,7 +34,6 @@ export default class MarbleBall extends React.Component{
     componentDidMount(){
         const {marbleBallObj}=this.props
         const {data,text,...style}=marbleBallObj
-        style.opacity=1;
         this.timer=setTimeout(()=>{
             this.setState({
                 curStyle:style,

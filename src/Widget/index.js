@@ -1,5 +1,5 @@
 import Code from './code';
-import CustomCheckBox from './customcheckbox';
+import CustomCheckBox from './custom-checkbox';
 import Marble from './marble';
 import Minus from  './minus';
 import Plus from  './plus';

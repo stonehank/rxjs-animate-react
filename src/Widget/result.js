@@ -17,7 +17,7 @@ export default class Result extends React.PureComponent{
         refreshStartStopButton()
     }
     componentDidUpdate(){
-        this.resultEle.scrollTop=this.resultEle.offsetHeight;
+        this.resultEle.scrollTop=this.resultEle.scrollHeight;
         const {unSubResult,refreshStartStopButton}=this.props
         if(Object.keys(unSubResult).length>0 && checkDidAllunSub(unSubResult)){
             refreshStartStopButton()

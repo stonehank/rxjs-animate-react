@@ -74,7 +74,7 @@ a{
     box-sizing:border-box;
     line-height:2rem;
     vertical-align: middle;
-    text-align: center;
+    /*text-align: center;*/
     border:1px #B9BDB5 solid;
     width:10rem;
     background: #272926;

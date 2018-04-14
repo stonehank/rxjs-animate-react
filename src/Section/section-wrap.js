@@ -1,12 +1,11 @@
 import React from 'react';
 import {CustomCheckBox} from '../Widget'
-import SectionContent from './sectioncontent'
-import {checkDidAllunSub} from '../tools'
+import SectionContent from './section-content'
 
 export default class SectionWrap extends React.PureComponent{
     render(){
         console.log('SectionWrap')
-        const {isFetching,title,caption,code,minus,plus,showStartButton,testStop,
+        const {isFetching,basicData,showStartButton,testStop,
             showResult,showMarble,testStart,clearStart,marbleCheckChange,resultCheckChange}=this.props
         return(
             <section className="section clearfix">
@@ -25,7 +24,7 @@ export default class SectionWrap extends React.PureComponent{
                     <p>Loading...</p>
                     :
                     <SectionContent
-                        title={title} caption={caption} code={code} minus={minus} plus={plus}/>
+                        basicData={basicData}/>
                 }
                 <div className="clearfix">
                     {showStartButton

@@ -1,12 +1,44 @@
 import {Data,notFoundData,deepList,shallowList} from './mock-data'
 
 const LINETOP=30
+
+
+/**
+ * 能取消的fetch（promise）
+ * let enhanceFetch=cancelableFetch(fetch);
+ * enhanceFetch.promise().then(data=>{....}).catch()
+ * enhanceFetch.cancel()
+ * @param promise
+ * @returns {{promise: enhancePromise, cancel: cancel}}
+ */
+
+function cancelableFetch(promise){
+    let shouldCancel=false;
+    let enhancePromise=(args)=>{
+        //防止cancel一次后变量永远都是true
+        shouldCancel=false;
+        return new Promise((resolve,reject)=>{
+        promise.call(this,args).then((data)=>{
+            shouldCancel?reject('hasCanceled'):resolve(data)
+        }).catch(err=>{
+            shouldCancel?reject('hasCanceled'):resolve(err)
+        })
+    })}
+    return{
+        promise:enhancePromise,
+        cancel:()=>{shouldCancel=true}
+    }
+}
+
+
+
+
 /**
  * 模拟500毫秒延迟
  * @param operatorName
  * @returns {Promise}
  */
-export function fetchData(operatorName){
+export function _fetchData(operatorName){
     return new Promise((resolve)=>{
         setTimeout(()=>{
             let findData=Data.find(obj=>obj.name===operatorName)
@@ -14,13 +46,12 @@ export function fetchData(operatorName){
             return resolve(findData)
         },500)
     })
-
 }
 
 /**
  * 模拟200毫秒延迟
  */
-export function fetchNav(){
+export  function _fetchNav(){
     return new Promise((resolve)=>{
         setTimeout(()=>{
             return resolve({shallowList,deepList})
@@ -29,7 +60,25 @@ export function fetchNav(){
 }
 
 
+export const fetchData=cancelableFetch(_fetchData)
+export const fetchNav=cancelableFetch(_fetchNav)
 
+
+/**
+ * 分割'/aaa/bbb'为[aaa,bbb]
+ * 参数i选择对应index的值
+ */
+export function getPath(pathname,i,getAllBehind){
+    let rgx=/\/([^/])*/g;
+    let resultArr=decodeURI(pathname).match(rgx);
+    let len=resultArr.length;
+    let allBehind='';
+    for(let j=i+1;j<len;j++){
+        allBehind+=resultArr[j]
+    }
+    let path=getAllBehind?allBehind:resultArr[i];
+    return path?path.substr(1):'';
+}
 
 
 
@@ -89,27 +138,6 @@ export function clearFunc(unSubObj){
         }
 }
 
-///**
-// * 返回值为true 则未订阅
-// * 返回值为false 则已订阅
-// * @param unSubObj
-// * @returns {*}
-// */
-//export function checkIsUnSub(unSubObj){
-//    var obj={}
-//        for(let i in unSubObj){
-//            if(unSubObj[i]){
-//                if(unSubObj[i].isStopped!==unSubObj[i].closed){
-//                    console.error('isStopped和closed属性不一致，检查unSub当前状态')
-//                }
-//                //setTimeout(()=>{obj[i]=unSubObj[i].isStopped},0)
-//                obj[i]=unSubObj[i].closed
-//                //console.log(window.i=obj[i],i)
-//            }
-//        }
-//    //console.log(obj)
-//    return obj
-//}
 
 
 export function calcColorBallNewPosition(line,whichLine,v,curTimeGap){
