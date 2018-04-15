@@ -6,13 +6,7 @@
     z-index: 1;
 }
 
-li{
-    list-style-type: none;
-}
-a{
-    color:#ccc;
-    text-decoration: none;
-}
+
 .webNavHor{
     display: inline-block;
     user-select: none;

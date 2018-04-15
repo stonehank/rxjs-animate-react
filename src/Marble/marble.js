@@ -1,6 +1,6 @@
 import React from 'react';
 import {clearFunc,checkDidAllunSub} from '../tools'
-import MarbleBall from './marbleball'
+import MarbleBall from './marble-ball'
 import ShowSubscribeStatus from './../Widget/show-subscribe-status';
 import ShowExampleMarbleBall from './show-example-marbleball';
 import MarbleCaption from './marble-caption'

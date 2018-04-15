@@ -1,153 +1,303 @@
-html{
-    overflow: hidden;
-}
-.sectionContents{
-    position:relative
-}
-section{
-    transform:translate3d(0,0,0)
-}
-.sections{
-    height: 33.3rem;
-    height:88vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
-}
-.secwap{
-    width:100%;
-}
-.secweb{
-    width:80%;
-}
-.sections li:last-child{
-    margin-bottom:5rem;
+body {
+    background: #262626;
+    color: #d6d6d6;
 }
 
-.section-title{
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin-left: 0.8rem;
-    padding: 1rem 1rem 0.5rem 1rem;
-    display: inline-block;
-    position: relative;
-    -webkit-perspective: 200;
-    transform-style: preserve-3d;
-}
-.section-title:before{
-    content: '';
-    background: #d7d7d7;
-    position: absolute;
-    top: 0;  left: 0;  right: 0;  bottom: 0;
-    transform: rotateX(30deg);
-    transition: all 1s linear;
-    transform-origin: bottom;
-    border-radius: 4px 4px 0 0;
-}
-
-pre{
-    word-break: break-all;
-    white-space: pre-wrap;
-    padding:1rem;
-    background:#d7d7d7;
-    font-family: Consolas,Inconsolata,Courier,monospace;
-}
-button{
-    width:5rem;
-    height:2.5rem;
-    border-radius:5px;
-    padding:0.5rem;
-    margin:0.5rem;
-}
-button:active{
-    outline:none;
-}
-button:focus{
-    outline:none;
-
-}
-.add{
-    background: #ffcb3b;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 2.5rem;
-    font-size: 1.5rem;
-    line-height: 2rem;
+body, p, ul, li, pre {
+    margin: 0;
     padding: 0;
 }
-.delete{
-    background:lightcoral;
-}
-.edit{
-    background:lightblue;
-}
-.save{
-    background:lightgreen;
-}
-.cancel{
-    background: #dadada;
+
+li{
+    list-style-type: none;
 }
 
-.popInform{
-    width: 40%;
-    /*height: 2.5rem;*/
-    background: #ccc;
-    position: absolute;
-    z-index: 2;
-    left: 30%;
-    top: 15%;
-    line-height: 2.5rem;
-    opacity:0.8;
-    border-radius:5px;
-    text-align: center;
-}
-.popSuc {
-    background: lightgreen
-}
-.popErr{
-    background: #ff3724;
-    color:white;
-    font-weight:bold;
+a{
+    color:#ccc;
+    text-decoration: none;
 }
 
-.promptModal{
-    width: 18em;
-    height: 6rem;
-    border-radius:10px;
-    position: absolute;
-    top: 0;left: 0;right: 0;bottom: 0;
+pre {
+    white-space: pre-line;
+    background: #111;
+    font-family: Consolas, Inconsolata, Courier, monospace;
+    font-size: 14px;
+    line-height: 22px;
+    color: #9b9b9b;
+}
+
+small {
+    color: #181818;
+    font-size: 0.8rem;
+}
+
+button {
+    background: #868686;
+    width: 12rem;
+    border: none;
     color: #000;
-    z-index: 3;
-    text-align: center;
-    margin: auto;
-    background:#BDC0BA
-}
-.promptModal button{
-    margin: 1rem 1.5rem 0 1.5rem;
-}
-.promptModal p{
-    margin-top:0.5rem;
-}
-.mask{
-    position:absolute;
-    top:0;left:0;bottom:0;right:0;
-    background:#0C0C0C;
-    opacity:0.7;
-    z-index:3;
+    padding: 0.5rem;
+    margin: 0.5rem 1rem;
+    border-radius: 5px;
 }
 
-.overviewSection{
-    padding:0 0.5rem;
-    margin-bottom:5rem;
-    overflow:auto;
-    height:33.3rem;
-    height:88vh;
+button:hover {
+    background: #c6c6c6
 }
-.overviewLi{
-    line-height:1.3rem;
-    padding:0.5rem;
+
+button:active {
+    outline: none;
 }
-.overviewLi:last-child{
-    margin-bottom:3rem;
+
+button:focus {
+    outline: none;
+}
+
+.clearfix:before, .clearfix:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+/*-----/Result/result-----*/
+
+.result {
+    width: 50%;
+    position: relative;
+    right: 0;
+    margin-bottom: 1.5rem;
+    overflow: auto;
+    max-height: 200px;
+    top: 0;
+    user-select: none;
+    background: #9a9a9a;
+}
+
+/*-----/Marble/marble-----*/
+#marbleWrap {
+    width: 50%;
+    float: right;
+    background: #ccc;
+    transition: all 0.5s linear;
+}
+
+#marble {
+    position: relative;
+    width: 100%;
+    padding-bottom: 3rem;
+    overflow: auto;
+    font-size: 0.5rem;
+}
+
+#marble .hr {
+    transition: all 0.2s linear;
+    min-width: 100%;
+    margin-top: 30px;
+    border-bottom: 1px solid #000;
+}
+
+#marble .hr:nth-of-type(1) {
+    margin-top: 40px;
+}
+
+#marble span {
+    height: 40px;
+    margin: 30px 0 0 2rem;
+    border: 1px solid #000;
+    width: 15rem;
+    display: block;
+    color: #000;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/*-----/Marble/marble-colorball-----*/
+
+.colorBall {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    line-height: 20px;
+    position: absolute;
+    top: 0;
+    transition: all 0.2s linear;
+    text-align: center;
+}
+
+/*-----/Marble/show-example-marbleball-----*/
+
+/*.bg-blue{ background:blue;}*/
+/*.bg-green{ background:green;}*/
+/*.bg-yellow{ background:yellow;}*/
+/*.bg-purple{ background:purple;}*/
+/*.bg-orange{ background:orange;}*/
+/*.text-white{ color:white;}*/
+/*.text-black{ color:black;}*/
+
+.colorBallExample {
+    line-height: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    display: inline-block;
+    margin-left: 0.5rem;
+}
+
+.completeMarbleBall {
+    background: #008f0f;
+    color: lightgreen;
+    font-weight: bold;
+    letter-spacing: -1.5px
+}
+
+.errorMarbleBall {
+    background: red;
+    color: #fff;
+    font-weight: bold;
+}
+
+.blueMarbleBall {
+    background: blue;
+    color: #fff;
+}
+
+.greenMarbleBall {
+    background: green;
+    color: #000
+}
+
+.yellowMarbleBall {
+    background: yellow;
+    color: #000;
+}
+
+.purpleMarbleBall {
+    background: purple;
+    color: #fff;
+}
+
+.orangeMarbleBall {
+    background: orange;
+    color: #fff;
+}
+/*-----/Widget/poptext-----*/
+
+#popData {
+    position: absolute;
+    display: inline-block;
+    padding: 0 0.5rem;
+    background: lightgreen;
+    text-align: center;
+    border-radius: 10px;
+    top: 0;
+    left: 0;
+    color: #000;
+    z-index: 1;
+    pointer-events: none;
+    font-size: 1rem;
+}
+
+/*-----/Widget/custom-checkbox-----*/
+
+.inputCheckBox {
+    display: none;
+}
+
+.slide-checkbox {
+    display: inline-block;
+    width: 4rem;
+    height: 1.6rem;
+    background: #e9e9e9;
+    border-radius: 20%/50%;
+    position: relative;
+    transition: all .5s;
+    cursor: pointer;
+}
+
+.slide-checkbox:before {
+    content: "";
+    display: block;
+    border-radius: 50%;
+    width: 40%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(to bottom, #9f9f9f, #bfbfbf, gray);
+    transition: inherit;
+    position: absolute;
+}
+
+.inputCheckBox:checked + .slide-checkbox:before {
+    left: 60%;
+    transform: rotate(180deg);
+    background: linear-gradient(to bottom, #007c00, #00af00, #006800);
+}
+
+.inputCheckBox:checked + .slide-checkbox {
+    background: #88f782;
+}
+
+/*-----/Widget/show-subscribe-status-----*/
+
+.unSubStatus .complete {
+    color: #00810e;
+}
+
+.unSubStatus .error {
+    color: #cd0002;
+}
+
+.unSubStatus .unsubscribe {
+    color: #aa4e4e;
+}
+/*-----/Widget/plus-----*/
+.plus {
+    background: #246b24;
+    color: #b5b5b5;
+}
+
+.plus:before {
+    content: "+";
+}
+
+/*-----/Widget/minus-----*/
+.minus {
+    background: #842e3b;
+    color: #b5b5b5;
+}
+
+.minus:before {
+    content: '-';
+}
+
+/*-----/Widget/section-wrap-----*/
+.section {
+    float: left;
+    width: 50%;
+    display: inline-block;
+    height: 80vh
+}
+
+.testStartRxjs {
+    background: lightgreen;
+}
+
+.testStartRxjs:hover {
+    background: #bcfcbc;
+}
+
+.testStopRxjs {
+    background: #ee7f00;
+}
+
+.testStopRxjs:hover {
+    background: #ef9f33
+}
+
+.clearRxjs {
+    background: #f05e5b;
+}
+
+.clearRxjs:hover {
+    background: #f0918b;
 }

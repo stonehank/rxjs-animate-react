@@ -31,7 +31,7 @@ export default class SectionContent extends React.PureComponent{
         //console.log('SectionContent')
         const {title,caption,plus,minus,code}=this.props.basicData
         return (
-            <div className="content">
+            <div>
                 <p>{title}</p>
                 <p dangerouslySetInnerHTML={{__html: caption}}
                    style={{margin:'0.5rem 0',fontStyle:'italic',color:'#367f8d'}} />

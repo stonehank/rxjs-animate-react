@@ -52,8 +52,9 @@ export const Data = [
         func: function (showRxjsInResult, showRxjsInMarble) {
             let RxTimer0_1000, RxClick, RxAudit;
             RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(13);
-            //RxTimer0_1000 = Rx.Observable.timer(0, 30).take(200);
             RxClick = Rx.Observable.fromEvent(document, 'click');
+            //RxTimer0_1000 = Rx.Observable.timer(0, 30).take(200);
+            //RxClick = Rx.Observable.timer(0, 30).take(200);
             RxAudit = RxTimer0_1000.audit(()=>RxClick);
 
             this.unSubResult.RxAudit = RxAudit.subscribe(NEC(showRxjsInResult))

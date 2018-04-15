@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router,withRouter}  from 'react-router-dom'
 import Rx from 'rxjs/Rx'
 
-import './index.css'
+import './Css/index.css'
 import Nav from './Nav'
 import Routes from './Routes/routes'
 import {sortMethod,_fetchNav} from './tools'
