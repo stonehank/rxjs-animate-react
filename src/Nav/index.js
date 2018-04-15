@@ -1,5 +1,5 @@
-import CreateNav from './create-nav'
+import Nav from './nav'
 
 
 
-export default CreateNav
+export default Nav

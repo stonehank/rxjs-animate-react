@@ -4,7 +4,7 @@ import '../Css/nav.css'
 import WebNav from './web-nav'
 import WapNav from './wap-nav'
 
-export default class CreateNav extends React.PureComponent {
+export default class Nav extends React.PureComponent {
 
     render() {
         //console.log('CreateNav')

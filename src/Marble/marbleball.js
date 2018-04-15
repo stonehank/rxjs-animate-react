@@ -42,7 +42,7 @@ export default class MarbleBall extends React.Component{
         },20)
     }
     render(){
-        console.log('MarbleBall')
+        //console.log('MarbleBall')
         const {text,data}=this.state.curContent
         return(
             <React.Fragment>

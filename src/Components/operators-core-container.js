@@ -92,7 +92,10 @@ export default class OperatorsCoreContainer extends React.Component{
         const curOperatorName=this.props.match.params.section,
             nextOperatorName=nextProps.match.params.section;
         if(curOperatorName!==nextOperatorName){
-            this.setState({isFetching:true})
+            this.setState({
+                isFetching:true,
+                showStartButton:true
+            })
             this.fetchDataSetState(nextOperatorName)
         }
     }

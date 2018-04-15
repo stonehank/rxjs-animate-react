@@ -1,5 +1,12 @@
 USE [Create React App](https://github.com/facebookincubator/create-react-app).
 
+### [DEMO](https://codesandbox.io/s/github/stonehank/animateRxjs-react)(建议全屏操作，暂未做分辨率适配)
+
+#### 运行
+`npm install`
+
+`npm start`
+
 #### 使用技术
 1. react
 2. react-router-dom v4
@@ -15,7 +22,7 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 
 #### 程序功能
 
-1. 菜单：hover会显示当前排序的前10条，点击则显示全部。
+1. 菜单：默认显示前10条，点击则显示全部。
 
 2. 开始动画：点击`开始(subscribe)`按钮，执行`subscribe`，按钮状态会根据当前订阅情况变更。
 3. 停止动画：点击`停止(unsubscribe)`，当前小球位置保留，但停止后无法继续，只能重新开始。
