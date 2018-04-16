@@ -89,12 +89,22 @@ export const sortMethod=(sort,navArr)=>{
         return b[sort]-a[sort]
     },
         stringSortFunc=(a,b)=>{
-            return b[sort]<a[sort]
+            if(b[sort]<a[sort]){
+                return 1
+            }else if (b[sort]>a[sort]){
+                return -1
+            }else{
+                return 0
+            }
         },
         sortArr=null;
     if(needSortArr[0]){
         if(typeof needSortArr[0][sort]==='number'){
+            //console.time(1)
             sortArr=needSortArr.sort(numSortFunc)
+            //quickSort(needSortArr,numSortFunc)
+            //sortArr=needSortArr
+            //console.timeEnd(1)
         }else if(typeof needSortArr[0][sort]==='string'){
             sortArr=needSortArr.sort(stringSortFunc)
         }else{
@@ -220,26 +230,64 @@ export function checkDidAllunSub(unSubMarble,unSubResult){
 }
 
 
-Function.prototype.addBefore=function(addFunc,status){
-    let _thisFunc=this;
-    return function(force){
-        addFunc.call(this,status,force)
-        _thisFunc.call(this,status)
-    }
-}
-function changeStatus(status,force){
+export function changeStatus(status,force){
     if(force || !this.isStopped){
         this.status=status
     }
 }
-function addNECStatus(subscription){
-    subscription.complete=subscription.complete.addBefore(changeStatus,'complete')
-    subscription.error=subscription.error.addBefore(changeStatus,'error')
-    subscription.unsubscribe=subscription.unsubscribe.addBefore(changeStatus,'unsubscribe')
+ //function addNECStatus(subscription){
+    //subscription.complete=subscription.complete.addBefore(changeStatus,'complete')
+    //subscription.error=subscription.error.addBefore(changeStatus,'error')
+    //subscription.unsubscribe=subscription.unsubscribe.addBefore(changeStatus,'unsubscribe')
+//}
+
+//export function alladdNECStatus(unSubObj){
+//    for(let i in unSubObj){
+//        addNECStatus(unSubObj[i])
+//    }
+//}
+
+
+
+
+
+
+
+
+/*快速排序*/
+
+function quickSort(array,compareFunc) {
+    quick(array,0,array.length-1,compareFunc)
+}
+function quick(array,left,right,compareFunc){
+    var index,l= left,r=right;
+    if(array.length>1){
+        index=partition(array,l,r,compareFunc)
+        if(l<index-1){
+            quick(array,l,index-1,compareFunc)
+        }
+        if(index<r){
+            quick(array,index,r,compareFunc)
+        }
+    }
+}
+function partition(array,left,right,compareFunc){
+    var pivot=array[Math.floor((left+right)/2)],
+        i=left,
+        j=right;
+    while(i<=j){
+        while(compareFunc(array[i],pivot)<0){i++}
+        while(compareFunc(pivot,array[j])<0){j--}
+        if(i<=j){
+            swap(array,i,j)
+            i++;j--;
+        }
+    }
+    return i
 }
 
-export function alladdNECStatus(unSubObj){
-    for(let i in unSubObj){
-        addNECStatus(unSubObj[i])
-    }
+function swap(arr,left,right){
+    var tem=arr[right]
+    arr[right]=arr[left];
+    arr[left]=tem;
 }

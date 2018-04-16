@@ -23,6 +23,12 @@ export default class OperatorsCoreContainer extends React.Component{
         this.refreshResultMarble=this.refreshResultMarble.bind(this)
         this.refreshStartStopButton=this.refreshStartStopButton.bind(this)
         this.prevCodeArr=[]
+        /*
+        此处 this.unSubMarble ; this.unSubResult
+        内部是Subscriber对象
+        immutable对Subscriber不会用，总是不能在shouldComponentUpdate正确判断是否更新
+        所以这里使用了this 而没有放在state里面
+        */
         this.unSubMarble={}
         this.unSubResult={}
         this.newMarbleArr=[]
@@ -157,17 +163,16 @@ export default class OperatorsCoreContainer extends React.Component{
         clearFunc(this.unSubResult);
         this.timeStamp=new Date().getTime()
         this.newMarbleArr=[];
-        if(!this.state.func){alert('数据获取失败！刷新重试');return;}
-        this.state.func.call(this,this.showRxjsInResult,this.showRxjsInMarble)
-        alladdNECStatus(this.unSubMarble)
-        alladdNECStatus(this.unSubResult)
         this.setState({
             showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult),
             marbleArr:this.newMarbleArr,
-            resultValue:''
+            resultValue:' '
         })
+        if(!this.state.func){alert('数据获取失败！请选择正确的操作符');return;}
+        this.state.func.call(this,this.showRxjsInResult,this.showRxjsInMarble)
+
         //TODO:需要修正 强制刷新result
-        this.resultRefreshTimeStamp=new Date().getTime()
+        //this.resultRefreshTimeStamp=new Date().getTime()
     }
 
     refreshStartStopButton(){
@@ -223,11 +228,11 @@ export default class OperatorsCoreContainer extends React.Component{
      */
     showRxjsInResult(v){
         this.setState(prevState=>({
-            resultValue:prevState.resultValue+v+"<br>"
+            resultValue:`${prevState.resultValue}value:${v}&nbsp;&nbsp;stringify:${JSON.stringify(v)}<br>`
         }))
     }
     render(){
-        //console.log('OperatorsCoreContainer')
+        console.log('OperatorsCoreContainer')
         const {isFetching,basicData,showMarble,showResult,showStartButton,
             marbleArr,line,marbleText,resultValue}=this.state
         return(

@@ -37,6 +37,6 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 
 
 #### 问题
-1. marble球排序以时间戳排序，因此当遇到 例如`Observable.of(1,2,3,4,5)`的时候，
-五次发射源基本上是同一个时间戳，因此会发生叠加，marble球看上去只有5，
+1. marble球排序以时间顺序排序，因此当遇到 例如`Observable.of(1,2,3,4,5)`的时候，
+五次发射源基本上是同一个时间戳，因此会发生叠加，marble球看上去只有1个，其实是5个叠加一起，
 这种情况可以看result表更为清楚。

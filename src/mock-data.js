@@ -1,7 +1,29 @@
 import Rx from 'rxjs/Rx';
-
+import {changeStatus} from './tools'
 let count = 0
 let _deepList = [];
+
+/**
+ * 此处为 Rx.Subscriber 底下的三个命令进行添加，为了能精确显示当前状态
+ * @param addFunc
+ * @param status
+ * @returns {Function}
+ */
+
+Function.prototype.addBefore=function(addFunc,status){
+    let _thisFunc=this;
+    return function(force){
+        addFunc.call(this,status,force)
+        _thisFunc.call(this,status)
+    }
+}
+
+function addCEUStatus(){
+    Rx.Subscriber.prototype.complete=Rx.Subscriber.prototype.complete.addBefore(changeStatus,'complete')
+    Rx.Subscriber.prototype.error=Rx.Subscriber.prototype.error.addBefore(changeStatus,'error')
+    Rx.Subscriber.prototype.unsubscribe=Rx.Subscriber.prototype.unsubscribe.addBefore(changeStatus,'unsubscribe')
+}
+addCEUStatus()
 
 export const shallowList = [
     {shallowTitle: '全部(按字母顺序)', sort: 'name', pathname: 'operators', notShowChild: true},
@@ -33,6 +55,135 @@ export const shallowList = [
 
 export const Data = [
     {
+        name: 'distinctUntilKeyChange',
+        title: 'distinctUntilKeyChange 只对比前一项，通过参数中的key值去比较value',
+        caption: '说明：' + ' 参数可以设定根据那一项进行去重，此处根据 x 值去重，可以在Result看到原来4组obj，' +
+        '对比前一项去重后剩下第1,3,4组',
+        hits: 25,
+        useful: 89,
+        line: 2,
+        marbleText: 'distinctUntilKeyChange',
+        code: `
+            //cut
+            let RxFrom,RxDistinctUntilKeyChanged;
+            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
+            RxDistinctUntilKeyChanged = RxFrom.distinctUntilKeyChanged('x',(prevV,nextV)=>prevV===nextV);
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxFrom,RxDistinctUntilKeyChanged;
+            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
+            RxDistinctUntilKeyChanged = RxFrom.distinctUntilKeyChanged('x',(prevV,nextV)=>prevV===nextV);
+
+            this.unSubResult.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxFrom = RxFrom.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
+        name: 'distinctUntilChange',
+        title: 'distinctUntilChange 只对比前一项',
+        caption: '说明：' + ' 参数可以设定根据那一项进行去重，此处根据当前项 x 和上一项 y 对比去重，可以在Result看到原来4组obj，' +
+        '对比前一项去重后剩下第1,2,4组',
+        hits: 273,
+        useful: 425,
+        line: 2,
+        marbleText: 'distinctUntilChange',
+        code: `
+            //cut
+            let RxFrom,RxDistinctUntilChange;
+            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:2},{x:2,y:4},{x:1,y:6}]);
+            RxDistinctUntilChange = RxFrom.distinctUntilChanged((prevObj,nextObj)=>prevObj.y===nextObj.x);
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxFrom,RxDistinctUntilChange;
+            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:2},{x:2,y:4},{x:1,y:6}]);
+            RxDistinctUntilChange = RxFrom.distinctUntilChanged((prevObj,nextObj)=>prevObj.y===nextObj.x);
+
+            this.unSubResult.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxFrom = RxFrom.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
+        name: 'distinct',
+        title: 'distinct 全部对比并且去重复',
+        caption: '说明：' + ' 参数可以设定根据那一项进行去重，此处根据x值去重，可以在Result看到原来4组obj，去重后剩下2组',
+        hits: 213,
+        useful: 745,
+        line: 2,
+        marbleText: 'distinct',
+        code: `
+            //cut
+            let RxFrom,RxDistinct;
+            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
+            RxDistinct = RxFrom.distinct(obj=>obj.x);
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxFrom,RxDistinct;
+            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
+            RxDistinct = RxFrom.distinct(obj=>obj.x);
+
+            this.unSubResult.RxDistinct = RxDistinct.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxFrom = RxFrom.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxDistinct = RxDistinct.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
+        name: 'delayWhen',
+        title: 'delayWhen：根据另一个源来执行延迟',
+        caption: '说明：' + ' 源RxOf根据RxClick触发后才触发，此处点击屏幕后才会显示start',
+        hits: 78,
+        useful: 527,
+        line: 2,
+        marbleText: 'delayWhen',
+        code: `
+            //cut
+               let RxOf,RxClick,RxDelayWhen;
+            RxOf = Rx.Observable.of('start');
+            RxClick = Rx.Observable.fromEvent(document,'click');
+            RxDelayWhen = RxOf.delayWhen(e=>RxClick);
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxOf,RxClick,RxDelayWhen;
+            RxOf = Rx.Observable.of('start');
+            RxClick = Rx.Observable.fromEvent(document,'click').take(1);
+            RxDelayWhen = RxOf.delayWhen(e=>RxClick);
+
+            this.unSubResult.RxDelayWhen = RxDelayWhen.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxDelayWhen = RxDelayWhen.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
+        name: 'delay',
+        title: 'delay：参数为延迟的时间（毫秒）',
+        caption: '说明：' + '点击后第一行为当前点击，最后一行为实际输出（此处延迟1秒），点击5次后complete',
+        hits: 42,
+        useful: 128,
+        line: 2,
+        marbleText: 'delay',
+        code: `
+            //cut
+            let RxClick,RxDelay;
+            RxClick = Rx.Observable.fromEvent(document,'click');
+            RxDelay = RxClick.delay(1000)
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxClick,RxDelay;
+            RxClick = Rx.Observable.fromEvent(document,'click').take(5);
+            RxDelay = RxClick.delay(1000);
+
+            this.unSubResult.RxDelay = RxDelay.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxDelay = RxDelay.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
         name: 'audit',
         title: 'audit:等待时间由另一个observable决定，不会立刻发送第一个源',
         caption: '说明：' + '点击后会立刻输出最新值，此处是1秒内任意多次点击也只发出1次值，<font color="#8d8d8d">跟debounce很像，暂时未弄清楚区别?</font>' +
@@ -51,9 +202,9 @@ export const Data = [
          `,
         func: function (showRxjsInResult, showRxjsInMarble) {
             let RxTimer0_1000, RxClick, RxAudit;
-            //RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(13);
+            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
             RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxTimer0_1000 = Rx.Observable.timer(0, 30).take(200);
+            //RxTimer0_1000 = Rx.Observable.timer(0, 30).take(200);
             //RxClick = Rx.Observable.timer(0, 30).take(400);
             RxAudit = RxTimer0_1000.audit(()=>RxClick);
 
@@ -82,7 +233,7 @@ export const Data = [
          `,
         func: function (showRxjsInResult, showRxjsInMarble) {
             let RxTimer0_1000, RxClick, RxDebounce;
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(13);
+            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
             RxClick = Rx.Observable.fromEvent(document, 'click');
             RxDebounce = RxTimer0_1000.debounce(()=>RxClick);
 
@@ -111,7 +262,7 @@ export const Data = [
          `,
         func: function (showRxjsInResult, showRxjsInMarble) {
             let RxTimer0_1000, RxClick, RxThrottle;
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(13);
+            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
             RxClick = Rx.Observable.fromEvent(document, 'click');
             RxThrottle = RxTimer0_1000.throttle(()=>RxClick);
 

@@ -13,7 +13,7 @@ export default class NavCore extends React.PureComponent {
         return (
         /*context——Consumer*/
         <Consumer>
-            {({sortDeepList,shallowList,curPathname})=>(
+            {({sortDeepList,sortNavDeepList,shallowList,curPathname})=>(
                 <React.Fragment>
                 <nav className={nav}>
                     <ul className={firstUl}>
@@ -23,7 +23,7 @@ export default class NavCore extends React.PureComponent {
                                     ?
                                     <ShallowListTitle name={e.shallowTitle}
                                                       pathname={e.pathname}
-                                                      sortDeepList={sortDeepList[e.pathname]}
+                                                      sortDeepList={sortNavDeepList[e.pathname]}
                                                       secondLi={secondLi}
                                                       secondUl={secondUl}
                                                       curPathname={curPathname}

@@ -27,9 +27,9 @@ class App extends React.Component{
         this.fetch$=Rx.Observable.fromPromise(_fetchNav())
             .subscribe(({deepList,shallowList})=>{
                 shallowList.forEach(e=>{
-                    let srotedList=sortMethod(e.sort,deepList)
-                    this.sortDeepList[e.pathname]=srotedList
-                    this.sortNavDeepList[e.pathname]=srotedList.slice(0,10)
+                    let sortedList=sortMethod(e.sort,deepList)
+                    this.sortDeepList[e.pathname]=sortedList
+                    this.sortNavDeepList[e.pathname]=sortedList.slice(0,10)
                 });
                 this.shallowList=shallowList;
                 this.setState({isFetchingNav:false})
@@ -38,9 +38,9 @@ class App extends React.Component{
     render(){
         //console.log('app')
         const {isFetchingNav}=this.state
-        const {sortDeepList,shallowList}=this
+        const {sortDeepList,shallowList,sortNavDeepList}=this
         const curPathname=this.props.location.pathname.substr(1)
-        const contextProps={sortDeepList,shallowList,curPathname}
+        const contextProps={sortDeepList,sortNavDeepList,shallowList,curPathname}
         return(
             isFetchingNav
                 ?
