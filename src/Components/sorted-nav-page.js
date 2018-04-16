@@ -17,6 +17,7 @@ export default class SortedNavPage extends React.Component{
     render(){
         //console.log('AllSortPages')
         return(
+            /*context——Consumer*/
             <Consumer>
                 {({sortDeepList})=>{
                     const {match}=this.props,

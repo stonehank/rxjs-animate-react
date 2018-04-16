@@ -33,15 +33,15 @@ export default class OperatorsCoreContainer extends React.Component{
             isFetching:true,
             resultValue:'',
             marbleArr:false,
-            showStartButton:true
+            showStartButton:true,
+            curOperatorName:'',
+            fetchDataSetState:this.fetchDataSetState
         }
     }
 
     fetchDataSetState(operatorName){
         this.fetch$=Rx.Observable.fromPromise(_fetchData(operatorName))
             .subscribe(data=>{
-
-        //fetchData.promise(operatorName).then(data=>{
                 const {title,name,caption,code,line,marbleText,func}=data;
                 const codeObj=calcCodeStrArrPlusMinus(code,this.prevCodeArr),
                     codeStr=codeObj.str,
@@ -67,15 +67,9 @@ export default class OperatorsCoreContainer extends React.Component{
                     basicData:{ title, name, caption, minus, plus,code:codeStr},
                     line, marbleText, func
                 })
-
             })
-            //.catch(err=>console.warn('fetchData '+err))
     }
     componentWillUnmount(){
-        //const {isFetching}=this.state;
-        //if(isFetching){
-        //fetchData.cancel()
-        //}
         this.fetch$.unsubscribe()
     }
     shouldComponentUpdate(nextProps,nextState){
@@ -84,21 +78,42 @@ export default class OperatorsCoreContainer extends React.Component{
         return !is(fromJS(this.props),fromJS(nextProps))
              || !is(fromJS(this.state),fromJS(nextState))
     }
-    componentDidMount(){
-        const operatorName=this.props.match.params.section;
-        this.fetchDataSetState(operatorName)
-    }
-    componentWillReceiveProps(nextProps){
-        const curOperatorName=this.props.match.params.section,
+
+    /**
+     * 新API 可以代替以下componentDidMount 和 componentWillReceiveProps
+     * @param nextProps
+     * @param prevState
+     * @returns {*}
+     */
+    static getDerivedStateFromProps(nextProps,prevState){
+        const curOperatorName=prevState.curOperatorName,
             nextOperatorName=nextProps.match.params.section;
         if(curOperatorName!==nextOperatorName){
-            this.setState({
+            prevState.fetchDataSetState(nextOperatorName)
+            return {
                 isFetching:true,
-                showStartButton:true
-            })
-            this.fetchDataSetState(nextOperatorName)
+                showStartButton:true,
+                curOperatorName:nextOperatorName
+            }
         }
+        return null;
     }
+    //componentDidMount(){
+    //    const operatorName=this.props.match.params.section;
+    //    this.fetchDataSetState(operatorName)
+    //}
+    //
+    //componentWillReceiveProps(nextProps){
+    //    const curOperatorName=this.props.match.params.section,
+    //        nextOperatorName=nextProps.match.params.section;
+    //    if(curOperatorName!==nextOperatorName){
+    //        this.setState({
+    //            isFetching:true,
+    //            showStartButton:true
+    //        })
+    //        this.fetchDataSetState(nextOperatorName)
+    //    }
+    //}
     /**
      * 清空result界面 &  清空marble界面
      */
@@ -153,7 +168,6 @@ export default class OperatorsCoreContainer extends React.Component{
         })
         //TODO:需要修正 强制刷新result
         this.resultRefreshTimeStamp=new Date().getTime()
-        //this.refreshResultMarble()
     }
 
     refreshStartStopButton(){
@@ -214,8 +228,8 @@ export default class OperatorsCoreContainer extends React.Component{
     }
     render(){
         //console.log('OperatorsCoreContainer')
-        const {isFetching,basicData,line,
-            resultValue,showMarble,showResult,marbleArr,marbleText,showStartButton}=this.state
+        const {isFetching,basicData,showMarble,showResult,showStartButton,
+            marbleArr,line,marbleText,resultValue}=this.state
         return(
             <React.Fragment>
                 <SectionWrap

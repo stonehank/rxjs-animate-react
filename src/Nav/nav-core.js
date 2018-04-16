@@ -11,6 +11,7 @@ export default class NavCore extends React.PureComponent {
         let {nav,firstLi,secondLi,firstUl,secondUl}=css
         //console.log('NavCore')
         return (
+        /*context——Consumer*/
         <Consumer>
             {({sortDeepList,shallowList,curPathname})=>(
                 <React.Fragment>

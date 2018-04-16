@@ -29,7 +29,14 @@ export default class Marble extends React.PureComponent{
         //console.log('Marble')
         const {line,marbleText,marbleArr,unSubMarble}=this.props
         const _marbleArr=marbleArr?marbleArr:[]
-        const arr=new Array(line).fill(1)
+        let arr=new Array(line)
+        if(Array.prototype.fill){
+             arr.fill(1)
+        }else{
+            for(var i=0;i<arr.length;i++){
+                arr[i]=1
+            }
+        }
         return  (
             <div id="marbleWrap" >
                 <div style={{fontSize:"1.2rem",color:"#000"}}>

@@ -8,6 +8,9 @@ import Nav from './Nav'
 import Routes from './Routes/routes'
 import {sortMethod,_fetchNav} from './tools'
 
+/**
+ * 新API 创建context
+ */
 export const {Provider,Consumer}=React.createContext()
 
 class App extends React.Component{
@@ -43,6 +46,7 @@ class App extends React.Component{
                 ?
                 <p>loading..</p>
                 :
+                /*context——Provider*/
                 <Provider value={contextProps}>
                     <Nav type="webNav" orient="horizontal" showChild={true}/>
                     <Routes shallowList={shallowList} curPathname={curPathname}/>

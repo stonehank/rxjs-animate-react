@@ -19,6 +19,7 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 的marble图确实让人更容易理解，但能动的还是更加直观。
 3. 之前用原生JS做了一个[rxjs动画版](https://github.com/stonehank/animateRxjs-rawJS)，
 这次用react做也加深自己对react的学习。
+4. 使用最新API `createContext` 和 `getDerivedStateFromProps`
 
 #### 程序功能
 
