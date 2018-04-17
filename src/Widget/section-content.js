@@ -32,9 +32,9 @@ export default class SectionContent extends React.PureComponent{
         const {title,caption,plus,minus,code}=this.props.basicData
         return (
             <div>
-                <p>{title}</p>
+                <p className="section-title">{title}</p>
                 <p dangerouslySetInnerHTML={{__html: caption}}
-                   style={{margin:'0.5rem 0',fontStyle:'italic',color:'#367f8d'}} />
+                   className="section-caption"/>
                 <div>
                     {this.state.showPlusMinus
                         ?

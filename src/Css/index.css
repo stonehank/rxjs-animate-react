@@ -303,3 +303,18 @@ button:focus {
 .clearRxjs:hover {
     background: #f0918b;
 }
+
+/*-----/Widget/section-content-----*/
+
+.section-title{
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.section-caption{
+    margin:0.5rem 0;
+    font-style:italic;
+    color:#367f8d;
+    line-height:1.8rem;
+    letter-spacing: 1px;
+}
