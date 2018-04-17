@@ -55,6 +55,63 @@ export const shallowList = [
 
 export const Data = [
     {
+        name: 'merge',
+        title: 'merge:将发射源合并，同时执行',
+        caption: '说明：' + ' merge合并不管发射源顺序，直接合并',
+        hits: 985,
+        useful: 612,
+        line: 3,
+        marbleText: 'merge',
+        code: `
+            //cut
+            let RxClick, RxTimer0_1000, RxMerge;
+            RxClick = Rx.Observable.fromEvent(document, 'click');
+            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
+            RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000)
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxClick, RxTimer0_1000, RxMerge;
+            RxClick = Rx.Observable.fromEvent(document, 'click');
+            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
+            RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000)
+
+            this.unSubResult.RxMerge = RxMerge.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showRxjsInMarble, 2));
+            this.unSubMarble.RxMerge = RxMerge.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
+        name: 'forkJoin',
+        title: 'forkJoin:将最终结果合并成1个数组',
+        caption: '说明：' + ' 第一个发射源执行显示1到6(几乎同时),第二个发射源每隔1s显示增加1,' +
+        'forkJoin会等全部发射源完成结束后，才将各自的最终结果合并成1个数组',
+        hits: 1524,
+        useful: 912,
+        line: 3,
+        marbleText: 'forkJoin',
+        code: `
+            //cut
+            let RxRange, RxTimer0_1000, RxForkJoin;
+            RxRange = Rx.Observable.range(1, 6);
+            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
+            RxForkJoin = Rx.Observable.forkJoin(RxRange, RxTimer0_1000)
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxRange, RxTimer0_1000, RxForkJoin;
+            RxRange = Rx.Observable.range(1, 6);
+            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
+            RxForkJoin = Rx.Observable.forkJoin(RxRange, RxTimer0_1000);
+
+            this.unSubResult.RxForkJoin = RxForkJoin.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxRange = RxRange.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showRxjsInMarble, 2));
+            this.unSubMarble.RxForkJoin = RxForkJoin.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
         name: 'distinctUntilKeyChange',
         title: 'distinctUntilKeyChange 只对比前一项，通过参数中的key值去比较value',
         caption: '说明：' + ' 参数可以设定根据那一项进行去重，此处根据 x 值去重，可以在Result看到原来4组obj，' +

@@ -163,16 +163,15 @@ export default class OperatorsCoreContainer extends React.Component{
         clearFunc(this.unSubResult);
         this.timeStamp=new Date().getTime()
         this.newMarbleArr=[];
+        if(!this.state.func){alert('数据获取失败！请选择正确的操作符');return;}
+        this.state.func.call(this,this.showRxjsInResult,this.showRxjsInMarble)
         this.setState({
             showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult),
             marbleArr:this.newMarbleArr,
             resultValue:' '
         })
-        if(!this.state.func){alert('数据获取失败！请选择正确的操作符');return;}
-        this.state.func.call(this,this.showRxjsInResult,this.showRxjsInMarble)
-
         //TODO:需要修正 强制刷新result
-        //this.resultRefreshTimeStamp=new Date().getTime()
+        this.resultRefreshTimeStamp=new Date().getTime()
     }
 
     refreshStartStopButton(){
