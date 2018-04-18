@@ -3,6 +3,7 @@ import {CustomCheckBox} from '../Widget'
 import SectionContent from './section-content'
 
 export default class SectionWrap extends React.PureComponent{
+
     render(){
         //console.log('SectionWrap')
         const {isFetching,basicData,showStartButton,testStop,

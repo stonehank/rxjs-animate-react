@@ -231,7 +231,7 @@ export default class OperatorsCoreContainer extends React.Component{
         }))
     }
     render(){
-        console.log('OperatorsCoreContainer')
+        //console.log('OperatorsCoreContainer')
         const {isFetching,basicData,showMarble,showResult,showStartButton,
             marbleArr,line,marbleText,resultValue}=this.state
         return(

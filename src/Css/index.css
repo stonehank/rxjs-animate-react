@@ -111,6 +111,15 @@ button:focus {
     font-size: 1rem;
 }
 
+#dragMarble{
+    opacity:0.7;
+}
+
+#dragMarble div{
+    cursor:-webkit-grabbing;
+}
+
+
 /*-----/Marble/marble-colorball-----*/
 
 .colorBall {
@@ -123,8 +132,11 @@ button:focus {
     transform:translate3d(0,0,0);
     transition: top 0.2s linear;
     text-align: center;
+    cursor:-webkit-grab;
 }
-
+.colorBall:active{
+    cursor:-webkit-grabbing;
+}
 /*-----/Marble/show-example-marbleball-----*/
 
 /*.bg-blue{ background:blue;}*/

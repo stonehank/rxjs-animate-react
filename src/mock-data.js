@@ -73,13 +73,14 @@ export const Data = [
         func: function (showRxjsInResult, showRxjsInMarble) {
             let RxClick, RxTimer0_1000, RxMerge;
             RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
-            RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000)
+            RxTimer0_1000 = Rx.Observable.timer(0, 30).take(200);
+            //RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
+            //RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000)
 
-            this.unSubResult.RxMerge = RxMerge.subscribe(NEC(showRxjsInResult))
+            //this.unSubResult.RxMerge = RxMerge.subscribe(NEC(showRxjsInResult))
             this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
             this.unSubMarble.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showRxjsInMarble, 2));
-            this.unSubMarble.RxMerge = RxMerge.subscribe(NEC(showRxjsInMarble, 'last'));
+            //this.unSubMarble.RxMerge = RxMerge.subscribe(NEC(showRxjsInMarble, 'last'));
         }
     },
     {
@@ -261,8 +262,6 @@ export const Data = [
             let RxTimer0_1000, RxClick, RxAudit;
             RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
             RxClick = Rx.Observable.fromEvent(document, 'click');
-            //RxTimer0_1000 = Rx.Observable.timer(0, 30).take(200);
-            //RxClick = Rx.Observable.timer(0, 30).take(400);
             RxAudit = RxTimer0_1000.audit(()=>RxClick);
 
             this.unSubResult.RxAudit = RxAudit.subscribe(NEC(showRxjsInResult))
