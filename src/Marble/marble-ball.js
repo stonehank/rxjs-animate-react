@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PopText from './../Widget/poptext'
-export default class MarbleBall extends React.Component{
+export default class MarbleBall extends React.PureComponent{
     constructor(){
         super()
         this.showPop=this.showPop.bind(this)
@@ -13,6 +13,7 @@ export default class MarbleBall extends React.Component{
             curStyle:{},
             curContent:{},
             left:0,
+            restorePositionKey:0,
             showPopText:false
         }
     }
@@ -38,14 +39,25 @@ export default class MarbleBall extends React.Component{
 
     dragStart(e){
         e.nativeEvent.stopImmediatePropagation()
+
+        const {curStyle}=this.state
+        const curStyleWithOpa=Object.assign({},curStyle,{opacity:0.5})
+
         this.initX=e.clientX
         document.getElementById('root').style.cursor='-webkit-grabbing';
         document.addEventListener('mousemove',this.dragging)
         document.addEventListener('mouseup',this.dragOver)
+
+        this.setState({
+            curStyle:curStyleWithOpa
+        })
     }
     dragOver(e){
         e.stopPropagation()
         e.stopImmediatePropagation()
+        const {curStyle}=this.state
+        const curStyleWithOpa=Object.assign({},curStyle,{opacity:1})
+
         document.removeEventListener('mousemove',this.dragging)
         document.removeEventListener('mouseup',this.dragOver)
         document.getElementById('root').style.cursor='inherit';
@@ -53,8 +65,10 @@ export default class MarbleBall extends React.Component{
         ReactDOM.render(this.draggingBall,document.getElementById('dragMarble'))
 
         if(isNaN(this.finalX)){return}
+        this.props.changeDragStatus(true)
         this.setState(prevState=>({
-            left:prevState.left+this.finalX
+            left:prevState.left+this.finalX,
+            curStyle:curStyleWithOpa
         }))
         this.finalX=0;
     }
@@ -74,17 +88,48 @@ export default class MarbleBall extends React.Component{
         ReactDOM.render(this.draggingBall,document.getElementById('dragMarble'))
         //console.timeEnd(1)
     }
-
-
     componentWillUnmount(){
         clearTimeout(this.timer)
     }
 
+
+    static getDerivedStateFromProps(nextProps,prevState){
+        //console.log('MarbleBall will update')
+        const {marbleBallObj,restorePositionKey}=nextProps
+        //只有restorePositionKey变了 并且 left也变了 才会执行还原
+        if(restorePositionKey!==prevState.restorePositionKey && prevState.left!==marbleBallObj.left){
+            //console.log('real render')
+            return {
+                restorePositionKey:restorePositionKey,
+                left:marbleBallObj.left
+            }
+        }else{
+            return null
+        }
+    }
+
+        //todo 使用新api
+    //componentWillUpdate(nextProps){
+    //    //console.log('MarbleBall will update')
+    //    const {marbleBallObj,restorePositionKey}=nextProps
+    //    //只有restorePositionKey变了 并且 left也变了 才会执行还原
+    //    if(restorePositionKey!==this.state.restorePositionKey && this.state.left!==marbleBallObj.left){
+    //        console.log('real render')
+    //        this.setState({
+    //            restorePositionKey:restorePositionKey,
+    //            left:marbleBallObj.left
+    //        })
+    //    }
+    //}
+
+
     componentDidMount(){
-        const {marbleBallObj}=this.props
+        //console.log('MarbleBall didmount')
+        const {marbleBallObj,restorePositionKey}=this.props
         const {data,text,left,...style}=marbleBallObj
         this.timer=setTimeout(()=>{
             this.setState({
+                restorePositionKey:restorePositionKey,
                 curStyle:style,
                 left:left,
                 curContent:{text,data}
@@ -92,7 +137,7 @@ export default class MarbleBall extends React.Component{
         },20)
     }
     render(){
-        //console.log('MarbleBall')
+        //console.log('MarbleBall render')
         const {left,curStyle,curContent}=this.state;
         const {text,data}=curContent
         const _curStyle=Object.assign({},curStyle,{left})
