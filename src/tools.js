@@ -137,14 +137,14 @@ export function unique(arr){
 }
 
 
-function clearWhich(unSub,force){
+function clearWhich(unSub){
     if(!unSub){return}
-    unSub.unsubscribe? unSub.unsubscribe(force): clearTimeout(unSub)
+    unSub.unsubscribe? unSub.unsubscribe(): clearTimeout(unSub)
 
 }
-export function clearFunc(unSubObj,force){
+export function clearFunc(unSubObj){
         for(let i in unSubObj){
-            clearWhich(unSubObj[i],force)
+            clearWhich(unSubObj[i])
         }
 }
 

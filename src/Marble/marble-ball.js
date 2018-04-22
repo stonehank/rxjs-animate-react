@@ -107,6 +107,18 @@ export default class MarbleBall extends React.PureComponent{
             return null
         }
     }
+    //componentDidUpdate(){
+    //        console.log('MarbleBall will update')
+    //        const {marbleBallObj,restorePositionKey}=this.props
+    //        //只有restorePositionKey变了 并且 left也变了 才会执行还原
+    //        if(restorePositionKey!==this.state.restorePositionKey && this.state.left!==marbleBallObj.left){
+    //            console.log('real render')
+    //            this.setState({
+    //                restorePositionKey:restorePositionKey,
+    //                left:marbleBallObj.left
+    //            })
+    //        }
+    //}
 
         //todo 使用新api
     //componentWillUpdate(nextProps){

@@ -16,6 +16,7 @@ export default class OperatorsCoreContainer extends React.Component{
         this.testStart=this.testStart.bind(this)
         this.clearStart=this.clearStart.bind(this)
         this.testStop=this.testStop.bind(this)
+        this.allUnsubscribe=this.allUnsubscribe.bind(this)
         this.marbleCheckChange=this.marbleCheckChange.bind(this)
         this.resultCheckChange=this.resultCheckChange.bind(this)
         this.showRxjsInResult=this.showRxjsInResult.bind(this)
@@ -37,7 +38,7 @@ export default class OperatorsCoreContainer extends React.Component{
             showResult:true,
             marbleText:'', func:null, line:0,
             isFetching:true,
-            resultValue:'',
+            resultValue:false,
             marbleArr:false,
             showStartButton:true,
             curOperatorName:'',
@@ -54,21 +55,10 @@ export default class OperatorsCoreContainer extends React.Component{
                     minus=codeObj.minus,
                     plus=codeObj.plus;
                 this.prevCodeArr=codeObj.arr;
-
-                /*用clearStart会多render1次*/
-                //this.clearStart()
-
-                /*全部unsubscribe 并且清空状态，此处不会触发更新*/
-                clearFunc(this.unSubMarble);
-                clearFunc(this.unSubResult);
+                this.clearStart()
                 this.unSubMarble={}
                 this.unSubResult={}
-
-                /*清空数据界面(非状态界面) 获取新值*/
-                this.newMarbleArr=[];
                 this.setState({
-                    marbleArr:this.newMarbleArr,
-                    resultValue:'',
                     isFetching:false,
                     basicData:{ title, name, caption, minus, plus,code:codeStr},
                     line, marbleText, func
@@ -122,15 +112,28 @@ export default class OperatorsCoreContainer extends React.Component{
     //}
     /**
      * 清空result界面 &  清空marble界面
+     * 清空小球小球arr
      */
-    refreshResultMarble(){
+    refreshResultMarble(status){
         this.newMarbleArr=[];
+        let _marbleArr,_resultValue
+        switch(status){
+            case 'clear':
+                _marbleArr=false;
+                _resultValue=false;
+                break;
+            case 'start':
+                _marbleArr=this.newMarbleArr;
+                _resultValue='';
+                break;
+            default:
+                throw new Error('参数status错误 应该为clear或者start')
+        }
+
         this.setState({
-            marbleArr:false,
-            resultValue:''
+            marbleArr:_marbleArr,
+            resultValue:_resultValue
         })
-        //TODO:需要修正 强制刷新result
-        this.resultRefreshTimeStamp=new Date().getTime()
     }
 
     /**
@@ -159,17 +162,15 @@ export default class OperatorsCoreContainer extends React.Component{
             e.stopPropagation()
             e.nativeEvent.stopImmediatePropagation();
         }
-        clearFunc(this.unSubMarble);
-        clearFunc(this.unSubResult);
-        this.timeStamp=new Date().getTime()
-        this.newMarbleArr=[];
         if(!this.state.func){alert('数据获取失败！请选择正确的操作符');return;}
+        this.timeStamp=new Date().getTime()
+
+        this.allUnsubscribe()
+        this.refreshResultMarble('start')
 
         //为了避免快速执行时 result的value出现又被以下清空，放到执行上面
         this.setState(prevState=>({
             showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult),
-            marbleArr:this.newMarbleArr,
-            resultValue:' '
         }))
 
         this.state.func.call(this,this.showRxjsInResult,this.showRxjsInMarble)
@@ -189,12 +190,19 @@ export default class OperatorsCoreContainer extends React.Component{
             e.stopPropagation()
             e.nativeEvent.stopImmediatePropagation();
         }
-        clearFunc(this.unSubMarble);
-        clearFunc(this.unSubResult);
+        this.allUnsubscribe()
         this.refreshStartStopButton()
         //TODO:需要修正 强制刷新marble,result
         this.marbleRefreshTimeStamp=new Date().getTime()
         this.resultRefreshTimeStamp=new Date().getTime()
+    }
+
+    /**
+     * 全部unsubscribe，但不更新页面
+     */
+    allUnsubscribe(){
+        clearFunc(this.unSubMarble);
+        clearFunc(this.unSubResult);
     }
 
     /**
@@ -207,9 +215,8 @@ export default class OperatorsCoreContainer extends React.Component{
             e.stopPropagation()
             e.nativeEvent.stopImmediatePropagation();
         }
-        clearFunc(this.unSubMarble,true);
-        clearFunc(this.unSubResult,true);
-        this.refreshResultMarble()
+        this.allUnsubscribe()
+        this.refreshResultMarble('clear')
 
     }
     /**
@@ -230,8 +237,9 @@ export default class OperatorsCoreContainer extends React.Component{
      * @param v
      */
     showRxjsInResult(v){
+
         this.setState(prevState=>({
-            resultValue:`${prevState.resultValue}value:${v}&nbsp;&nbsp;stringify:${JSON.stringify(v)}<br>`
+            resultValue:`${prevState.resultValue && ''}value:${v}&nbsp;&nbsp;stringify:${JSON.stringify(v)}<br>`
         }))
     }
     render(){
