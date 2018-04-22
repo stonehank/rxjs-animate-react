@@ -239,7 +239,7 @@ export default class OperatorsCoreContainer extends React.Component{
     showRxjsInResult(v){
 
         this.setState(prevState=>({
-            resultValue:`${prevState.resultValue && ''}value:${v}&nbsp;&nbsp;stringify:${JSON.stringify(v)}<br>`
+            resultValue:`${prevState.resultValue || ''}value:${v}&nbsp;&nbsp;stringify:${JSON.stringify(v)}<br>`
         }))
     }
     render(){

@@ -55,6 +55,66 @@ export const shallowList = [
 
 export const Data = [
     {
+        name: 'retryWhen',
+        title: 'retryWhen:重复发射源，直到内部源(条件源)发出complete或者error',
+        caption: '说明：' + '在重复条件下，retryWhen总是能重复发射源的镜像，但不包括error；此处条件为interval值<3，此处第一行为发射源' +
+        '虽然很快error，但是error并不影响retryWhen，第二行为重复的条件，即条件发射源一旦触发并且符合重复的条件（未complete，未error），' +
+        '立刻开始重复一次发射源的镜像  ',
+        hits: 715,
+        useful: 412,
+        line: 3,
+        marbleText: 'retryWhen',
+        code: `
+            //cut
+            let RxInterval, RxTimer_Throw, retryWhen;
+            RxTimer_Throw=Rx.Observable.timer(0,200).map(n=>{if(n===3){throw 'err'};return n});
+            RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<3);
+            retryWhen =RxTimer_Throw.retryWhen(()=>RxInterval);
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxInterval, RxTimer_Throw, RxRetryWhen;
+            RxTimer_Throw=Rx.Observable.timer(0,200).map(n=>{if(n===3){throw 'err'}return n});
+            RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<3);
+            RxRetryWhen =RxTimer_Throw.retryWhen(()=>RxInterval);
+
+            this.unSubResult.RxRetryWhen = RxRetryWhen.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxTimer_Throw = RxTimer_Throw.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxInterval = RxInterval.subscribe(NEC(showRxjsInMarble, 2));
+            this.unSubMarble.RxRetryWhen = RxRetryWhen.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
+        name: 'repeatWhen',
+        title: 'repeatWhen:重复发射源，直到内部源(条件源)发出complete或者error',
+        caption: '说明：' + '在重复条件下，repeatWhen总是能重复发射源的镜像，但不包括complete；此处条件为interval值<3，此处第一行为发射源' +
+        '虽然很快complete，但是complete并不影响repeatWhen，第二行为重复的条件，即条件发射源一旦触发并且符合重复的条件（未complete，未error），' +
+        '立刻开始重复一次发射源的镜像 ',
+        hits: 915,
+        useful: 612,
+        line: 3,
+        marbleText: 'repeatWhen',
+        code: `
+            //cut
+            let RxInterval, RxTimer0_100, RxRepeatWhen;
+            RxTimer0_100=Rx.Observable.timer(0,100).take(3)
+            RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<5)
+            RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval)
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxInterval_takeWhile, RxTimer0_100, RxRepeatWhen;
+            RxTimer0_100=Rx.Observable.timer(0,100).take(3)
+            RxInterval_takeWhile = Rx.Observable.interval(1000).takeWhile(x=>x<3)
+            RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval_takeWhile);
+
+            this.unSubResult.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxTimer0_100 = RxTimer0_100.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxInterval_takeWhile = RxInterval_takeWhile.subscribe(NEC(showRxjsInMarble, 2));
+            this.unSubMarble.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
         name: 'merge',
         title: 'merge:将发射源合并，同时执行',
         caption: '说明：' + ' merge合并不管发射源顺序，直接合并',
