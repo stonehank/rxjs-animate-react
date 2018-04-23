@@ -6,7 +6,8 @@ import {fromJS,is} from 'immutable';
 class MarbleBallComponent extends React.Component{
 
     shouldComponentUpdate(prevProps){
-        return !is(fromJS(this.props._curStyle),fromJS(prevProps._curStyle)) || this.props.isDragging !==prevProps.isDragging
+        return !is(fromJS(this.props._curStyle),fromJS(prevProps._curStyle))
+            || this.props.isDragging !==prevProps.isDragging
     }
     render(){
         //console.log('marbleBallComponent')

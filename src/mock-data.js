@@ -55,6 +55,59 @@ export const shallowList = [
 
 export const Data = [
     {
+        name: 'takeUntil',
+        title: 'takeUntil:参数为另一个发射源，当发射值时，发出complete',
+        caption: '说明：' + '参数隔3秒发出1，当1发出，立刻complete',
+        hits: 715,
+        useful: 412,
+        line: 3,
+        marbleText: 'takeUntil',
+        code: `
+            //cut
+            let RxIntervalTake5,RxOfDelay, RxTakeUntil;
+            RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
+            RxOfDelay = Rx.Observable.of(1).delay(3000);
+            RxTakeUntil = RxInterval.takeUntil(RxOfDelay)
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxIntervalTake5,RxOfDelay, RxTakeUntil;
+            RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
+            RxOfDelay = Rx.Observable.of(1).delay(3000);
+            RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay)
+
+            this.unSubResult.RxTakeUntil = RxTakeUntil.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxIntervalTake5 = RxIntervalTake5.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxOfDelay = RxOfDelay.subscribe(NEC(showRxjsInMarble, 2));
+            this.unSubMarble.RxTakeUntil = RxTakeUntil.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
+        name: 'takeWhile',
+        title: 'takeWhile:参数返回false时，发出complete',
+        caption: '说明：' + '参数的条件是n<4，因此n为4时，发出complete',
+        hits: 715,
+        useful: 412,
+        line: 2,
+        marbleText: 'takeWhile(n=>n<4)',
+        code: `
+            //cut
+            let RxIntervalTake7, RxTakeWhile;
+            RxIntervalTake7 = Rx.Observable.interval(1000).take(7);
+            RxTakeWhile = RxIntervalTake7.takeWhile(n=>n<4)
+            //cut
+         `,
+        func: function (showRxjsInResult, showRxjsInMarble) {
+            let RxIntervalTake7, RxTakeWhile;
+            RxIntervalTake7 = Rx.Observable.interval(1000).take(7);
+            RxTakeWhile = RxIntervalTake7.takeWhile(n=>n<4)
+
+            this.unSubResult.RxTakeWhile = RxTakeWhile.subscribe(NEC(showRxjsInResult))
+            this.unSubMarble.RxIntervalTake7 = RxIntervalTake7.subscribe(NEC(showRxjsInMarble, 1));
+            this.unSubMarble.RxTakeWhile = RxTakeWhile.subscribe(NEC(showRxjsInMarble, 'last'));
+        }
+    },
+    {
         name: 'retryWhen',
         title: 'retryWhen:重复发射源，直到内部源(条件源)发出complete或者error',
         caption: '说明：' + '在重复条件下，retryWhen总是能重复发射源的镜像，但不包括error；此处条件为interval值<3，此处第一行为发射源' +
