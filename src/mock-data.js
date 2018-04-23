@@ -611,6 +611,7 @@ function fillDeepList() {
         let deepObj = {
             id: count++,
             name: Data[i].name,
+            firstCapital:Data[i].name[0].toUpperCase(),
             hits: Data[i].hits,
             useful: Data[i].useful
         }
