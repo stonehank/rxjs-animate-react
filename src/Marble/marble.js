@@ -1,5 +1,6 @@
 import React from 'react';
 import {clearFunc,checkDidAllunSub} from '../tools'
+import MarbleComponent from './marble-component'
 import MarbleBall from './marble-ball'
 import ShowSubscribeStatus from './../Widget/show-subscribe-status';
 import ShowExampleMarbleBall from './show-example-marbleball';
@@ -13,7 +14,7 @@ export default class Marble extends React.PureComponent{
             isDragged:false,
             restorePositionKey:0
         };
-        this.changeDragStatus=this.changeDragStatus.bind(this)
+        this.setIsDragged=this.setIsDragged.bind(this)
         this.restorePosition=this.restorePosition.bind(this)
     }
 
@@ -39,7 +40,7 @@ export default class Marble extends React.PureComponent{
         this.timer=setTimeout(()=>{this.marbleEle.scrollLeft=9999999999},20)
         this.marbleArrLen=_marbleArr.length
     }
-    changeDragStatus(bool){
+    setIsDragged(bool){
         this.setState({
             isDragged:bool
         })
@@ -72,12 +73,12 @@ export default class Marble extends React.PureComponent{
             }
         }
         return  (
-            <div id="marbleWrap" >
+            <MarbleComponent>
                 <div style={{fontSize:"1.2rem",color:"#000"}}>
                     <ShowExampleMarbleBall />
                     <button className='restore-pos' onClick={this.restorePosition} disabled={!isDragged}>拖拽还原</button>
                     <ShowSubscribeStatus unSubObj={unSubMarble} name="Marble"/>
-               </div>
+                </div>
                 <div id="marble"
                      ref={e=>this.marbleEle=e}>
                     {arr.map((e,i)=>
@@ -88,13 +89,13 @@ export default class Marble extends React.PureComponent{
                     )}
                     <div id="dragMarble"></div>
                     {_marbleArr.map((e,i)=>
-                         <MarbleBall  marbleBallObj={e} key={i}
-                                      changeDragStatus={this.changeDragStatus}
-                                      restorePositionKey={restorePositionKey}
-                                      dragMaxLeft={decideHrWidths} />
+                        <MarbleBall  marbleBallObj={e} key={i}
+                                     setIsDragged={this.setIsDragged}
+                                     restorePositionKey={restorePositionKey}
+                                     dragMaxLeft={decideHrWidths} />
                     )}
                 </div>
-            </div>
+            </MarbleComponent>
         )
     }
 }

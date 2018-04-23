@@ -4,13 +4,10 @@ import Overview from '../Components/overview'
 import SortedNavPage from '../Components/sorted-nav-page'
 import OperatorsCoreContainer from '../Components/operators-core-container'
 import Page404 from '../Components/page404'
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
 
-export default class Routes extends React.PureComponent{
-    //shouldComponentUpdate(nextProps){
-    //
-    //    console.log(this.props,nextProps)
-    //    return true
-    //}
+class Routes extends React.PureComponent{
 
     render(){
         //console.log('Routes')
@@ -27,3 +24,5 @@ export default class Routes extends React.PureComponent{
         )
     }
 }
+
+export default Routes=DragDropContext(HTML5Backend)(Routes)

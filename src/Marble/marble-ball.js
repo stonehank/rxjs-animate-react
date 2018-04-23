@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PopText from './../Widget/poptext'
+import MarbleBallComponent from './marble-ball-component';
+
 export default class MarbleBall extends React.PureComponent{
     constructor(){
         super()
         this.showPop=this.showPop.bind(this)
         this.closePop=this.closePop.bind(this)
-        this.dragStart=this.dragStart.bind(this)
-        this.dragging=this.dragging.bind(this)
-        this.dragOver=this.dragOver.bind(this)
+        this.setDropLeft=this.setDropLeft.bind(this)
         this.state={
             curStyle:{},
             curContent:{},
@@ -22,13 +22,8 @@ export default class MarbleBall extends React.PureComponent{
             showPopText:false
         })
     }
-    showPop(e){
-
-        const {offsetY,offsetX}=e.nativeEvent
-        const {top}=this.state.curStyle
-        const left=this.state.left;
+    showPop(){
         this.setState({
-            position:{top:offsetY+top,left:offsetX+left},
             showPopText:true
         })
     }
@@ -37,57 +32,12 @@ export default class MarbleBall extends React.PureComponent{
         e.nativeEvent.stopImmediatePropagation()
     }
 
-    dragStart(e){
-        e.nativeEvent.stopImmediatePropagation()
-
-        const {curStyle}=this.state
-        const curStyleWithOpa=Object.assign({},curStyle,{opacity:0.5})
-
-        this.initX=e.clientX
-        document.getElementById('root').style.cursor='-webkit-grabbing';
-        document.addEventListener('mousemove',this.dragging)
-        document.addEventListener('mouseup',this.dragOver)
-
-        this.setState({
-            curStyle:curStyleWithOpa
-        })
-    }
-    dragOver(e){
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-        const {curStyle}=this.state
-        const curStyleWithOpa=Object.assign({},curStyle,{opacity:1})
-
-        document.removeEventListener('mousemove',this.dragging)
-        document.removeEventListener('mouseup',this.dragOver)
-        document.getElementById('root').style.cursor='inherit';
-        this.draggingBall=null;
-        ReactDOM.render(this.draggingBall,document.getElementById('dragMarble'))
-
-        if(isNaN(this.finalX)){return}
-        this.props.changeDragStatus(true)
+    setDropLeft(x){
         this.setState(prevState=>({
-            left:prevState.left+this.finalX,
-            curStyle:curStyleWithOpa
+            left:prevState.left+x
         }))
-        this.finalX=0;
     }
-    dragging(e){
-        e.preventDefault()
-        //console.time(1)
-        const {marbleBallObj,dragMaxLeft}=this.props
-        const {text,...style}=marbleBallObj
-        const {left}=this.state;
-        this.finalX=e.clientX-this.initX;
-        if(this.finalX<-left){this.finalX=-left}
-        if(this.finalX>dragMaxLeft-left){this.finalX=dragMaxLeft-left}
 
-
-        this.draggingBall=React.createElement('div',{className:'colorBall',style:Object.assign({},style,{left:left+this.finalX})},text)
-
-        ReactDOM.render(this.draggingBall,document.getElementById('dragMarble'))
-        //console.timeEnd(1)
-    }
     componentWillUnmount(){
         clearTimeout(this.timer)
     }
@@ -107,32 +57,6 @@ export default class MarbleBall extends React.PureComponent{
             return null
         }
     }
-    //componentDidUpdate(){
-    //        console.log('MarbleBall will update')
-    //        const {marbleBallObj,restorePositionKey}=this.props
-    //        //只有restorePositionKey变了 并且 left也变了 才会执行还原
-    //        if(restorePositionKey!==this.state.restorePositionKey && this.state.left!==marbleBallObj.left){
-    //            console.log('real render')
-    //            this.setState({
-    //                restorePositionKey:restorePositionKey,
-    //                left:marbleBallObj.left
-    //            })
-    //        }
-    //}
-
-        //todo 使用新api
-    //componentWillUpdate(nextProps){
-    //    //console.log('MarbleBall will update')
-    //    const {marbleBallObj,restorePositionKey}=nextProps
-    //    //只有restorePositionKey变了 并且 left也变了 才会执行还原
-    //    if(restorePositionKey!==this.state.restorePositionKey && this.state.left!==marbleBallObj.left){
-    //        console.log('real render')
-    //        this.setState({
-    //            restorePositionKey:restorePositionKey,
-    //            left:marbleBallObj.left
-    //        })
-    //    }
-    //}
 
 
     componentDidMount(){
@@ -150,22 +74,25 @@ export default class MarbleBall extends React.PureComponent{
     }
     render(){
         //console.log('MarbleBall render')
-        const {left,curStyle,curContent}=this.state;
+        const {setIsDragged}=this.props
+        const {left,curStyle,curContent,showPopText}=this.state;
         const {text,data}=curContent
         const _curStyle=Object.assign({},curStyle,{left})
         return(
             <React.Fragment>
-                <div className="colorBall"
-                     onClick={this.cancelBubble}
-                     onMouseDown={this.dragStart}
-                     onMouseOut={this.closePop}
-                     onMouseOver={this.showPop}
-                     style={_curStyle}>{text}</div>
-                {this.state.showPopText?
-                <PopText data={data} position={this.state.position}/>:
+                <MarbleBallComponent text={text}
+                                     _curStyle={_curStyle}
+                                     closePop={this.closePop}
+                                     showPop={this.showPop}
+                                     cancelBubble={this.cancelBubble}
+                                     setIsDragged={setIsDragged}
+                                     setDropLeft={this.setDropLeft}/>
+                {showPopText?
+                <PopText data={data} position={{left:_curStyle.left,top:_curStyle.top}}/>:
                     null
                 }
             </React.Fragment>
         )
     }
 }
+
