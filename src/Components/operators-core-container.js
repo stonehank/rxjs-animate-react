@@ -1,17 +1,18 @@
 import React from 'react';
-import {clearFunc,calcColorBallNewPosition,calcCodeStrArrPlusMinus,checkDidAllunSub,_fetchData,alladdNECStatus} from '../tools'
+import {clearFunc,calcColorBallNewPosition,calcCodeStrArrPlusMinus,checkDidAllunSub,_fetchData,evalFunctionInReact,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine} from '../tools'
 import {SectionWrap} from '../Widget'
 import Marble from '../Marble'
 import Result from '../Result'
 import Rx from 'rxjs/Rx'
-import * as Immutable from 'immutable';
+import {fromJS,is,toJS} from 'immutable';
 
-const {fromJS,is} =Immutable
+
 
 
 export default class OperatorsCoreContainer extends React.Component{
     constructor(){
         super()
+        this.initSetData=this.initSetData.bind(this)
         this.fetchDataSetState=this.fetchDataSetState.bind(this)
         this.testStart=this.testStart.bind(this)
         this.clearStart=this.clearStart.bind(this)
@@ -23,6 +24,9 @@ export default class OperatorsCoreContainer extends React.Component{
         this.showRxjsInMarble=this.showRxjsInMarble.bind(this)
         this.refreshResultMarble=this.refreshResultMarble.bind(this)
         this.refreshStartStopButton=this.refreshStartStopButton.bind(this)
+        this.setShowInWhereArr=this.setShowInWhereArr.bind(this)
+        this.setMarbleLine=this.setMarbleLine.bind(this)
+        this.NEC=this.NEC.bind(this)
         this.prevCodeArr=[]
         /*
         此处 this.unSubMarble ; this.unSubResult
@@ -36,7 +40,7 @@ export default class OperatorsCoreContainer extends React.Component{
         this.state={
             showMarble:true,
             showResult:true,
-            marbleText:'', func:null, line:0,
+            marbleText:'', line:0,
             isFetching:true,
             resultValue:false,
             marbleArr:false,
@@ -46,24 +50,59 @@ export default class OperatorsCoreContainer extends React.Component{
         }
     }
 
+
+    initSetData(data){
+            const {title,name,caption,code,marbleText}=data;
+            const codeObj=calcCodeStrArrPlusMinus(code,this.prevCodeArr),
+                codeStr=codeObj.str,
+                minus=codeObj.minus,
+                plus=codeObj.plus;
+            this.prevCodeArr=codeObj.arr;
+            this.clearStart()
+            this.unSubMarble={}
+            this.unSubResult={}
+            const showInWhereArr=getSubPositionFromCode(code)
+            const line=showInWhereArr.length;
+            this.setState({
+                showInWhereArr,
+                code,
+                isFetching:false,
+                basicData:{ title, name, caption, minus, plus,code:codeStr},
+                line, marbleText
+            })
+    }
+
     fetchDataSetState(operatorName){
         this.fetch$=Rx.Observable.fromPromise(_fetchData(operatorName))
-            .subscribe(data=>{
-                const {title,name,caption,code,line,marbleText,func}=data;
-                const codeObj=calcCodeStrArrPlusMinus(code,this.prevCodeArr),
-                    codeStr=codeObj.str,
-                    minus=codeObj.minus,
-                    plus=codeObj.plus;
-                this.prevCodeArr=codeObj.arr;
-                this.clearStart()
-                this.unSubMarble={}
-                this.unSubResult={}
-                this.setState({
-                    isFetching:false,
-                    basicData:{ title, name, caption, minus, plus,code:codeStr},
-                    line, marbleText, func
-                })
-            })
+            .subscribe(data=>this.initSetData(data))
+    }
+
+    setShowInWhereArr(i,key){
+        //console.log(i,key)
+        const {showInWhereArr,code,} = this.state
+        const currentShowStatus=showInWhereArr[i][key]
+        let newShowInWhereArr=fromJS(showInWhereArr).setIn([i,key],!currentShowStatus).toJS()
+        const needChange=showInWhereArr[i]
+        let newCode=currentShowStatus
+            ?
+            delSubscribe(code,needChange.name,needChange.line,key)
+            :
+            addSubscribe(code,needChange.name,needChange.line,key)
+        this.setState(prevState=>({
+            showInWhereArr:newShowInWhereArr,
+            code:newCode
+        }))
+    }
+
+    setMarbleLine(i,newLine){
+        let newShowInWhereArr=fromJS(this.state.showInWhereArr).setIn([i,'line'],newLine).toJS()
+        const needChange=this.state.showInWhereArr[i]
+        let newCode=changeLine(this.state.code,needChange.name,newLine)
+
+        this.setState(prevState=>({
+            showInWhereArr:newShowInWhereArr,
+            code:newCode
+        }))
     }
     componentWillUnmount(){
         this.fetch$.unsubscribe()
@@ -94,22 +133,7 @@ export default class OperatorsCoreContainer extends React.Component{
         }
         return null;
     }
-    //componentDidMount(){
-    //    const operatorName=this.props.match.params.section;
-    //    this.fetchDataSetState(operatorName)
-    //}
-    //
-    //componentWillReceiveProps(nextProps){
-    //    const curOperatorName=this.props.match.params.section,
-    //        nextOperatorName=nextProps.match.params.section;
-    //    if(curOperatorName!==nextOperatorName){
-    //        this.setState({
-    //            isFetching:true,
-    //            showStartButton:true
-    //        })
-    //        this.fetchDataSetState(nextOperatorName)
-    //    }
-    //}
+
     /**
      * 清空result界面 &  清空marble界面
      * 清空小球小球arr
@@ -152,6 +176,20 @@ export default class OperatorsCoreContainer extends React.Component{
             showMarble:!prevState.showMarble
         }))
     }
+
+    /**
+     * Subscription订阅参数
+     * N:next:()=>{}
+     * E:error:()=>{}
+     * C:complete:()=>{}
+     */
+    NEC(showInWhere, whichLine){
+        return {
+            next: (v)=> {showInWhere(v, whichLine)},
+            error: ()=> {showInWhere('error', whichLine)},
+            complete: ()=> {showInWhere('complete', whichLine)}
+        }
+    }
     /**
      * 开始按钮方法
      * 清楚unsubscribe-》执行函数-》清空页面（放在最后可以刷新状态）
@@ -162,7 +200,7 @@ export default class OperatorsCoreContainer extends React.Component{
             e.stopPropagation()
             e.nativeEvent.stopImmediatePropagation();
         }
-        if(!this.state.func){alert('数据获取失败！请选择正确的操作符');return;}
+        if(this.state.code==="无数据"){alert('数据获取失败！请选择正确的操作符');return;}
         this.timeStamp=new Date().getTime()
 
         this.allUnsubscribe()
@@ -173,7 +211,13 @@ export default class OperatorsCoreContainer extends React.Component{
             showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult),
         }))
 
-        this.state.func.call(this,this.showRxjsInResult,this.showRxjsInMarble)
+
+        //Function(this.state.code).call(this)
+        Function(['NEC','resSub','marSub','showInRes','showInMar'],this.state.code)
+            .apply(this,[this.NEC,this.unSubResult,this.unSubMarble,this.showRxjsInResult,this.showRxjsInMarble])
+        //this.state.func.apply(this,[this.NEC,this.unSubResult,this.unSubMarble,this.showRxjsInResult,this.showRxjsInMarble])
+        //this.state.func.call(this)
+        //this.state.func.call(this,this.showRxjsInResult,this.showRxjsInMarble)
 
         //TODO:需要修正 强制刷新result
         this.resultRefreshTimeStamp=new Date().getTime()
@@ -237,20 +281,22 @@ export default class OperatorsCoreContainer extends React.Component{
      * @param v
      */
     showRxjsInResult(v){
-
         this.setState(prevState=>({
             resultValue:`${prevState.resultValue || ''}value:${v}&nbsp;&nbsp;stringify:${JSON.stringify(v)}<br>`
         }))
     }
     render(){
-        //console.log('OperatorsCoreContainer')
-        const {isFetching,basicData,showMarble,showResult,showStartButton,
+        console.log('OperatorsCoreContainer')
+        const {isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,
             marbleArr,line,marbleText,resultValue}=this.state
         return(
             <React.Fragment>
                 <SectionWrap
                     isFetching={isFetching}
                     basicData={basicData}
+                    showInWhereArr={showInWhereArr}
+                    setShowInWhereArr={this.setShowInWhereArr}
+                    setMarbleLine={this.setMarbleLine}
                     resultCheckChange={this.resultCheckChange}
                     marbleCheckChange={this.marbleCheckChange}
                     showMarble={showMarble}
@@ -260,7 +306,7 @@ export default class OperatorsCoreContainer extends React.Component{
                     clearStart={this.clearStart}
                     testStart={this.testStart} />
                 <div>
-                    {this.state.showMarble?
+                    {showMarble?
                         <Marble
                             timeStamp={this.marbleRefreshTimeStamp}
                             refreshStartStopButton={this.refreshStartStopButton}
@@ -269,7 +315,7 @@ export default class OperatorsCoreContainer extends React.Component{
                             line={line}
                             marbleText={marbleText} />
                         :null}
-                    {this.state.showResult?
+                    {showResult?
                         <Result
                             resultRefreshTimeStamp={this.resultRefreshTimeStamp}
                             refreshStartStopButton={this.refreshStartStopButton}

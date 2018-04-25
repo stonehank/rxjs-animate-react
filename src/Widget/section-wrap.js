@@ -1,12 +1,18 @@
 import React from 'react';
 import {CustomCheckBox} from '../Widget'
 import SectionContent from './section-content'
+import {fromJS,is} from 'immutable';
 
-export default class SectionWrap extends React.PureComponent{
 
+export default class SectionWrap extends React.Component{
+
+    shouldComponentUpdate(nextProps){
+        //console.log((nextProps),(this.props))
+        return !is(fromJS(nextProps),fromJS(this.props))
+    }
     render(){
         //console.log('SectionWrap')
-        const {isFetching,basicData,showStartButton,testStop,
+        const {isFetching,basicData,showStartButton,testStop,showInWhereArr,setShowInWhereArr,setMarbleLine,
             showResult,showMarble,testStart,clearStart,marbleCheckChange,resultCheckChange}=this.props
         return(
             <section className="section clearfix">
@@ -25,6 +31,9 @@ export default class SectionWrap extends React.PureComponent{
                     <p>Loading...</p>
                     :
                     <SectionContent
+                        setShowInWhereArr={setShowInWhereArr}
+                        showInWhereArr={showInWhereArr}
+                        setMarbleLine={setMarbleLine}
                         basicData={basicData}/>
                 }
                 <div className="clearfix">

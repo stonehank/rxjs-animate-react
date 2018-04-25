@@ -31,7 +31,7 @@ export default class Result extends React.PureComponent{
                 <div style={{fontSize:"1.2rem",color:"#000"}}>
                     <ShowSubscribeStatus unSubObj={unSubResult} name="Result"/>
                 </div>
-                <div dangerouslySetInnerHTML={{__html: value}}></div>
+                <div dangerouslySetInnerHTML={{__html: value?value:''}}></div>
             </div>
         )
     }

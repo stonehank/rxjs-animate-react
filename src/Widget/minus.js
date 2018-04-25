@@ -10,7 +10,7 @@ export default class Minus extends React.PureComponent{
             minus
                 ?
                 minus.map((e,i)=>(
-                    <p key={i} className="minus">{e?e:"无"}</p>
+                    e?<p key={i} className="minus">{e}</p>:null
                 ))
                 :
                 <p>minus不存在，检查代码</p>

@@ -336,3 +336,23 @@ button:focus {
     line-height:1.8rem;
     letter-spacing: 1px;
 }
+
+/*-----/Widget/choose-where-to-show-----*/
+
+.choose-where-to-show{
+    /*border:1px solid #ccc;*/
+    width:100%;
+    text-align:center;
+
+}
+.choose-where-to-show td:not(:first-child){
+    border:1px solid #515151;
+}
+.choose-where-to-show thead th:not(:first-child){
+    background-color: #111111
+}
+
+.choose-where-to-show tbody tr td:first-child{
+    background-color:#111111;
+    font-weight:bold;
+}

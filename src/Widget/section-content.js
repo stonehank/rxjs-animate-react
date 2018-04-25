@@ -1,8 +1,8 @@
 import React from 'react';
-import {Plus,Minus,Code} from '../Widget'
+import {Plus,Minus,Code,ChooseWhereToShow} from '../Widget'
 
 
-export default class SectionContent extends React.PureComponent{
+export default class SectionContent extends React.Component{
     constructor(){
         super()
         this.toggleCode=this.toggleCode.bind(this)
@@ -30,6 +30,7 @@ export default class SectionContent extends React.PureComponent{
     render(){
         //console.log('SectionContent')
         const {title,caption,plus,minus,code}=this.props.basicData
+        const {showInWhereArr,setShowInWhereArr,setMarbleLine}=this.props
         return (
             <div>
                 <p className="section-title">{title}</p>
@@ -47,6 +48,7 @@ export default class SectionContent extends React.PureComponent{
                         <button onClick={this.togglePlusMinus}>显示增减行</button>
                     }
                 </div>
+                <ChooseWhereToShow showInWhereArr={showInWhereArr} setShowInWhereArr={setShowInWhereArr} setMarbleLine={setMarbleLine}/>
                 {this.state.showCode
                     ?
                     <React.Fragment>

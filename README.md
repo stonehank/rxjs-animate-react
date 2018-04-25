@@ -12,6 +12,7 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 2. react-router-dom v4
 3. rxjs
 4. 部分使用immutable
+5. react-dnd
 
 #### 目的
 1. 首先是自己觉得rxjs操作符太多...有些特别容易混淆。

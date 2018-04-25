@@ -4,13 +4,15 @@
   "private": true,
   "dependencies": {
     "immutable": "^3.8.2",
+    "lodash": "^4.17.5",
     "react": "^16.3.1",
     "react-dnd": "^2.6.0",
     "react-dnd-html5-backend": "^2.6.0",
     "react-dom": "^16.3.1",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
-    "rxjs": "^5.5.8"
+    "rxjs": "^5.5.8",
+    "why-did-you-update": "^0.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -8,6 +8,13 @@ import Nav from './Nav'
 import Routes from './Routes/routes'
 import {sortMethod,_fetchNav} from './tools'
 
+
+
+//if (process.env.NODE_ENV !== 'production') {
+//    const {whyDidYouUpdate} = require('why-did-you-update');
+//    whyDidYouUpdate(React);
+//}
+
 /**
  * 新API 创建context
  */

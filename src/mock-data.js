@@ -3,6 +3,7 @@ import {changeStatus} from './tools'
 let count = 0
 let _deepList = [];
 
+window.Rx=Rx;
 /**
  * 此处为 Rx.Subscriber 底下的三个命令进行添加，为了能精确显示当前状态
  * @param addFunc
@@ -34,16 +35,16 @@ export const shallowList = [
 
 /*
  * 规则：
- * 一、this.unSubMarble 的命名 都要带上Rx，再以具体的Observable命名
- * 以事件名称命名例如：this.unSubMarble.RxClick
- * 自发数据命名例如：this.unSubMarble.RxInterval,this.unSubMarble.RxOf
+ * 一、marSub 的命名 都要带上Rx，再以具体的Observable命名
+ * 以事件名称命名例如：marSub.RxClick
+ * 自发数据命名例如：marSub.RxInterval,marSub.RxOf
  *
  *
  * 二、使用NEC(next,error,complete)方法创建回调，
  * 参数1 表示要显示的方法
  * 参数2 表示要显示的行数
  *
- * 三、代码code:``最后一行不要带分号
+ * 三、代码code:最后一行不要带分号
  */
 
 
@@ -55,32 +56,70 @@ export const shallowList = [
 
 export const Data = [
     {
+        name: 'aaaaaaaaaaatest',
+        title: 'takeUntil:参数为另一个发射源，当发射值时，发出complete',
+        caption: '说明：' + '参数隔3秒发出1，当1发出，立刻complete',
+        hits: 715,
+        useful: 412,
+        //line: 3,
+        marbleText: 'takeUntil',
+        code: `
+            //cut
+           let RxIntervalTake5,RxOfDelay, RxTakeUntil;
+            RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
+            RxOfDelay = Rx.Observable.of(1).delay(3000);
+            RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay);
+             //cut
+            marSub.RxIntervalTake5 = RxIntervalTake5.subscribe(NEC(showInMar, 1));
+            marSub.RxOfDelay = RxOfDelay.subscribe(NEC(showInMar, 2));
+            marSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInMar, 'last'));
+            resSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInRes));
+
+         `,
+        ////func: function (showInRes, showInMar) {
+        //    let RxIntervalTake5,RxOfDelay, RxTakeUntil;
+        //    RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
+        //    RxOfDelay = Rx.Observable.of(1).delay(3000);
+        //    RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay)
+        //
+        //    resSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInRes))
+        //    marSub.RxIntervalTake5 = RxIntervalTake5.subscribe(NEC(showInMar, 1));
+        //    marSub.RxOfDelay = RxOfDelay.subscribe(NEC(showInMar, 2));
+        //    marSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInMar, 'last'));
+        //}
+    },
+    {
         name: 'takeUntil',
         title: 'takeUntil:参数为另一个发射源，当发射值时，发出complete',
         caption: '说明：' + '参数隔3秒发出1，当1发出，立刻complete',
         hits: 715,
         useful: 412,
-        line: 3,
+        //line: 3,
         marbleText: 'takeUntil',
         code: `
             //cut
-            let RxIntervalTake5,RxOfDelay, RxTakeUntil;
+             let RxIntervalTake5,RxOfDelay, RxTakeUntil;
             RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
             RxOfDelay = Rx.Observable.of(1).delay(3000);
-            RxTakeUntil = RxInterval.takeUntil(RxOfDelay)
+            RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay);
             //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxIntervalTake5,RxOfDelay, RxTakeUntil;
-            RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
-            RxOfDelay = Rx.Observable.of(1).delay(3000);
-            RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay)
 
-            this.unSubResult.RxTakeUntil = RxTakeUntil.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxIntervalTake5 = RxIntervalTake5.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxOfDelay = RxOfDelay.subscribe(NEC(showRxjsInMarble, 2));
-            this.unSubMarble.RxTakeUntil = RxTakeUntil.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxIntervalTake5 = RxIntervalTake5.subscribe(NEC(showInMar, 1));
+            marSub.RxOfDelay = RxOfDelay.subscribe(NEC(showInMar, 2));
+            marSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInMar, 'last'));
+            resSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInRes));
+         `,
+        ////func: function (showInRes, showInMar) {
+        //    let RxIntervalTake5,RxOfDelay, RxTakeUntil;
+        //    RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
+        //    RxOfDelay = Rx.Observable.of(1).delay(3000);
+        //    RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay);
+        //
+        //    resSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInRes));
+        //    marSub.RxIntervalTake5 = RxIntervalTake5.subscribe(NEC(showInMar, 1));
+        //    marSub.RxOfDelay = RxOfDelay.subscribe(NEC(showInMar, 2));
+        //    marSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'takeWhile',
@@ -88,24 +127,28 @@ export const Data = [
         caption: '说明：' + '参数的条件是n<4，因此n为4时，发出complete',
         hits: 715,
         useful: 412,
-        line: 2,
+        //line: 2,
         marbleText: 'takeWhile(n=>n<4)',
         code: `
             //cut
             let RxIntervalTake7, RxTakeWhile;
             RxIntervalTake7 = Rx.Observable.interval(1000).take(7);
-            RxTakeWhile = RxIntervalTake7.takeWhile(n=>n<4)
+            RxTakeWhile = RxIntervalTake7.takeWhile(n=>n<4);
             //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxIntervalTake7, RxTakeWhile;
-            RxIntervalTake7 = Rx.Observable.interval(1000).take(7);
-            RxTakeWhile = RxIntervalTake7.takeWhile(n=>n<4)
+            marSub.RxIntervalTake7 = RxIntervalTake7.subscribe(NEC(showInMar, 1));
+            marSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInMar, 'last'));
+            resSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInRes));
 
-            this.unSubResult.RxTakeWhile = RxTakeWhile.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxIntervalTake7 = RxIntervalTake7.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxTakeWhile = RxTakeWhile.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+         `,
+        ////func: function (showInRes, showInMar) {
+        //    let RxIntervalTake7, RxTakeWhile;
+        //    RxIntervalTake7 = Rx.Observable.interval(1000).take(7);
+        //    RxTakeWhile = RxIntervalTake7.takeWhile(n=>n<4)
+        //
+        //    resSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInRes))
+        //    marSub.RxIntervalTake7 = RxIntervalTake7.subscribe(NEC(showInMar, 1));
+        //    marSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'retryWhen',
@@ -115,7 +158,7 @@ export const Data = [
         '立刻开始重复一次发射源的镜像  ',
         hits: 715,
         useful: 412,
-        line: 3,
+        //line: 3,
         marbleText: 'retryWhen',
         code: `
             //cut
@@ -124,18 +167,24 @@ export const Data = [
             RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<3);
             retryWhen =RxTimer_Throw.retryWhen(()=>RxInterval);
             //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxInterval, RxTimer_Throw, RxRetryWhen;
-            RxTimer_Throw=Rx.Observable.timer(0,200).map(n=>{if(n===3){throw 'err'}return n});
-            RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<3);
-            RxRetryWhen =RxTimer_Throw.retryWhen(()=>RxInterval);
 
-            this.unSubResult.RxRetryWhen = RxRetryWhen.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxTimer_Throw = RxTimer_Throw.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxInterval = RxInterval.subscribe(NEC(showRxjsInMarble, 2));
-            this.unSubMarble.RxRetryWhen = RxRetryWhen.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxTimer_Throw = RxTimer_Throw.subscribe(NEC(showInMar, 1));
+            marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 2));
+            marSub.RxRetryWhen = RxRetryWhen.subscribe(NEC(showInMar, 'last'));
+            resSub.RxRetryWhen = RxRetryWhen.subscribe(NEC(showInRes));
+
+         `,
+        ////func: function (showInRes, showInMar) {
+        //    let RxInterval, RxTimer_Throw, RxRetryWhen;
+        //    RxTimer_Throw=Rx.Observable.timer(0,200).map(n=>{if(n===3){throw 'err'}return n});
+        //    RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<3);
+        //    RxRetryWhen =RxTimer_Throw.retryWhen(()=>RxInterval);
+        //
+        //    resSub.RxRetryWhen = RxRetryWhen.subscribe(NEC(showInRes))
+        //    marSub.RxTimer_Throw = RxTimer_Throw.subscribe(NEC(showInMar, 1));
+        //    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 2));
+        //    marSub.RxRetryWhen = RxRetryWhen.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'repeatWhen',
@@ -145,27 +194,32 @@ export const Data = [
         '立刻开始重复一次发射源的镜像 ',
         hits: 915,
         useful: 612,
-        line: 3,
+        //line: 3,
         marbleText: 'repeatWhen',
         code: `
             //cut
             let RxInterval, RxTimer0_100, RxRepeatWhen;
-            RxTimer0_100=Rx.Observable.timer(0,100).take(3)
-            RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<5)
-            RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval)
+            RxTimer0_100=Rx.Observable.timer(0,100).take(3);
+            RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<5);
+            RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval);
             //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxInterval_takeWhile, RxTimer0_100, RxRepeatWhen;
-            RxTimer0_100=Rx.Observable.timer(0,100).take(3)
-            RxInterval_takeWhile = Rx.Observable.interval(1000).takeWhile(x=>x<3)
-            RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval_takeWhile);
 
-            this.unSubResult.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxTimer0_100 = RxTimer0_100.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxInterval_takeWhile = RxInterval_takeWhile.subscribe(NEC(showRxjsInMarble, 2));
-            this.unSubMarble.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxTimer0_100 = RxTimer0_100.subscribe(NEC(showInMar, 1));
+            marSub.RxInterval_takeWhile = RxInterval_takeWhile.subscribe(NEC(showInMar, 2));
+            marSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInMar, 'last'));
+             resSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxInterval_takeWhile, RxTimer0_100, RxRepeatWhen;
+        //    RxTimer0_100=Rx.Observable.timer(0,100).take(3)
+        //    RxInterval_takeWhile = Rx.Observable.interval(1000).takeWhile(x=>x<3)
+        //    RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval_takeWhile);
+        //
+        //    resSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInRes))
+        //    marSub.RxTimer0_100 = RxTimer0_100.subscribe(NEC(showInMar, 1));
+        //    marSub.RxInterval_takeWhile = RxInterval_takeWhile.subscribe(NEC(showInMar, 2));
+        //    marSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'merge',
@@ -173,28 +227,33 @@ export const Data = [
         caption: '说明：' + ' merge合并不管发射源顺序，直接合并',
         hits: 985,
         useful: 612,
-        line: 3,
+        //line: 3,
         marbleText: 'merge',
         code: `
             //cut
             let RxClick, RxTimer0_1000, RxMerge;
             RxClick = Rx.Observable.fromEvent(document, 'click');
             RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
-            RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000)
+            RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000);
             //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxClick, RxTimer0_1000, RxMerge;
-            RxClick = Rx.Observable.fromEvent(document, 'click');
-            //RxTimer0_1000 = Rx.Observable.timer(0, 30).take(200);
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
-            RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000)
 
-            this.unSubResult.RxMerge = RxMerge.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showRxjsInMarble, 2));
-            this.unSubMarble.RxMerge = RxMerge.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+            marSub.RxMerge = RxMerge.subscribe(NEC(showInMar, 'last'));
+             resSub.RxMerge = RxMerge.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxClick, RxTimer0_1000, RxMerge;
+        //    RxClick = Rx.Observable.fromEvent(document, 'click');
+        //    //RxTimer0_1000 = Rx.Observable.timer(0, 30).take(200);
+        //    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
+        //    RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000)
+        //
+        //    resSub.RxMerge = RxMerge.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+        //    marSub.RxMerge = RxMerge.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'forkJoin',
@@ -203,27 +262,32 @@ export const Data = [
         'forkJoin会等全部发射源完成结束后，才将各自的最终结果合并成1个数组',
         hits: 1524,
         useful: 912,
-        line: 3,
+        //line: 3,
         marbleText: 'forkJoin',
         code: `
             //cut
             let RxRange, RxTimer0_1000, RxForkJoin;
             RxRange = Rx.Observable.range(1, 6);
             RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
-            RxForkJoin = Rx.Observable.forkJoin(RxRange, RxTimer0_1000)
-            //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxRange, RxTimer0_1000, RxForkJoin;
-            RxRange = Rx.Observable.range(1, 6);
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
             RxForkJoin = Rx.Observable.forkJoin(RxRange, RxTimer0_1000);
+            //cut
 
-            this.unSubResult.RxForkJoin = RxForkJoin.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxRange = RxRange.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showRxjsInMarble, 2));
-            this.unSubMarble.RxForkJoin = RxForkJoin.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxRange = RxRange.subscribe(NEC(showInMar, 1));
+            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+            marSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInMar, 'last'));
+              resSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxRange, RxTimer0_1000, RxForkJoin;
+        //    RxRange = Rx.Observable.range(1, 6);
+        //    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
+        //    RxForkJoin = Rx.Observable.forkJoin(RxRange, RxTimer0_1000);
+        //
+        //    resSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInRes))
+        //    marSub.RxRange = RxRange.subscribe(NEC(showInMar, 1));
+        //    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+        //    marSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'distinctUntilKeyChange',
@@ -232,7 +296,7 @@ export const Data = [
         '对比前一项去重后剩下第1,3,4组',
         hits: 25,
         useful: 89,
-        line: 2,
+        //line: 2,
         marbleText: 'distinctUntilKeyChange',
         code: `
             //cut
@@ -240,16 +304,20 @@ export const Data = [
             RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
             RxDistinctUntilKeyChanged = RxFrom.distinctUntilKeyChanged('x',(prevV,nextV)=>prevV===nextV);
             //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxFrom,RxDistinctUntilKeyChanged;
-            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
-            RxDistinctUntilKeyChanged = RxFrom.distinctUntilKeyChanged('x',(prevV,nextV)=>prevV===nextV);
 
-            this.unSubResult.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxFrom = RxFrom.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+            marSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInMar, 'last'));
+               resSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxFrom,RxDistinctUntilKeyChanged;
+        //    RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
+        //    RxDistinctUntilKeyChanged = RxFrom.distinctUntilKeyChanged('x',(prevV,nextV)=>prevV===nextV);
+        //
+        //    resSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInRes))
+        //    marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+        //    marSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'distinctUntilChange',
@@ -258,7 +326,7 @@ export const Data = [
         '对比前一项去重后剩下第1,2,4组',
         hits: 273,
         useful: 425,
-        line: 2,
+        //line: 2,
         marbleText: 'distinctUntilChange',
         code: `
             //cut
@@ -266,16 +334,20 @@ export const Data = [
             RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:2},{x:2,y:4},{x:1,y:6}]);
             RxDistinctUntilChange = RxFrom.distinctUntilChanged((prevObj,nextObj)=>prevObj.y===nextObj.x);
             //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxFrom,RxDistinctUntilChange;
-            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:2},{x:2,y:4},{x:1,y:6}]);
-            RxDistinctUntilChange = RxFrom.distinctUntilChanged((prevObj,nextObj)=>prevObj.y===nextObj.x);
 
-            this.unSubResult.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxFrom = RxFrom.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+            marSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInMar, 'last'));
+             resSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxFrom,RxDistinctUntilChange;
+        //    RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:2},{x:2,y:4},{x:1,y:6}]);
+        //    RxDistinctUntilChange = RxFrom.distinctUntilChanged((prevObj,nextObj)=>prevObj.y===nextObj.x);
+        //
+        //    resSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInRes))
+        //    marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+        //    marSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'distinct',
@@ -283,7 +355,7 @@ export const Data = [
         caption: '说明：' + ' 参数可以设定根据那一项进行去重，此处根据x值去重，可以在Result看到原来4组obj，去重后剩下2组',
         hits: 213,
         useful: 745,
-        line: 2,
+        //line: 2,
         marbleText: 'distinct',
         code: `
             //cut
@@ -291,16 +363,20 @@ export const Data = [
             RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
             RxDistinct = RxFrom.distinct(obj=>obj.x);
             //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxFrom,RxDistinct;
-            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
-            RxDistinct = RxFrom.distinct(obj=>obj.x);
 
-            this.unSubResult.RxDistinct = RxDistinct.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxFrom = RxFrom.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxDistinct = RxDistinct.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+            marSub.RxDistinct = RxDistinct.subscribe(NEC(showInMar, 'last'));
+              resSub.RxDistinct = RxDistinct.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxFrom,RxDistinct;
+        //    RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
+        //    RxDistinct = RxFrom.distinct(obj=>obj.x);
+        //
+        //    resSub.RxDistinct = RxDistinct.subscribe(NEC(showInRes))
+        //    marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+        //    marSub.RxDistinct = RxDistinct.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'delayWhen',
@@ -308,7 +384,7 @@ export const Data = [
         caption: '说明：' + ' 源RxOf根据RxClick触发后才触发，此处点击屏幕后才会显示start',
         hits: 78,
         useful: 527,
-        line: 2,
+        //line: 2,
         marbleText: 'delayWhen',
         code: `
             //cut
@@ -317,17 +393,21 @@ export const Data = [
             RxClick = Rx.Observable.fromEvent(document,'click');
             RxDelayWhen = RxOf.delayWhen(e=>RxClick);
             //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxOf,RxClick,RxDelayWhen;
-            RxOf = Rx.Observable.of('start');
-            RxClick = Rx.Observable.fromEvent(document,'click').take(1);
-            RxDelayWhen = RxOf.delayWhen(e=>RxClick);
 
-            this.unSubResult.RxDelayWhen = RxDelayWhen.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxDelayWhen = RxDelayWhen.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxDelayWhen = RxDelayWhen.subscribe(NEC(showInMar, 'last'));
+              resSub.RxDelayWhen = RxDelayWhen.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxOf,RxClick,RxDelayWhen;
+        //    RxOf = Rx.Observable.of('start');
+        //    RxClick = Rx.Observable.fromEvent(document,'click').take(1);
+        //    RxDelayWhen = RxOf.delayWhen(e=>RxClick);
+        //
+        //    resSub.RxDelayWhen = RxDelayWhen.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxDelayWhen = RxDelayWhen.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'delay',
@@ -335,24 +415,28 @@ export const Data = [
         caption: '说明：' + '点击后第一行为当前点击，最后一行为实际输出（此处延迟1秒），点击5次后complete',
         hits: 42,
         useful: 128,
-        line: 2,
+        //line: 2,
         marbleText: 'delay',
         code: `
             //cut
             let RxClick,RxDelay;
             RxClick = Rx.Observable.fromEvent(document,'click');
-            RxDelay = RxClick.delay(1000)
-            //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxClick,RxDelay;
-            RxClick = Rx.Observable.fromEvent(document,'click').take(5);
             RxDelay = RxClick.delay(1000);
+            //cut
 
-            this.unSubResult.RxDelay = RxDelay.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxDelay = RxDelay.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxDelay = RxDelay.subscribe(NEC(showInMar, 'last'));
+             resSub.RxDelay = RxDelay.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxClick,RxDelay;
+        //    RxClick = Rx.Observable.fromEvent(document,'click').take(5);
+        //    RxDelay = RxClick.delay(1000);
+        //
+        //    resSub.RxDelay = RxDelay.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxDelay = RxDelay.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'audit',
@@ -361,27 +445,32 @@ export const Data = [
         '第二行为timer的行动（可以忽略），第三行为结果数据输出行，结合第二行可以更清楚的看出结果数据来源',
         hits: 762,
         useful: 875,
-        line: 3,
+        //line: 3,
         marbleText: 'audit',
         code: `
         //cut
-        let RxTimer0_1000,RxClick,RxThrottle;
-        RxTimer0_1000 =  Rx.Observable.timer(0,1000);
-        RxClick =Rx.Observable.fromEvent(document,'click');
-        RxThrottle = RxTimer0_1000.audit(()=>RxClick)
-        //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxTimer0_1000, RxClick, RxAudit;
+   let RxTimer0_1000, RxClick, RxAudit;
             RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
             RxClick = Rx.Observable.fromEvent(document, 'click');
             RxAudit = RxTimer0_1000.audit(()=>RxClick);
+        //cut
 
-            this.unSubResult.RxAudit = RxAudit.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showRxjsInMarble, 2));
-            this.unSubMarble.RxAudit = RxAudit.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+            marSub.RxAudit = RxAudit.subscribe(NEC(showInMar, 'last'));
+                    resSub.RxAudit = RxAudit.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxTimer0_1000, RxClick, RxAudit;
+        //    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
+        //    RxClick = Rx.Observable.fromEvent(document, 'click');
+        //    RxAudit = RxTimer0_1000.audit(()=>RxClick);
+        //
+        //    resSub.RxAudit = RxAudit.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+        //    marSub.RxAudit = RxAudit.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'debounce',
@@ -390,27 +479,32 @@ export const Data = [
         '第二行为timer的行动（可以忽略），第三行为结果数据输出行，结合第二行可以更清楚的看出结果数据来源',
         hits: 762,
         useful: 875,
-        line: 3,
+        //line: 3,
         marbleText: 'debounce',
         code: `
         //cut
-        let RxTimer0_1000,RxClick,RxThrottle;
-        RxTimer0_1000 =  Rx.Observable.timer(0,1000);
-        RxClick =Rx.Observable.fromEvent(document,'click');
-        RxThrottle = RxTimer0_1000.debounce(()=>RxClick)
-        //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxTimer0_1000, RxClick, RxDebounce;
+        let RxTimer0_1000, RxClick, RxDebounce;
             RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
             RxClick = Rx.Observable.fromEvent(document, 'click');
             RxDebounce = RxTimer0_1000.debounce(()=>RxClick);
+        //cut
 
-            this.unSubResult.RxDebounce = RxDebounce.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showRxjsInMarble, 2));
-            this.unSubMarble.RxDebounce = RxDebounce.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+            marSub.RxDebounce = RxDebounce.subscribe(NEC(showInMar, 'last'));
+         resSub.RxDebounce = RxDebounce.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxTimer0_1000, RxClick, RxDebounce;
+        //    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
+        //    RxClick = Rx.Observable.fromEvent(document, 'click');
+        //    RxDebounce = RxTimer0_1000.debounce(()=>RxClick);
+        //
+        //    resSub.RxDebounce = RxDebounce.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+        //    marSub.RxDebounce = RxDebounce.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'throttle',
@@ -419,27 +513,32 @@ export const Data = [
         '第二行为timer的行动（可以忽略），第三行为结果数据输出行，结合第二行可以更清楚的看出结果数据来源',
         hits: 762,
         useful: 875,
-        line: 3,
+        //line: 3,
         marbleText: 'throttle',
         code: `
         //cut
         let RxTimer0_1000,RxClick,RxThrottle;
         RxTimer0_1000 =  Rx.Observable.timer(0,1000);
         RxClick =Rx.Observable.fromEvent(document,'click');
-        RxThrottle = RxTimer0_1000.throttle(()=>RxClick)
+        RxThrottle = RxTimer0_1000.throttle(()=>RxClick);
         //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxTimer0_1000, RxClick, RxThrottle;
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
-            RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxThrottle = RxTimer0_1000.throttle(()=>RxClick);
 
-            this.unSubResult.RxThrottle = RxThrottle.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showRxjsInMarble, 2));
-            this.unSubMarble.RxThrottle = RxThrottle.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+            marSub.RxThrottle = RxThrottle.subscribe(NEC(showInMar, 'last'));
+         resSub.RxThrottle = RxThrottle.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxTimer0_1000, RxClick, RxThrottle;
+        //    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
+        //    RxClick = Rx.Observable.fromEvent(document, 'click');
+        //    RxThrottle = RxTimer0_1000.throttle(()=>RxClick);
+        //
+        //    resSub.RxThrottle = RxThrottle.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+        //    marSub.RxThrottle = RxThrottle.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'auditTime',
@@ -447,23 +546,27 @@ export const Data = [
         caption: '说明：' + '此处最后一行不论点击多少次会等1秒才会发送最新值',
         hits: 762,
         useful: 875,
-        line: 2,
+        //line: 2,
         marbleText: 'auditTime',
         code: `
         //cut
-        let RxClick,RxDebounceTime;
-        RxClick =Rx.Observable.fromEvent(document,'click');
-        RxDebounceTime = RxClick.auditTime(1000)
-        //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
             let RxClick, RxAuditTime;
             RxClick = Rx.Observable.fromEvent(document, 'click');
             RxAuditTime = RxClick.auditTime(1000)
-            this.unSubResult.RxAuditTime = RxAuditTime.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxAuditTime = RxAuditTime.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+        //cut
+
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxAuditTime = RxAuditTime.subscribe(NEC(showInMar, 'last'));
+         resSub.RxAuditTime = RxAuditTime.subscribe(NEC(showInRes));
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxClick, RxAuditTime;
+        //    RxClick = Rx.Observable.fromEvent(document, 'click');
+        //    RxAuditTime = RxClick.auditTime(1000)
+        //    resSub.RxAuditTime = RxAuditTime.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxAuditTime = RxAuditTime.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'throttleTime',
@@ -471,23 +574,29 @@ export const Data = [
         caption: '说明：' + '此处最后一行一旦有点击立刻会发出一个事件',
         hits: 762,
         useful: 875,
-        line: 2,
+        //line: 2,
         marbleText: 'throttleTime',
         code: `
         //cut
-        let RxClick,RxDebounceTime;
-        RxClick =Rx.Observable.fromEvent(document,'click');
-        RxDebounceTime = RxClick.throttleTime(1000)
-        //cut
-         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxClick, RxThrottleTime;
+   let RxClick, RxThrottleTime;
             RxClick = Rx.Observable.fromEvent(document, 'click');
             RxThrottleTime = RxClick.throttleTime(1000)
-            this.unSubResult.RxThrottleTime = RxThrottleTime.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxThrottleTime = RxThrottleTime.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+        //cut
+
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxThrottleTime = RxThrottleTime.subscribe(NEC(showInMar, 'last'));
+                    resSub.RxThrottleTime = RxThrottleTime.subscribe(NEC(showInRes));
+
+
+         `,
+        //func: function (showInRes, showInMar) {
+        //    let RxClick, RxThrottleTime;
+        //    RxClick = Rx.Observable.fromEvent(document, 'click');
+        //    RxThrottleTime = RxClick.throttleTime(1000)
+        //    resSub.RxThrottleTime = RxThrottleTime.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxThrottleTime = RxThrottleTime.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'debounceTime',
@@ -495,23 +604,28 @@ export const Data = [
         caption: '说明：' + '最后一行为实际发出的事件',
         hits: 762,
         useful: 875,
-        line: 2,
+        //line: 2,
         marbleText: 'debounceTime',
         code: `
         //cut
         let RxClick,RxDebounceTime;
         RxClick =Rx.Observable.fromEvent(document,'click');
-        RxDebounceTime = RxClick.debounceTime(1000)
+        RxDebounceTime = RxClick.debounceTime(1000);
         //cut
+
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxDebounceTime = RxDebounceTime.subscribe(NEC(showInMar, 'last'));
+         resSub.RxDebounceTime = RxDebounceTime.subscribe(NEC(showInRes));
+
          `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxClick, RxDebounceTime;
-            RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxDebounceTime = RxClick.debounceTime(1000)
-            this.unSubResult.RxDebounceTime = RxDebounceTime.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxDebounceTime = RxDebounceTime.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+        //func: function (showInRes, showInMar) {
+        //    let RxClick, RxDebounceTime;
+        //    RxClick = Rx.Observable.fromEvent(document, 'click');
+        //    RxDebounceTime = RxClick.debounceTime(1000)
+        //    resSub.RxDebounceTime = RxDebounceTime.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxDebounceTime = RxDebounceTime.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'concatMap',
@@ -519,25 +633,31 @@ export const Data = [
         caption: '说明：此处累计click的次数，然后按顺序依次执行',
         hits: 762,
         useful: 875,
-        line: 2,
+        //line: 2,
         marbleText: 'concatMap',
         code: `
         //cut
         let RxClick,RxInterval,RxConcatMap;
         RxClick = Rx.Observable.fromEvent(document,'click').take(3);
         RxInterval = Rx.Observable.interval(1000).take(3);
-        RxConcatMap = RxClick.concatMap(ev=>RxInterval)
+        RxConcatMap = RxClick.concatMap(ev=>RxInterval);
         //cut
+
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxConcatMap = RxConcatMap.subscribe(NEC(showInMar, 'last'));
+                     resSub.RxConcatMap = RxConcatMap.subscribe(NEC(showInRes));
+
+
          `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxClick, RxInterval, RxConcatMap;
-            RxClick = Rx.Observable.fromEvent(document, 'click').take(3);
-            RxInterval = Rx.Observable.interval(1000).take(3);
-            RxConcatMap = RxClick.concatMap(ev=>RxInterval);
-            this.unSubResult.RxConcatMap = RxConcatMap.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxConcatMap = RxConcatMap.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+        //func: function (showInRes, showInMar) {
+        //    let RxClick, RxInterval, RxConcatMap;
+        //    RxClick = Rx.Observable.fromEvent(document, 'click').take(3);
+        //    RxInterval = Rx.Observable.interval(1000).take(3);
+        //    RxConcatMap = RxClick.concatMap(ev=>RxInterval);
+        //    resSub.RxConcatMap = RxConcatMap.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxConcatMap = RxConcatMap.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'concatAll',
@@ -545,7 +665,7 @@ export const Data = [
         caption: '说明：此处所展示效果相当于使用了concatMap，此处用的是先map 后concatAll',
         hits: 762,
         useful: 875,
-        line: 2,
+        //line: 2,
         marbleText: 'concatAll',
         code: `
         //cut
@@ -553,20 +673,25 @@ export const Data = [
         RxClick = Rx.Observable.fromEvent(document,'click');
         RxInterval = Rx.Observable.interval(1000).take(3);
         highOrder = RxClick.map(ev=>RxInterval);
-        RxConcatAll = highOrder.concatAll()
+        RxConcatAll = highOrder.concatAll();
         //cut
+
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxConcatAll = RxConcatAll.subscribe(NEC(showInMar, 'last'));
+                      resSub.RxConcatAll = RxConcatAll.subscribe(NEC(showInRes));
+
         `,
 
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxClick, RxInterval, highOrder, RxConcatAll;
-            RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxInterval = Rx.Observable.interval(1000).take(3);
-            highOrder = RxClick.map(ev=>RxInterval);
-            RxConcatAll = highOrder.concatAll();
-            this.unSubResult.RxConcatAll = RxConcatAll.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxConcatAll = RxConcatAll.subscribe(NEC(showRxjsInMarble, 'last'));
-        }
+        //func: function (showInRes, showInMar) {
+        //    let RxClick, RxInterval, highOrder, RxConcatAll;
+        //    RxClick = Rx.Observable.fromEvent(document, 'click');
+        //    RxInterval = Rx.Observable.interval(1000).take(3);
+        //    highOrder = RxClick.map(ev=>RxInterval);
+        //    RxConcatAll = highOrder.concatAll();
+        //    resSub.RxConcatAll = RxConcatAll.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxConcatAll = RxConcatAll.subscribe(NEC(showInMar, 'last'));
+        //}
     },
     {
         name: 'concat',
@@ -574,25 +699,30 @@ export const Data = [
         caption: '',
         hits: 1235,
         useful: 451,
-        line: 2,
+        //line: 2,
         marbleText: 'concat',
         code: `
         //cut
         let RxClick,RxInterval,RxConcat;
         RxClick = Rx.Observable.fromEvent(document,'click').take(3);
         RxInterval = Rx.Observable.interval(1000).take(3);
-        RxConcat = RxClick.concat(RxInterval)
+        RxConcat = RxClick.concat(RxInterval);
         //cut
+
+            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+            marSub.RxConcat = RxConcat.subscribe(NEC(showInMar, 'last'));
+                     resSub.RxConcat = RxConcat.subscribe(NEC(showInRes));
+
         `,
-        func: function (showRxjsInResult, showRxjsInMarble) {
-            let RxClick, RxInterval, RxConcat;
-            RxClick = Rx.Observable.fromEvent(document, 'click').take(3);
-            RxInterval = Rx.Observable.interval(1000).take(3);
-            RxConcat = RxClick.concat(RxInterval);
-            this.unSubResult.RxConcat = RxConcat.subscribe(NEC(showRxjsInResult))
-            this.unSubMarble.RxClick = RxClick.subscribe(NEC(showRxjsInMarble, 1));
-            this.unSubMarble.RxConcat = RxConcat.subscribe(NEC(showRxjsInMarble, 'last'))
-        }
+        //func: function (showInRes, showInMar) {
+        //    let RxClick, RxInterval, RxConcat;
+        //    RxClick = Rx.Observable.fromEvent(document, 'click').take(3);
+        //    RxInterval = Rx.Observable.interval(1000).take(3);
+        //    RxConcat = RxClick.concat(RxInterval);
+        //    resSub.RxConcat = RxConcat.subscribe(NEC(showInRes))
+        //    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+        //    marSub.RxConcat = RxConcat.subscribe(NEC(showInMar, 'last'))
+        //}
 
     }
 ]
@@ -601,8 +731,8 @@ export const notFoundData = {
     name: '无数据',
     caption: '无数据',
     code: '无数据',
-    line: 0,
-    marbleText: ''
+    //line: 0,
+    marbleText: '无数据'
 }
 
 

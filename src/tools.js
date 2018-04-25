@@ -1,5 +1,6 @@
 import {Data,notFoundData,deepList,shallowList} from './mock-data'
-
+import Rx from 'rxjs/Rx';
+import {uniqWith,uniq,compact} from 'lodash'
 const LINETOP=30
 
 
@@ -119,22 +120,30 @@ export const sortMethod=(sort,navArr)=>{
 /*对code方法*/
 
 export function code2Obj(code){
+    console.time(1)
     var curFuncStr=code+'',
-        rawCodeStr=curFuncStr.replace(/;\s/g,';;').replace(/\B\s/g,''),
-        rawArr=rawCodeStr.split(/\/\/cut\s*/),
-        arr=rawArr[1]?rawArr[1].split(/;;/g):rawArr[0]==='无数据'?[]:rawArr,
-        str=rawArr[1]?rawArr[1].replace(/;;/g,';\n'):rawArr[0]==='无数据'?'':rawArr;
+        rawArr=curFuncStr.split(/\/\/cut\s*/),
+        rawCodeStr=rawArr[1]
+            ?
+            rawArr[1].replace(/;(\s*Rx[^\.=;&]+)|;(\s*$)/g,";;$1$2")
+                .replace(/\B\s\B/g,'')
+                .replace(/({.*);;(.*})/g,'$1;$2')
+            :
+            null,
+        arr=rawCodeStr?rawCodeStr.split(/;;/g):rawArr[0]==='无数据'?[]:rawArr,
+        str=rawCodeStr?rawCodeStr.replace(/;;/g,';\n'):rawArr[0]==='无数据'?'':rawArr;
+    console.timeEnd(1)
     return {str,arr}
 };
-export function unique(arr){
-    var unqiue=[]
-    for(var i=0,len=arr.length;i<len;i++){
-        if(arr.indexOf(arr[i])===i){
-            unqiue.push(arr[i])
-        }
-    }
-    return unqiue
-}
+// function unique(arr){
+//    var unqiue=[]
+//    for(var i=0,len=arr.length;i<len;i++){
+//        if(arr.indexOf(arr[i])===i){
+//            unqiue.push(arr[i])
+//        }
+//    }
+//    return unqiue
+//}
 
 
 function clearWhich(unSub){
@@ -152,14 +161,13 @@ export function clearFunc(unSubObj){
 
 export function calcColorBallNewPosition(line,whichLine,v,curTimeGap){
     let newObj;
-    let rightWhichLine=(+whichLine>0 && +whichLine<=line);
-    let lastLine=whichLine==='last';
+    let rightWhichLine=(+whichLine>0 && +whichLine<line);
+    let lastLine=(whichLine==='last'|| whichLine===line);
     let errorOrComplete=(v==='error'|| v==='complete');
-
     if(rightWhichLine){
         newObj = Object.assign(getArgument(v,curTimeGap), {top: whichLine * LINETOP})
-    }else if(!rightWhichLine && !errorOrComplete &&!lastLine){
-        newObj=getArgument(v,curTimeGap)
+    }else if(!rightWhichLine && !errorOrComplete && !lastLine){
+        newObj = getArgument(v,curTimeGap)
     }else{
         newObj = Object.assign(getArgument(v,curTimeGap), {top: line * LINETOP + 73})
     }
@@ -189,14 +197,16 @@ function getArgument(v,curTimeGap){
     return obj
 }
 
+
+//todo lodash 优化
 export function calcCodeStrArrPlusMinus(code,prevCodeArr){
     const codeObj=code2Obj(code),
         str=codeObj.str,
         arr=codeObj.arr,
         curLen=codeObj.arr.length,
         preLen=prevCodeArr.length,
-        minus=unique(arr.concat(prevCodeArr)).slice(curLen),
-        plus=unique(prevCodeArr.concat(arr)).slice(preLen);
+        minus=uniq(arr.concat(prevCodeArr)).slice(curLen),
+        plus=uniq(prevCodeArr.concat(arr)).slice(preLen);
     return {str,arr,minus,plus}
 }
 
@@ -290,4 +300,57 @@ function swap(arr,left,right){
     var tem=arr[right]
     arr[right]=arr[left];
     arr[left]=tem;
+}
+
+export function evalFunctionInReact(str,argsName){
+    let args=[].slice.call(arguments,1);
+    return Function(args,str)
+}
+
+export function getSubPositionFromCode(code){
+    let resultArr=[]
+    const subTimes=code.match(/Rx[^.;=(),+\s]+\b\.subscribe.*/g)||[]
+    subTimes.forEach(e=>{
+        let obj={}
+        let matchArr=e.match(/(^Rx[^.;=(),+\s]+\b).*(showInMar|showInRes)\s*,?\s*'?(\d|last)?'?/);
+        obj.name=matchArr[1]
+        obj.showInMar=matchArr[2].indexOf('showInMar')!==-1;
+        obj.showInRes=matchArr[2].indexOf('showInRes')!==-1
+        obj.line=matchArr[3]
+        resultArr.push(obj)
+    })
+    return uniqWith(resultArr, (a,b)=>{
+        if(a.name===b.name){
+            //a=b=Object.assign({},a,b)
+            a.showInRes=b.showInRes=a.showInRes||b.showInRes;
+            a.showInMar=b.showInMar=a.showInMar || b.showInMar
+            a.line=b.line=a.line||b.line
+        }
+        return a.name===b.name
+    });
+
+}
+
+export function delSubscribe(code,name,line,key){
+    let regExp;
+    regExp=new RegExp(`${key==='showInMar'?'marSub':'resSub'}\.${name}.*?subscribe.*?${key}.*?;`)
+    return code.replace(regExp,'')
+}
+export function addSubscribe(code,name,line,key){
+    let newCode;
+    switch(key){
+        case 'showInMar':
+            newCode=code+`marSub.${name}=${name}.subscribe(NEC(showInMar,'${line}'));`
+            break;
+        case 'showInRes':
+            newCode=code+`resSub.${name}=${name}.subscribe(NEC(showInRes));`
+            break;
+    }
+    return newCode
+}
+
+export function changeLine(code,name,newLine){
+    let regExp;
+    regExp=new RegExp(`(marSub\.${name}.*?subscribe.*?showInMar.*?)([0-9]|last)(.*?;)`)
+    return code.replace(regExp,'$1'+newLine+'$3')
 }

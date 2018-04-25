@@ -5,5 +5,5 @@ import Plus from  './plus';
 import SectionWrap from  './section-wrap';
 import ShowSubscribeStatus from './show-subscribe-status'
 import PopText from './poptext'
-
-export {Code,CustomCheckBox,Minus,Plus,SectionWrap,ShowSubscribeStatus,PopText}
+import ChooseWhereToShow from './choose-where-to-show'
+export {Code,CustomCheckBox,Minus,Plus,SectionWrap,ShowSubscribeStatus,PopText,ChooseWhereToShow}

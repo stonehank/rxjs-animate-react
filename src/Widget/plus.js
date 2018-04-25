@@ -8,7 +8,7 @@ export default class Plus extends React.PureComponent{
             plus
                 ?
                 plus.map((e,i)=>(
-                    <p key={i} className="plus">{e?e:'无'}</p>
+                    e?<p key={i} className="plus">{e}</p>:null
                 ))
                 :
                 <p>plus不存在，检查代码</p>

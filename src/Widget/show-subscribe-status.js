@@ -17,10 +17,7 @@ export default class ShowSubscribeStatus extends React.Component{
 
     //shouldComponentUpdate(nextProps){
     //    console.log(nextProps.unSubObj,this.props.unSubObj)
-    //    //return !is((this.unSubStatus),fromJS(nextProps.unSubMarble)
-    //    //Object.values(unSubObj).forEach(e=>{
-    //    //
-    //    //})
+    //
     //    return true
     //}
 
