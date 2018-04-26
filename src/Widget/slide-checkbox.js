@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-export default class CustomCheckBox extends React.PureComponent{
+export default class SlideCheckBox extends React.PureComponent{
     constructor(){
         super()
         this.cancelBubble=this.cancelBubble.bind(this)
@@ -29,3 +29,4 @@ export default class CustomCheckBox extends React.PureComponent{
         )
     }
 }
+

@@ -1,6 +1,6 @@
 import React from 'react'
 import DeepListTitle from './deeplist-title'
-import ReuseNavLink from './reuse-navlink'
+import {ReuseNavLink} from '../Widget'
 
 
 export default class ShallowListTitle extends React.PureComponent {

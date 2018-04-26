@@ -6,6 +6,7 @@ import ShowSubscribeStatus from './../Widget/show-subscribe-status';
 import ShowExampleMarbleBall from './show-example-marbleball';
 import MarbleCaption from './marble-caption'
 import HrLine from './hr-line'
+import {ReuseButton} from '../Widget'
 
 export default class Marble extends React.PureComponent{
     constructor(){
@@ -46,8 +47,8 @@ export default class Marble extends React.PureComponent{
         })
     }
     restorePosition(e){
-        e.stopPropagation()
-        e.nativeEvent.stopImmediatePropagation();
+        //e.stopPropagation()
+        //e.nativeEvent.stopImmediatePropagation();
         this.setState(prevState=>({
             restorePositionKey:prevState.restorePositionKey+1,
             isDragged:false
@@ -76,7 +77,7 @@ export default class Marble extends React.PureComponent{
             <MarbleComponent>
                 <div style={{fontSize:"1.2rem",color:"#000"}}>
                     <ShowExampleMarbleBall />
-                    <button className='restore-pos' onClick={this.restorePosition} disabled={!isDragged}>拖拽还原</button>
+                    <ReuseButton className={"restore-pos"} handleClick={this.restorePosition} text={"拖拽还原"} disabled={!isDragged}/>
                     <ShowSubscribeStatus unSubObj={unSubMarble} name="Marble"/>
                 </div>
                 <div id="marble"

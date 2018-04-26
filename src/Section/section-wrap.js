@@ -1,5 +1,5 @@
 import React from 'react';
-import {CustomCheckBox} from '../Widget'
+import {SlideCheckBox,ReuseButton} from '../Widget'
 import SectionContent from './section-content'
 import {fromJS,is} from 'immutable';
 
@@ -12,16 +12,16 @@ export default class SectionWrap extends React.Component{
     }
     render(){
         //console.log('SectionWrap')
-        const {isFetching,basicData,showStartButton,testStop,showInWhereArr,setShowInWhereArr,setMarbleLine,
+        const {isFetching,basicData,code,showStartButton,testStop,showInWhereArr,setShowInWhereArr,setMarbleLine,editingCodeToSave,
             showResult,showMarble,testStart,clearStart,marbleCheckChange,resultCheckChange}=this.props
         return(
             <section className="section clearfix">
-                <CustomCheckBox
+                <SlideCheckBox
                     text={"Marble界面"}
                     checkBoxChange={marbleCheckChange}
                     checkBoxStatus={showMarble}
                     id={"slide-checkbox1"} />
-                <CustomCheckBox
+                <SlideCheckBox
                     text={"Result界面"}
                     checkBoxChange={resultCheckChange}
                     checkBoxStatus={showResult}
@@ -34,16 +34,18 @@ export default class SectionWrap extends React.Component{
                         setShowInWhereArr={setShowInWhereArr}
                         showInWhereArr={showInWhereArr}
                         setMarbleLine={setMarbleLine}
+                        editingCodeToSave={editingCodeToSave}
+                        code={code}
                         basicData={basicData}/>
                 }
                 <div className="clearfix">
                     {showStartButton
                         ?
-                        <button className="testStartRxjs" onClick={testStart} >开始(subscribe)</button>
+                        <ReuseButton className={"testStartRxjs"} handleClick={testStart} text={"开始(subscribe)"} />
                         :
-                        <button className="testStopRxjs" onClick={testStop} >停止(unsubscribe)</button>
+                        <ReuseButton className={"testStopRxjs"} handleClick={testStop} text={"停止(unsubscribe)"} />
                     }
-                    <button className="clearRxjs" onClick={clearStart}>清除(unsubscribe&clear)</button>
+                    <ReuseButton className={"clearRxjs"} handleClick={clearStart} text={"清除(unsubscribe&clear)"} />
                 </div>
             </section>
         )

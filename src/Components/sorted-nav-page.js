@@ -3,7 +3,7 @@ import {Link}  from 'react-router-dom'
 import {getPath} from '../tools'
 import {Consumer} from '../index'
 import  {fromJS,is}  from 'immutable';
-
+import {ReuseNavLink} from '../Widget'
 
 
 export default class SortedNavPage extends React.Component{
@@ -38,11 +38,12 @@ export default class SortedNavPage extends React.Component{
                                     }
                                 }
                                 return (
-                                    <li style={{marginLeft:'1rem'}} key={e.id}>
-                                        {showCapital?<span>{firstCapital}</span>:null}
-                                        <Link className="firstLiHorWeb"  to={`operators/${e.name}`}>
-                                            {sortType!=='operators'?`${e.name}(${sortType}:${e[sortType]})`:`${e.name}`}
-                                        </Link>
+                                    <li className="sortedLi"style={{marginLeft:'1rem'}} key={e.id}>
+                                        {showCapital?<p>{firstCapital}</p>:null}
+                                        <ReuseNavLink   toPath={`operators/${e.name}`}
+                                                        name={sortType!=='operators'?`${e.name}(${sortType}:${e[sortType]})`:`${e.name}`} />
+
+
                                     </li>
                                 )
                             })}

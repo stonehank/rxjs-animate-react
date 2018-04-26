@@ -1,5 +1,5 @@
 import React from 'react'
-import ReuseNavLink from '../Nav/reuse-navlink'
+import ReuseNavLink from '../Widget/reuse-navlink'
 import {setSearchList} from '../tools'
 
 export default class SearchInput extends React.PureComponent{

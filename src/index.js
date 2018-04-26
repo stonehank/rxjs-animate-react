@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router,withRouter}  from 'react-router-dom'
 import Rx from 'rxjs/Rx'
-
+import 'codemirror/lib/codemirror.css'
 import './Css/index.css'
 import Nav from './Nav'
 import Routes from './Routes/routes'
@@ -10,10 +10,10 @@ import {sortMethod,_fetchNav} from './tools'
 
 
 
-//if (process.env.NODE_ENV !== 'production') {
-//    const {whyDidYouUpdate} = require('why-did-you-update');
-//    whyDidYouUpdate(React);
-//}
+if (process.env.NODE_ENV !== 'production') {
+    const {whyDidYouUpdate} = require('why-did-you-update');
+    whyDidYouUpdate(React);
+}
 
 /**
  * 新API 创建context

@@ -1,5 +1,5 @@
 import React from 'react'
-import ReuseNavLink from './reuse-navlink'
+import {ReuseNavLink} from '../Widget'
 
 export default class DeepListTitle extends React.PureComponent{
     render(){

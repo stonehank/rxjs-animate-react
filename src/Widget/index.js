@@ -1,9 +1,11 @@
-import Code from './code';
-import CustomCheckBox from './custom-checkbox';
+
+import SlideCheckBox from './slide-checkbox';
 import Minus from  './minus';
 import Plus from  './plus';
-import SectionWrap from  './section-wrap';
+import SquareCheckBox from './square-checkbox'
 import ShowSubscribeStatus from './show-subscribe-status'
 import PopText from './poptext'
-import ChooseWhereToShow from './choose-where-to-show'
-export {Code,CustomCheckBox,Minus,Plus,SectionWrap,ShowSubscribeStatus,PopText,ChooseWhereToShow}
+import ReuseNavLink from './reuse-navlink'
+import ReuseButton from './reuse-button'
+
+export {SlideCheckBox,SquareCheckBox,Minus,Plus,ShowSubscribeStatus,PopText,ReuseButton,ReuseNavLink}

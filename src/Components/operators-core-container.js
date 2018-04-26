@@ -1,6 +1,6 @@
 import React from 'react';
 import {clearFunc,calcColorBallNewPosition,calcCodeStrArrPlusMinus,checkDidAllunSub,_fetchData,evalFunctionInReact,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine} from '../tools'
-import {SectionWrap} from '../Widget'
+import SectionWrap from '../Section/section-wrap'
 import Marble from '../Marble'
 import Result from '../Result'
 import Rx from 'rxjs/Rx'
@@ -26,8 +26,8 @@ export default class OperatorsCoreContainer extends React.Component{
         this.refreshStartStopButton=this.refreshStartStopButton.bind(this)
         this.setShowInWhereArr=this.setShowInWhereArr.bind(this)
         this.setMarbleLine=this.setMarbleLine.bind(this)
+        this.editingCodeToSave=this.editingCodeToSave.bind(this)
         this.NEC=this.NEC.bind(this)
-        this.prevCodeArr=[]
         /*
         此处 this.unSubMarble ; this.unSubResult
         内部是Subscriber对象
@@ -51,13 +51,20 @@ export default class OperatorsCoreContainer extends React.Component{
     }
 
 
-    initSetData(data){
+    initSetData(data,isUpdateCode){
+        if(isUpdateCode){
+            const code=data;
+            const showInWhereArr=getSubPositionFromCode(code)
+            const line=showInWhereArr.length;
+            this.setState({
+                showInWhereArr,
+                code,
+                isFetching:false,
+                line
+            })
+
+        }else{
             const {title,name,caption,code,marbleText}=data;
-            const codeObj=calcCodeStrArrPlusMinus(code,this.prevCodeArr),
-                codeStr=codeObj.str,
-                minus=codeObj.minus,
-                plus=codeObj.plus;
-            this.prevCodeArr=codeObj.arr;
             this.clearStart()
             this.unSubMarble={}
             this.unSubResult={}
@@ -67,9 +74,10 @@ export default class OperatorsCoreContainer extends React.Component{
                 showInWhereArr,
                 code,
                 isFetching:false,
-                basicData:{ title, name, caption, minus, plus,code:codeStr},
+                basicData:{ title, name, caption},
                 line, marbleText
             })
+        }
     }
 
     fetchDataSetState(operatorName){
@@ -85,7 +93,7 @@ export default class OperatorsCoreContainer extends React.Component{
         const needChange=showInWhereArr[i]
         let newCode=currentShowStatus
             ?
-            delSubscribe(code,needChange.name,needChange.line,key)
+            delSubscribe(code,needChange.name,key)
             :
             addSubscribe(code,needChange.name,needChange.line,key)
         this.setState(prevState=>({
@@ -104,6 +112,12 @@ export default class OperatorsCoreContainer extends React.Component{
             code:newCode
         }))
     }
+
+    editingCodeToSave(value){
+        this.setState({isFetching:true})
+       this.initSetData(value,true)
+    }
+
     componentWillUnmount(){
         this.fetch$.unsubscribe()
     }
@@ -196,10 +210,10 @@ export default class OperatorsCoreContainer extends React.Component{
      * @param e
      */
     testStart(e){
-        if(e){
-            e.stopPropagation()
-            e.nativeEvent.stopImmediatePropagation();
-        }
+        //if(e){
+        //    e.stopPropagation()
+        //    e.nativeEvent.stopImmediatePropagation();
+        //}
         if(this.state.code==="无数据"){alert('数据获取失败！请选择正确的操作符');return;}
         this.timeStamp=new Date().getTime()
 
@@ -215,9 +229,6 @@ export default class OperatorsCoreContainer extends React.Component{
         //Function(this.state.code).call(this)
         Function(['NEC','resSub','marSub','showInRes','showInMar'],this.state.code)
             .apply(this,[this.NEC,this.unSubResult,this.unSubMarble,this.showRxjsInResult,this.showRxjsInMarble])
-        //this.state.func.apply(this,[this.NEC,this.unSubResult,this.unSubMarble,this.showRxjsInResult,this.showRxjsInMarble])
-        //this.state.func.call(this)
-        //this.state.func.call(this,this.showRxjsInResult,this.showRxjsInMarble)
 
         //TODO:需要修正 强制刷新result
         this.resultRefreshTimeStamp=new Date().getTime()
@@ -230,10 +241,10 @@ export default class OperatorsCoreContainer extends React.Component{
     }
 
     testStop(e){
-        if(e){
-            e.stopPropagation()
-            e.nativeEvent.stopImmediatePropagation();
-        }
+        //if(e){
+        //    e.stopPropagation()
+        //    e.nativeEvent.stopImmediatePropagation();
+        //}
         this.allUnsubscribe()
         this.refreshStartStopButton()
         //TODO:需要修正 强制刷新marble,result
@@ -255,10 +266,10 @@ export default class OperatorsCoreContainer extends React.Component{
      * @param e
      */
     clearStart(e){
-        if(e){
-            e.stopPropagation()
-            e.nativeEvent.stopImmediatePropagation();
-        }
+        //if(e){
+        //    e.stopPropagation()
+        //    e.nativeEvent.stopImmediatePropagation();
+        //}
         this.allUnsubscribe()
         this.refreshResultMarble('clear')
 
@@ -286,17 +297,19 @@ export default class OperatorsCoreContainer extends React.Component{
         }))
     }
     render(){
-        console.log('OperatorsCoreContainer')
-        const {isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,
+        //console.log('OperatorsCoreContainer')
+        const {isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,code,
             marbleArr,line,marbleText,resultValue}=this.state
         return(
             <React.Fragment>
                 <SectionWrap
                     isFetching={isFetching}
                     basicData={basicData}
+                    code={code}
                     showInWhereArr={showInWhereArr}
                     setShowInWhereArr={this.setShowInWhereArr}
                     setMarbleLine={this.setMarbleLine}
+                    editingCodeToSave={this.editingCodeToSave}
                     resultCheckChange={this.resultCheckChange}
                     marbleCheckChange={this.marbleCheckChange}
                     showMarble={showMarble}

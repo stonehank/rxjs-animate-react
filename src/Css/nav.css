@@ -236,3 +236,19 @@
     width:80%;
     border-bottom:1px solid #000;
 }
+
+.sortedLi{
+    box-sizing: border-box;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    width: 10rem;
+}
+
+.sortedLi p{
+    background: #1e1e1e;
+    width:2rem;
+    text-align: center;
+}
+.sortedLi a{
+    margin-left:2rem;
+}

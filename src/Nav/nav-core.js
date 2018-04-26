@@ -1,6 +1,6 @@
 import React from 'react'
 import ShallowListTitle from './shallowlist-title'
-import ReuseNavLink from './reuse-navlink'
+import {ReuseNavLink} from '../Widget'
 import Search from '../Search'
 import {Consumer} from '../index'
 
