@@ -602,23 +602,7 @@ _deepList = fillDeepList()
  *   {id:3,name:xxx,hits:2341,useful:541}
  * ]
  *
- *
- *
  */
 
 
 export let deepList = _deepList
-
-function NEC(showInWhere, whichLine) {
-    return {
-        next: (v)=> {
-            showInWhere(v, whichLine)
-        },
-        error: ()=> {
-            showInWhere('error', whichLine)
-        },
-        complete: ()=> {
-            showInWhere('complete', whichLine)
-        }
-    }
-}

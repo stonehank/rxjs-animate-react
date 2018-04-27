@@ -1,5 +1,4 @@
 import React from 'react';
-import {calcCodeStrArrPlusMinus} from '../tools'
 import {ReuseButton} from '../Widget'
 import CodeMirror from 'react-codemirror';
 import 'codemirror/mode/javascript/javascript'
@@ -55,7 +54,6 @@ export default class Code extends React.PureComponent{
             lineWrapping:true,
             gutters:['edit-gutter']
         }
-        console.log(CodeMirror.setSize)
         return(
             editing
                 ?

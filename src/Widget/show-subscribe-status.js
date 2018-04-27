@@ -46,7 +46,6 @@ export default class ShowSubscribeStatus extends React.Component{
 
     render(){
         //console.log('ShowSubscribeStatus')
-        //const {unSubObj,name}=this.props
         const {unSubSimpleObj,name}=this.state
         return(
             <React.Fragment>

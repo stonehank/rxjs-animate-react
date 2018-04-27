@@ -80,8 +80,7 @@ export default class Marble extends React.PureComponent{
                     <ReuseButton className={"restore-pos"} handleClick={this.restorePosition} text={"拖拽还原"} disabled={!isDragged}/>
                     <ShowSubscribeStatus unSubObj={unSubMarble} name="Marble"/>
                 </div>
-                <div id="marble"
-                     ref={e=>this.marbleEle=e}>
+                <div id="marble" ref={e=>this.marbleEle=e}>
                     {arr.map((e,i)=>
                         <React.Fragment key={i}>
                             <MarbleCaption i={i} line={line} marbleText={marbleText}/>

@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link}  from 'react-router-dom'
 import {getPath} from '../tools'
 import {Consumer} from '../index'
 import  {fromJS,is}  from 'immutable';

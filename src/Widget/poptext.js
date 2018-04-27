@@ -1,14 +1,18 @@
 import React from 'react'
-
+import classNames from 'classnames'
 
 export default class PopText extends React.PureComponent{
     render(){
-        const {data,position}=this.props
-        const {top,left}=position
+        const {data,cssStyle,needStringify,className}=this.props
+        const newClassName=classNames("pop-data",className?className:null)
         return(
-            <div id="popData" style={{left,top}}>
-                <p>{`${data}`}</p>
-                <p>{`stringify:${JSON.stringify(data)}`}</p>
+            <div className={newClassName}  style={cssStyle}>
+                <p dangerouslySetInnerHTML={{__html: data}} />
+                {needStringify
+                    ?
+                    <p>{`stringify:${JSON.stringify(data)}`}</p>
+                    :
+                    null}
             </div>
         )
     }

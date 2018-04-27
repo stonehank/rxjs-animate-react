@@ -1,6 +1,6 @@
 import {Data,notFoundData,deepList,shallowList} from './mock-data'
 //import Rx from 'rxjs/Rx';
-import {uniqWith,uniq,compact} from 'lodash'
+import {uniqWith,uniq} from 'lodash'
 const LINETOP=30
 
 
@@ -125,7 +125,7 @@ export function code2Obj(code){
         rawArr=curFuncStr.split(/\s+\/\/editArea\s+/),
         rawCodeStr=rawArr[1]
             ?
-            rawArr[1].replace(/;(\s*Rx[^\.=;&]+)|;(\s*$)/g,";;$1$2")
+            rawArr[1].replace(/;(\s*Rx[^.=;&]+)|;(\s*$)/g,";;$1$2")
                 .replace(/\B\s\B/g,'')
                 .replace(/({.*);;(.*})/g,'$1;$2')
             :
@@ -162,7 +162,7 @@ export function clearFunc(unSubObj){
 
 export function calcColorBallNewPosition(line,whichLine,v,curTimeGap){
     let newObj;
-    const numberWhichLine=parseInt(whichLine)
+    const numberWhichLine=parseInt(whichLine,10)
     let rightWhichLine=(numberWhichLine>0 && numberWhichLine<line);
     let lastLine=(whichLine==='last'|| numberWhichLine===line);
     let errorOrComplete=(v==='error'|| v==='complete');
@@ -262,52 +262,6 @@ export function changeStatus(status,force){
     }
 }
 
-
-
-
-/*快速排序*/
-
-function quickSort(array,compareFunc) {
-    quick(array,0,array.length-1,compareFunc)
-}
-function quick(array,left,right,compareFunc){
-    var index,l= left,r=right;
-    if(array.length>1){
-        index=partition(array,l,r,compareFunc)
-        if(l<index-1){
-            quick(array,l,index-1,compareFunc)
-        }
-        if(index<r){
-            quick(array,index,r,compareFunc)
-        }
-    }
-}
-function partition(array,left,right,compareFunc){
-    var pivot=array[Math.floor((left+right)/2)],
-        i=left,
-        j=right;
-    while(i<=j){
-        while(compareFunc(array[i],pivot)<0){i++}
-        while(compareFunc(pivot,array[j])<0){j--}
-        if(i<=j){
-            swap(array,i,j)
-            i++;j--;
-        }
-    }
-    return i
-}
-
-function swap(arr,left,right){
-    var tem=arr[right]
-    arr[right]=arr[left];
-    arr[left]=tem;
-}
-
-export function evalFunctionInReact(str,argsName){
-    let args=[].slice.call(arguments,1);
-    return Function(args,str)
-}
-
 export function getSubPositionFromCode(code){
     let resultArr=[];
     const editArea=code.split(/\s+\/\/editArea\s+/)[1]||'';
@@ -315,7 +269,7 @@ export function getSubPositionFromCode(code){
     //console.time(1)
     variables.forEach(e=>{
         let obj={};
-        const subArr=code.match(new RegExp(e+'\.subscribe.*','g')) ||[];
+        const subArr=code.match(new RegExp(e+'.subscribe.*','g')) ||[];
         const subStr=subArr.join('');
         let matchArr=subStr.match(/(^Rx[^.;=(),+\s]+\b).*showInMar\s*,?\s*'?(\d|last)?'?/) || [];
         obj.name=matchArr[1] || e;
@@ -338,24 +292,26 @@ export function getSubPositionFromCode(code){
 
 export function delSubscribe(code,name,key){
     let regExp;
-    regExp=new RegExp(`${key==='showInMar'?'marSub':'resSub'}\.${name}.*?subscribe.*?${key}.*?;`)
+    regExp=new RegExp(`${key==='showInMar'?'marSub':'resSub'}.${name}.*?subscribe.*?${key}.*?;`)
     return code.replace(regExp,'')
 }
 export function addSubscribe(code,name,line,key){
-    let newCode;
+    let newCode=code;
     switch(key){
         case 'showInMar':
-            newCode=code+`marSub.${name}=${name}.subscribe(NEC(showInMar,'${line}'));\n`
+            newCode+=`marSub.${name}=${name}.subscribe(NEC(showInMar,'${line}'));\n`
             break;
         case 'showInRes':
-            newCode=code+`resSub.${name}=${name}.subscribe(NEC(showInRes));\n`
+            newCode+=`resSub.${name}=${name}.subscribe(NEC(showInRes));\n`
             break;
+        default:
+            return;
     }
     return newCode
 }
 
 export function changeLine(code,name,newLine){
     let regExp;
-    regExp=new RegExp(`(marSub\.${name}.*?subscribe.*?showInMar.*?)([0-9]|last)(.*?;)`)
+    regExp=new RegExp(`(marSub.${name}.*?subscribe.*?showInMar.*?)([0-9]|last)(.*?;)`)
     return code.replace(regExp,'$1'+newLine+'$3')
 }

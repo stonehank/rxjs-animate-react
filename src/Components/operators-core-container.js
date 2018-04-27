@@ -1,10 +1,11 @@
 import React from 'react';
-import {clearFunc,calcColorBallNewPosition,calcCodeStrArrPlusMinus,checkDidAllunSub,_fetchData,evalFunctionInReact,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine} from '../tools'
+import {clearFunc,calcColorBallNewPosition,checkDidAllunSub,_fetchData,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine} from '../tools'
 import SectionWrap from '../Section/section-wrap'
+import {PopText} from '../Widget'
 import Marble from '../Marble'
 import Result from '../Result'
 import Rx from 'rxjs/Rx'
-import {fromJS,is,toJS} from 'immutable';
+import {fromJS,is} from 'immutable';
 
 
 
@@ -38,6 +39,8 @@ export default class OperatorsCoreContainer extends React.Component{
         this.unSubResult={}
         this.newMarbleArr=[]
         this.state={
+            codeRunError:false,
+            codErrorInfo:'',
             showMarble:true,
             showResult:true,
             marbleText:'', line:0,
@@ -120,6 +123,7 @@ export default class OperatorsCoreContainer extends React.Component{
 
     componentWillUnmount(){
         this.fetch$.unsubscribe()
+        clearTimeout(this.codeErrorTimer)
     }
     shouldComponentUpdate(nextProps,nextState){
             //console.log(this.props,nextProps)
@@ -147,6 +151,7 @@ export default class OperatorsCoreContainer extends React.Component{
         }
         return null;
     }
+
 
     /**
      * 清空result界面 &  清空marble界面
@@ -226,9 +231,25 @@ export default class OperatorsCoreContainer extends React.Component{
         }))
 
 
-        //Function(this.state.code).call(this)
-        Function(['NEC','resSub','marSub','showInRes','showInMar'],this.state.code)
-            .apply(this,[this.NEC,this.unSubResult,this.unSubMarble,this.showRxjsInResult,this.showRxjsInMarble])
+        /**
+         * 开始按钮事件错误处理
+         */
+        try {
+            Function(['NEC','resSub','marSub','showInRes','showInMar'],this.state.code)
+                .apply(this,[this.NEC,this.unSubResult,this.unSubMarble,this.showRxjsInResult,this.showRxjsInMarble])
+        } catch (error) {
+            this.setState({
+                codErrorInfo:error.name+' : '+error.message,
+                codeRunError:true
+            })
+            this.codeErrorTimer=setTimeout(()=>{
+                this.setState({
+                    codErrorInfo:'',
+                    codeRunError:false
+                })
+            },5000)
+
+        }
 
         //TODO:需要修正 强制刷新result
         this.resultRefreshTimeStamp=new Date().getTime()
@@ -299,9 +320,11 @@ export default class OperatorsCoreContainer extends React.Component{
     render(){
         //console.log('OperatorsCoreContainer')
         const {isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,code,
-            marbleArr,line,marbleText,resultValue}=this.state
+            marbleArr,line,marbleText,resultValue,codeRunError,codErrorInfo}=this.state
         return(
             <React.Fragment>
+                {codeRunError ?
+                    <PopText data={'Something error in code!<br>'+codErrorInfo} className="code-run-error" /> : null}
                 <SectionWrap
                     isFetching={isFetching}
                     basicData={basicData}
@@ -318,7 +341,7 @@ export default class OperatorsCoreContainer extends React.Component{
                     testStop={this.testStop}
                     clearStart={this.clearStart}
                     testStart={this.testStart} />
-                <div>
+                <div className="show-wrap">
                     {showMarble?
                         <Marble
                             timeStamp={this.marbleRefreshTimeStamp}

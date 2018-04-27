@@ -1,19 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PopText from './../Widget/poptext'
 import MarbleBallComponent from './marble-ball-component';
 
 export default class MarbleBall extends React.PureComponent{
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.showPop=this.showPop.bind(this)
         this.closePop=this.closePop.bind(this)
         this.setDropLeft=this.setDropLeft.bind(this)
+        const {marbleBallObj,restorePositionKey}=this.props
+        const {data,text,left,background,color,top}=marbleBallObj
         this.state={
-            curStyle:{},
-            curContent:{},
-            left:0,
-            restorePositionKey:0,
+            restorePositionKey,
+            left,data,text,background,color,top:0,
             showPopText:false
         }
     }
@@ -59,36 +58,36 @@ export default class MarbleBall extends React.PureComponent{
     }
 
 
+    /**
+     * 扁平数据传递给drag-source，可省去不必要的渲染
+     */
     componentDidMount(){
         //console.log('MarbleBall didmount')
-        const {marbleBallObj,restorePositionKey}=this.props
-        const {data,text,left,...style}=marbleBallObj
+        const {marbleBallObj}=this.props
+        const {top}=marbleBallObj
+        //const {data,text,left,...style}=marbleBallObj
         this.timer=setTimeout(()=>{
             this.setState({
-                restorePositionKey:restorePositionKey,
-                curStyle:style,
-                left:left,
-                curContent:{text,data}
+                top
             })
         },20)
     }
+
     render(){
         //console.log('MarbleBall render')
         const {setIsDragged}=this.props
-        const {left,curStyle,curContent,showPopText}=this.state;
-        const {text,data}=curContent
-        const _curStyle=Object.assign({},curStyle,{left})
+        const {left,data,text,top,background,color,showPopText}=this.state;
         return(
             <React.Fragment>
                 <MarbleBallComponent text={text}
-                                     _curStyle={_curStyle}
+                                     left={left} top={top} background={background} color={color}
                                      closePop={this.closePop}
                                      showPop={this.showPop}
                                      cancelBubble={this.cancelBubble}
                                      setIsDragged={setIsDragged}
                                      setDropLeft={this.setDropLeft}/>
                 {showPopText?
-                <PopText data={data} position={{left:_curStyle.left,top:_curStyle.top}}/>:
+                <PopText data={data} className="marbleBallPopData" cssStyle={{left,top}} needStringify={true}/>:
                     null
                 }
             </React.Fragment>

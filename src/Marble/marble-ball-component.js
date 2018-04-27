@@ -1,18 +1,18 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
-import {fromJS,is} from 'immutable';
+//import {fromJS,is} from 'immutable';
 
 
-class MarbleBallComponent extends React.Component{
+class MarbleBallComponent extends React.PureComponent{
 
-    shouldComponentUpdate(prevProps){
-        return !is(fromJS(this.props._curStyle),fromJS(prevProps._curStyle))
-            || this.props.isDragging !==prevProps.isDragging
-    }
+    //shouldComponentUpdate(prevProps){
+    //    return !is(fromJS(this.props._curStyle),fromJS(prevProps._curStyle))
+    //        || this.props.isDragging !==prevProps.isDragging
+    //}
     render(){
-        //console.log('marbleBallComponent')
-        const {_curStyle,text,connectDragSource,closePop,showPop,cancelBubble,isDragging}=this.props
-        const curStyle=isDragging ? Object.assign({},_curStyle,{opacity:0.7}) : _curStyle
+        console.log('marbleBallComponent')
+        const {left,text,top,background,color,connectDragSource,closePop,showPop,cancelBubble,isDragging}=this.props
+        const curStyle=isDragging ? {left,top,background,color,opacity:0.7} :{left,top,background,color}
         return connectDragSource(
             <div className="colorBall"
                  onMouseOut={closePop}

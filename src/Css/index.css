@@ -64,7 +64,7 @@ button:focus {
 /*-----/Result/result-----*/
 
 .result {
-    width: 50%;
+    /*width: 50%;*/
     position: relative;
     right: 0;
     margin-bottom: 1.5rem;
@@ -78,8 +78,8 @@ button:focus {
 
 /*-----/Marble/marble-----*/
 #marbleWrap {
-    width: 50%;
-    float: right;
+    /*width: 50%;*/
+    /*float: right;*/
     background-color: #ccc;
     /*transition: all 0.5s linear;*/
 }
@@ -133,7 +133,7 @@ button:focus {
     background-color: #55b94e;
 }
 
-/*-----/Marble/marble-colorball-----*/
+/*-----/Marble/marble-ball-----*/
 
 .colorBall {
     width: 20px;
@@ -149,6 +149,11 @@ button:focus {
 }
 .colorBall:active{
     cursor:-webkit-grabbing;
+}
+
+.marbleBallPopData{
+    background-color: lightgreen;
+    color: #000;
 }
 /*-----/Marble/show-example-marbleball-----*/
 
@@ -207,7 +212,27 @@ button:focus {
     background-color: orange;
     color: #fff;
 }
-/*-----/Widget/code-----*/
+/*-----/Components/operators-core-container-----*/
+.code-run-error{
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    width:25rem;
+    max-width:80%;
+    height:4rem;
+    margin:auto;
+    background-color:#f05e5b;
+    color: #fff
+}
+
+.show-wrap{
+    position: absolute;
+    width: 50%;
+    top: 4rem;
+    right: 0;
+}
+/*-----/Section/code-----*/
 .code-wrap{
     position:relative;
 }
@@ -244,20 +269,17 @@ button:focus {
 
 /*-----/Widget/poptext-----*/
 
-#popData {
+.pop-data {
     position: absolute;
     display: inline-block;
-    padding: 0 0.5rem;
-    background-color: lightgreen;
+    padding: 0.5rem 0.5rem;
     text-align: center;
     border-radius: 10px;
-    top: 0;
-    left: 0;
-    color: #000;
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
     font-size: 1rem;
 }
+
 
 /*-----/Widget/custom-checkbox-----*/
 
@@ -356,10 +378,10 @@ button:focus {
 
 /*-----/Widget/section-wrap-----*/
 .section {
-    float: left;
+    /*float: left;*/
     width: 50%;
     display: inline-block;
-    height: 80vh
+    /*height: 80vh*/
 }
 
 .testStartRxjs {
