@@ -34,7 +34,7 @@ export default class ChooseWhereToShow extends React.Component{
             <table className="choose-where-to-show">
                 <thead>
                     <tr>
-                        <th>结果位置选择</th>
+                        <th>位置选择</th>
                         {showInWhereArr.map((s,i)=>(
                             <th key={i}>{s.name}</th>
                         ))}
@@ -42,15 +42,17 @@ export default class ChooseWhereToShow extends React.Component{
                 </thead>
                 <tbody>
                     <tr>
-                        <td>showInMarble</td>
+                        <td>InMarble</td>
                         {showInWhereArr.map((e,i)=>(
                             <td key={i}>
                                 <SquareCheckBox id={'marCheckBox'+i}
                                                 eventParas={i}
                                                 isChecked={e.showInMar}
                                                 setShowInMarble={this.setShowInMarble} />
-                                <span>line:</span>
-                                <select value={e.line==='last'?showInWhereArr.length:+e.line} onClick={this.cancelBubble} onChange={this.setMarbleLine.bind(this,i)}>
+                                &nbsp;
+                                <select onClick={this.cancelBubble}
+                                        onChange={this.setMarbleLine.bind(this,i)}
+                                        value={e.line==='last' ? showInWhereArr.length : +e.line} >
                                     {showInWhereArr.map((_e,_i)=>(
                                         <option key={_i} value={_i+1}>{_i+1}</option>
                                     ))}
@@ -59,7 +61,7 @@ export default class ChooseWhereToShow extends React.Component{
                         ))}
                     </tr>
                     <tr>
-                        <td>showInResult</td>
+                        <td>InResult</td>
                         {showInWhereArr.map((e,i)=>(
                             <td key={i}>
                                 <SquareCheckBox id={'resCheckBox'+i}

@@ -2,6 +2,7 @@ import React from 'react';
 import {Plus,Minus,ReuseButton} from '../Widget'
 import Code from './code'
 import ChooseWhereToShow from './choose-where-to-show'
+import ChooseWhereToShowExample from './choose-where-to-show-example'
 import {calcCodeStrArrPlusMinus} from '../tools'
 import {fromJS,is} from 'immutable';
 
@@ -92,6 +93,7 @@ export default class SectionContent extends React.Component{
                         ?
                         <React.Fragment>
                             <ReuseButton handleClick={this.toggleChooseWhereToShow} text={"关闭位置选择面板"} />
+                            <ChooseWhereToShowExample />
                             <ChooseWhereToShow showInWhereArr={showInWhereArr} setShowInWhereArr={setShowInWhereArr} setMarbleLine={setMarbleLine}/>
                         </React.Fragment>
                         :

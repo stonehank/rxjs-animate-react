@@ -5,10 +5,8 @@ export default class MarbleCaption extends React.PureComponent{
         //console.log('marblecaption')
         const {i,line,marbleText}=this.props
         return(
-            i===line-1
-                ?
-                <span>{marbleText}</span>
-                :
+            i===line-1 ?
+                <span>{marbleText}</span> :
                 null
         )
     }

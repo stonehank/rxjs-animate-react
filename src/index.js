@@ -7,7 +7,7 @@ import './Css/index.css'
 import Nav from './Nav'
 import Routes from './Routes/routes'
 import {sortMethod,_fetchNav} from './tools'
-
+import {sortBy} from 'lodash'
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -34,7 +34,12 @@ class App extends React.Component{
         this.fetch$=Rx.Observable.fromPromise(_fetchNav())
             .subscribe(({deepList,shallowList})=>{
                 shallowList.forEach(e=>{
+                    //console.time(1)
+                    //USE Lodash/sortBy
+                    //let sortedList=sortBy(deepList,[()=>e.sort])
+                    //USE js sort
                     let sortedList=sortMethod(e.sort,deepList)
+                    //console.timeEnd(1)
                     this.sortDeepList[e.pathname]=sortedList
                     this.sortNavDeepList[e.pathname]=sortedList.slice(0,10)
                 });

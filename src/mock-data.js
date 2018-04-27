@@ -33,10 +33,11 @@ export const shallowList = [
 ];
 
 export const EDITRULES=`
-/*1、所有需要显示的发射源命名必须以'Rx'开头，例如：let RxInterval，如果写成let interval，则不会在选择面板中显示*/
+/*1、所有需要显示的发射源命名必须以'Rx'开头，例如：let RxInterval，如果写成let interval$，则不会在选择面板中显示*/
 /*2、建议第一行为命名所有变量，例如：let RxOf,RxTimer,RxFrom...*/
 /*3、每一行语句结束处必须添加分号";"*/
-/*4、代码修改尽量在'//editArea'内部，再去选择面板上操作是否订阅和显示位置*/
+/*4、代码修改尽量在'//editArea'内部，再去选择面板上操作*/
+/*5、自动订阅功能：选择开启,则会按照代码中定义发射源变量(let RxXX,RxXX...)的顺序，自动subscribe所有Marble上的发射源和Result上的最后一个发射源，选择关闭，则不对代码进行操作；默认开启*/
 `
 /*
  * subscriber编写规则：
@@ -78,20 +79,20 @@ export const Data = [
         marbleText: 'takeUntil',
         code: `
 
-            //editArea
+    //editArea
 
-             let RxIntervalTake5,RxOfDelay, RxTakeUntil;
-            RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
-            RxOfDelay = Rx.Observable.of(1).delay(3000);
-            RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay);
+    let RxIntervalTake5,RxOfDelay, RxTakeUntil;
+    RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
+    RxOfDelay = Rx.Observable.of(1).delay(3000);
+    RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay);
 
-            //editArea
+    //editArea
 
 
-            marSub.RxIntervalTake5 = RxIntervalTake5.subscribe(NEC(showInMar, 1));
-            marSub.RxOfDelay = RxOfDelay.subscribe(NEC(showInMar, 2));
-            marSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInMar, 'last'));
-            resSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInRes));
+    marSub.RxIntervalTake5 = RxIntervalTake5.subscribe(NEC(showInMar, 1));
+    marSub.RxOfDelay = RxOfDelay.subscribe(NEC(showInMar, 2));
+    marSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInMar, 'last'));
+    resSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInRes));
          `},
     {
         name: 'takeWhile',
@@ -103,19 +104,19 @@ export const Data = [
         marbleText: 'takeWhile(n=>n<4)',
         code: `
 
-            //editArea
+    //editArea
 
-            let RxIntervalTake7, RxTakeWhile;
-            RxIntervalTake7 = Rx.Observable.interval(1000).take(7);
-            RxTakeWhile = RxIntervalTake7.takeWhile(n=>n<4);
+    let RxIntervalTake7, RxTakeWhile;
+    RxIntervalTake7 = Rx.Observable.interval(1000).take(7);
+    RxTakeWhile = RxIntervalTake7.takeWhile(n=>n<4);
 
-            //editArea
+    //editArea
 
-            marSub.RxIntervalTake7 = RxIntervalTake7.subscribe(NEC(showInMar, 1));
-            marSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInMar, 'last'));
-            resSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInRes));
+    marSub.RxIntervalTake7 = RxIntervalTake7.subscribe(NEC(showInMar, 1));
+    marSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInMar, 'last'));
+    resSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInRes));
 
-         `,},
+     `,},
     {
         name: 'retryWhen',
         title: 'retryWhen:重复发射源，直到内部源(条件源)发出complete或者error',
@@ -128,22 +129,22 @@ export const Data = [
         marbleText: 'retryWhen',
         code: `
 
-            //editArea
+    //editArea
 
-            let RxInterval, RxTimer_Throw, RxRetryWhen;
-            RxTimer_Throw=Rx.Observable.timer(0,200).map(n=>{if(n===3){throw 'err'};return n});
-            RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<3);
-            RxRetryWhen =RxTimer_Throw.retryWhen(()=>RxInterval);
+    let RxInterval, RxTimer_Throw, RxRetryWhen;
+    RxTimer_Throw=Rx.Observable.timer(0,200).map(n=>{if(n===3){throw 'err'};return n});
+    RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<3);
+    RxRetryWhen =RxTimer_Throw.retryWhen(()=>RxInterval);
 
-            //editArea
+    //editArea
 
 
-            marSub.RxTimer_Throw = RxTimer_Throw.subscribe(NEC(showInMar, 1));
-            marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 2));
-            marSub.RxRetryWhen = RxRetryWhen.subscribe(NEC(showInMar, 'last'));
-            resSub.RxRetryWhen = RxRetryWhen.subscribe(NEC(showInRes));
+    marSub.RxTimer_Throw = RxTimer_Throw.subscribe(NEC(showInMar, 1));
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 2));
+    marSub.RxRetryWhen = RxRetryWhen.subscribe(NEC(showInMar, 'last'));
+    resSub.RxRetryWhen = RxRetryWhen.subscribe(NEC(showInRes));
 
-         `},
+     `},
     {
         name: 'repeatWhen',
         title: 'repeatWhen:重复发射源，直到内部源(条件源)发出complete或者error',
@@ -156,21 +157,21 @@ export const Data = [
         marbleText: 'repeatWhen',
         code: `
 
-            //editArea
+    //editArea
 
-            let RxInterval, RxTimer0_100, RxRepeatWhen;
-            RxTimer0_100=Rx.Observable.timer(0,100).take(3);
-            RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<5);
-            RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval);
+    let RxInterval, RxTimer0_100, RxRepeatWhen;
+    RxTimer0_100=Rx.Observable.timer(0,100).take(3);
+    RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<5);
+    RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval);
 
-            //editArea
+    //editArea
 
 
-            marSub.RxTimer0_100 = RxTimer0_100.subscribe(NEC(showInMar, 1));
-            marSub.RxInterval_takeWhile = RxInterval_takeWhile.subscribe(NEC(showInMar, 2));
-            marSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInMar, 'last'));
-             resSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxTimer0_100 = RxTimer0_100.subscribe(NEC(showInMar, 1));
+    marSub.RxInterval_takeWhile = RxInterval_takeWhile.subscribe(NEC(showInMar, 2));
+    marSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInMar, 'last'));
+     resSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'merge',
         title: 'merge:将发射源合并，同时执行',
@@ -181,21 +182,21 @@ export const Data = [
         marbleText: 'merge',
         code: `
 
-            //editArea
+    //editArea
 
-            let RxClick, RxTimer0_1000, RxMerge;
-            RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
-            RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000);
+    let RxClick, RxTimer0_1000, RxMerge;
+    RxClick = Rx.Observable.fromEvent(document, 'click');
+    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
+    RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000);
 
-            //editArea
+    //editArea
 
 
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
-            marSub.RxMerge = RxMerge.subscribe(NEC(showInMar, 'last'));
-             resSub.RxMerge = RxMerge.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+    marSub.RxMerge = RxMerge.subscribe(NEC(showInMar, 'last'));
+     resSub.RxMerge = RxMerge.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'forkJoin',
         title: 'forkJoin:将最终结果合并成1个数组',
@@ -207,21 +208,21 @@ export const Data = [
         marbleText: 'forkJoin',
         code: `
 
-            //editArea
+    //editArea
 
-            let RxRange, RxTimer0_1000, RxForkJoin;
-            RxRange = Rx.Observable.range(1, 6);
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
-            RxForkJoin = Rx.Observable.forkJoin(RxRange, RxTimer0_1000);
+    let RxRange, RxTimer0_1000, RxForkJoin;
+    RxRange = Rx.Observable.range(1, 6);
+    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
+    RxForkJoin = Rx.Observable.forkJoin(RxRange, RxTimer0_1000);
 
-            //editArea
+    //editArea
 
 
-            marSub.RxRange = RxRange.subscribe(NEC(showInMar, 1));
-            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
-            marSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInMar, 'last'));
-              resSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxRange = RxRange.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+    marSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInMar, 'last'));
+      resSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'distinctUntilKeyChange',
         title: 'distinctUntilKeyChange 只对比前一项，通过参数中的key值去比较value',
@@ -233,19 +234,19 @@ export const Data = [
         marbleText: 'distinctUntilKeyChange',
         code: `
 
-            //editArea
+    //editArea
 
-            let RxFrom,RxDistinctUntilKeyChanged;
-            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
-            RxDistinctUntilKeyChanged = RxFrom.distinctUntilKeyChanged('x',(prevV,nextV)=>prevV===nextV);
+    let RxFrom,RxDistinctUntilKeyChanged;
+    RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
+    RxDistinctUntilKeyChanged = RxFrom.distinctUntilKeyChanged('x',(prevV,nextV)=>prevV===nextV);
 
-            //editArea
+    //editArea
 
 
-            marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
-            marSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInMar, 'last'));
-               resSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+    marSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'distinctUntilChange',
         title: 'distinctUntilChange 只对比前一项',
@@ -257,19 +258,19 @@ export const Data = [
         marbleText: 'distinctUntilChange',
         code: `
 
-            //editArea
+    //editArea
 
-            let RxFrom,RxDistinctUntilChange;
-            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:2},{x:2,y:4},{x:1,y:6}]);
-            RxDistinctUntilChange = RxFrom.distinctUntilChanged((prevObj,nextObj)=>prevObj.y===nextObj.x);
+    let RxFrom,RxDistinctUntilChange;
+    RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:2},{x:2,y:4},{x:1,y:6}]);
+    RxDistinctUntilChange = RxFrom.distinctUntilChanged((prevObj,nextObj)=>prevObj.y===nextObj.x);
 
-            //editArea
+    //editArea
 
 
-            marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
-            marSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInMar, 'last'));
-             resSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+    marSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'distinct',
         title: 'distinct 全部对比并且去重复',
@@ -280,19 +281,19 @@ export const Data = [
         marbleText: 'distinct',
         code: `
 
-            //editArea
+    //editArea
 
-            let RxFrom,RxDistinct;
-            RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
-            RxDistinct = RxFrom.distinct(obj=>obj.x);
+    let RxFrom,RxDistinct;
+    RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
+    RxDistinct = RxFrom.distinct(obj=>obj.x);
 
-            //editArea
+    //editArea
 
 
-            marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
-            marSub.RxDistinct = RxDistinct.subscribe(NEC(showInMar, 'last'));
-              resSub.RxDistinct = RxDistinct.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+    marSub.RxDistinct = RxDistinct.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDistinct = RxDistinct.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'delayWhen',
         title: 'delayWhen：根据另一个源来执行延迟',
@@ -303,20 +304,20 @@ export const Data = [
         marbleText: 'delayWhen',
         code: `
 
-            //editArea
+    //editArea
 
-               let RxOf,RxClick,RxDelayWhen;
-            RxOf = Rx.Observable.of('start');
-            RxClick = Rx.Observable.fromEvent(document,'click');
-            RxDelayWhen = RxOf.delayWhen(e=>RxClick);
+    let RxOf,RxClick,RxDelayWhen;
+    RxOf = Rx.Observable.of('start');
+    RxClick = Rx.Observable.fromEvent(document,'click');
+    RxDelayWhen = RxOf.delayWhen(e=>RxClick);
 
-            //editArea
+    //editArea
 
 
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxDelayWhen = RxDelayWhen.subscribe(NEC(showInMar, 'last'));
-              resSub.RxDelayWhen = RxDelayWhen.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxDelayWhen = RxDelayWhen.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDelayWhen = RxDelayWhen.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'delay',
         title: 'delay：参数为延迟的时间（毫秒）',
@@ -327,19 +328,18 @@ export const Data = [
         marbleText: 'delay',
         code: `
 
-            //editArea
+    //editArea
 
-            let RxClick,RxDelay;
-            RxClick = Rx.Observable.fromEvent(document,'click');
-            RxDelay = RxClick.delay(1000);
+    let RxClick,RxDelay;
+    RxClick = Rx.Observable.fromEvent(document,'click');
+    RxDelay = RxClick.delay(1000);
 
-            //editArea
+    //editArea
 
-
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxDelay = RxDelay.subscribe(NEC(showInMar, 'last'));
-             resSub.RxDelay = RxDelay.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxDelay = RxDelay.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDelay = RxDelay.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'audit',
         title: 'audit:等待时间由另一个observable决定，不会立刻发送第一个源',
@@ -351,21 +351,20 @@ export const Data = [
         marbleText: 'audit',
         code: `
 
-        //editArea
+    //editArea
 
-   let RxTimer0_1000, RxClick, RxAudit;
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
-            RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxAudit = RxTimer0_1000.audit(()=>RxClick);
+    let RxTimer0_1000, RxClick, RxAudit;
+    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
+    RxClick = Rx.Observable.fromEvent(document, 'click');
+    RxAudit = RxTimer0_1000.audit(()=>RxClick);
 
-        //editArea
+    //editArea
 
-
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
-            marSub.RxAudit = RxAudit.subscribe(NEC(showInMar, 'last'));
-                    resSub.RxAudit = RxAudit.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+    marSub.RxAudit = RxAudit.subscribe(NEC(showInMar, 'last'));
+    resSub.RxAudit = RxAudit.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'debounce',
         title: 'debounce:等待时间由另一个observable决定，不会立刻发送第一个源',
@@ -377,21 +376,21 @@ export const Data = [
         marbleText: 'debounce',
         code: `
 
-        //editArea
+    //editArea
 
-        let RxTimer0_1000, RxClick, RxDebounce;
-            RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
-            RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxDebounce = RxTimer0_1000.debounce(()=>RxClick);
+    let RxTimer0_1000, RxClick, RxDebounce;
+    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
+    RxClick = Rx.Observable.fromEvent(document, 'click');
+    RxDebounce = RxTimer0_1000.debounce(()=>RxClick);
 
-        //editArea
+    //editArea
 
 
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
-            marSub.RxDebounce = RxDebounce.subscribe(NEC(showInMar, 'last'));
-         resSub.RxDebounce = RxDebounce.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+    marSub.RxDebounce = RxDebounce.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDebounce = RxDebounce.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'throttle',
         title: 'throttle:等待时间由另一个observable决定，立刻发送第一个源',
@@ -403,21 +402,21 @@ export const Data = [
         marbleText: 'throttle',
         code: `
 
-        //editArea
+    //editArea
 
-        let RxTimer0_1000,RxClick,RxThrottle;
-        RxTimer0_1000 =  Rx.Observable.timer(0,1000);
-        RxClick =Rx.Observable.fromEvent(document,'click');
-        RxThrottle = RxTimer0_1000.throttle(()=>RxClick);
+    let RxTimer0_1000,RxClick,RxThrottle;
+    RxTimer0_1000 =  Rx.Observable.timer(0,1000);
+    RxClick =Rx.Observable.fromEvent(document,'click');
+    RxThrottle = RxTimer0_1000.throttle(()=>RxClick);
 
-        //editArea
+    //editArea
 
 
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
-            marSub.RxThrottle = RxThrottle.subscribe(NEC(showInMar, 'last'));
-         resSub.RxThrottle = RxThrottle.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+    marSub.RxThrottle = RxThrottle.subscribe(NEC(showInMar, 'last'));
+    resSub.RxThrottle = RxThrottle.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'auditTime',
         title: 'auditTime:类似throttleTime，收到第一个源不会立刻发送最新值，而是等待间隔时间后发送最新值',
@@ -428,19 +427,19 @@ export const Data = [
         marbleText: 'auditTime',
         code: `
 
-        //editArea
+    //editArea
 
-            let RxClick, RxAuditTime;
-            RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxAuditTime = RxClick.auditTime(1000)
+        let RxClick, RxAuditTime;
+        RxClick = Rx.Observable.fromEvent(document, 'click');
+        RxAuditTime = RxClick.auditTime(1000)
 
-        //editArea
+    //editArea
 
 
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxAuditTime = RxAuditTime.subscribe(NEC(showInMar, 'last'));
-         resSub.RxAuditTime = RxAuditTime.subscribe(NEC(showInRes));
-         `,},
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxAuditTime = RxAuditTime.subscribe(NEC(showInMar, 'last'));
+    resSub.RxAuditTime = RxAuditTime.subscribe(NEC(showInRes));
+     `,},
     {
         name: 'throttleTime',
         title: 'throttleTime:有click就取消上一次的，这里间隔时间最多1秒，收到第一个源立刻发送',
@@ -451,21 +450,21 @@ export const Data = [
         marbleText: 'throttleTime',
         code: `
 
-        //editArea
+    //editArea
 
-   let RxClick, RxThrottleTime;
-            RxClick = Rx.Observable.fromEvent(document, 'click');
-            RxThrottleTime = RxClick.throttleTime(1000)
+    let RxClick, RxThrottleTime;
+        RxClick = Rx.Observable.fromEvent(document, 'click');
+        RxThrottleTime = RxClick.throttleTime(1000)
 
-        //editArea
-
-
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxThrottleTime = RxThrottleTime.subscribe(NEC(showInMar, 'last'));
-                    resSub.RxThrottleTime = RxThrottleTime.subscribe(NEC(showInRes));
+    //editArea
 
 
-         `,},
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxThrottleTime = RxThrottleTime.subscribe(NEC(showInMar, 'last'));
+    resSub.RxThrottleTime = RxThrottleTime.subscribe(NEC(showInRes));
+
+
+     `,},
     {
         name: 'debounceTime',
         title: 'debounceTime:有click就取消上一次的，间隔时间可超过1秒，最后发送最新值',
@@ -476,20 +475,20 @@ export const Data = [
         marbleText: 'debounceTime',
         code: `
 
-        //editArea
+    //editArea
 
-        let RxClick,RxDebounceTime;
-        RxClick =Rx.Observable.fromEvent(document,'click');
-        RxDebounceTime = RxClick.debounceTime(1000);
+    let RxClick,RxDebounceTime;
+    RxClick =Rx.Observable.fromEvent(document,'click');
+    RxDebounceTime = RxClick.debounceTime(1000);
 
-        //editArea
+    //editArea
 
 
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxDebounceTime = RxDebounceTime.subscribe(NEC(showInMar, 'last'));
-         resSub.RxDebounceTime = RxDebounceTime.subscribe(NEC(showInRes));
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxDebounceTime = RxDebounceTime.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDebounceTime = RxDebounceTime.subscribe(NEC(showInRes));
 
-         `,},
+     `,},
     {
         name: 'concatMap',
         title: 'concatMap:先转换成高阶observable（map），再转换成一阶observable',
@@ -500,22 +499,22 @@ export const Data = [
         marbleText: 'concatMap',
         code: `
 
-        //editArea
+    //editArea
 
-        let RxClick,RxInterval,RxConcatMap;
-        RxClick = Rx.Observable.fromEvent(document,'click').take(3);
-        RxInterval = Rx.Observable.interval(1000).take(3);
-        RxConcatMap = RxClick.concatMap(ev=>RxInterval);
+    let RxClick,RxInterval,RxConcatMap;
+    RxClick = Rx.Observable.fromEvent(document,'click').take(3);
+    RxInterval = Rx.Observable.interval(1000).take(3);
+    RxConcatMap = RxClick.concatMap(ev=>RxInterval);
 
-        //editArea
-
-
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxConcatMap = RxConcatMap.subscribe(NEC(showInMar, 'last'));
-            resSub.RxConcatMap = RxConcatMap.subscribe(NEC(showInRes));
+    //editArea
 
 
-         `,},
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxConcatMap = RxConcatMap.subscribe(NEC(showInMar, 'last'));
+    resSub.RxConcatMap = RxConcatMap.subscribe(NEC(showInRes));
+
+
+     `,},
     {
         name: 'concatAll',
         title: 'concatAll：将高阶observable(类似obs1$.map(obs2$))转换成一阶observable',
@@ -526,22 +525,22 @@ export const Data = [
         marbleText: 'concatAll',
         code: `
 
-        //editArea
+    //editArea
 
-        let RxClick,RxInterval,highOrder,RxConcatAll;
-        RxClick = Rx.Observable.fromEvent(document,'click');
-        RxInterval = Rx.Observable.interval(1000).take(3);
-        highOrder = RxClick.map(ev=>RxInterval);
-        RxConcatAll = highOrder.concatAll();
+    let RxClick,interval$,highOrder,RxConcatAll;
+    RxClick = Rx.Observable.fromEvent(document,'click');
+    interval$ = Rx.Observable.interval(1000).take(3);
+    highOrder = RxClick.map(ev=>interval$);
+    RxConcatAll = highOrder.concatAll();
 
-        //editArea
+    //editArea
 
 
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxConcatAll = RxConcatAll.subscribe(NEC(showInMar, 'last'));
-                      resSub.RxConcatAll = RxConcatAll.subscribe(NEC(showInRes));
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxConcatAll = RxConcatAll.subscribe(NEC(showInMar, 'last'));
+    resSub.RxConcatAll = RxConcatAll.subscribe(NEC(showInRes));
 
-        `,
+`,
     },
     {
         name: 'concat',
@@ -553,21 +552,21 @@ export const Data = [
         marbleText: 'concat',
         code: `
 
-        //editArea
+    //editArea
 
-        let RxClick,RxInterval,RxConcat;
-        RxClick = Rx.Observable.fromEvent(document,'click').take(3);
-        RxInterval = Rx.Observable.interval(1000).take(3);
-        RxConcat = RxClick.concat(RxInterval);
+    let RxClick,RxInterval,RxConcat;
+    RxClick = Rx.Observable.fromEvent(document,'click').take(3);
+    RxInterval = Rx.Observable.interval(1000).take(3);
+    RxConcat = RxClick.concat(RxInterval);
 
-        //editArea
+    //editArea
 
 
-            marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-            marSub.RxConcat = RxConcat.subscribe(NEC(showInMar, 'last'));
-                     resSub.RxConcat = RxConcat.subscribe(NEC(showInRes));
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxConcat = RxConcat.subscribe(NEC(showInMar, 'last'));
+    resSub.RxConcat = RxConcat.subscribe(NEC(showInRes));
 
-        `,
+`,
     }
 ]
 export const notFoundData = {

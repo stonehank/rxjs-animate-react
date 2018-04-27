@@ -233,17 +233,7 @@ button:focus {
     right: 0;
 }
 /*-----/Section/code-----*/
-.code-wrap{
-    position:relative;
-}
-.edit-caption{
-    height:6rem;
-}
-.edit-gutter{
-    min-width: 29px;
-    text-align: right;
-    color: #999;
-}
+
 .code-change-button{
     width: 6rem;
     position: absolute;
@@ -282,6 +272,13 @@ button:focus {
 
 
 /*-----/Widget/custom-checkbox-----*/
+
+.slide-checkbox-caption{
+    line-height: 1.6rem;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom:0.5rem;
+}
 
 .inputCheckBox {
     display: none;
@@ -421,6 +418,14 @@ button:focus {
     color:#367f8d;
     line-height:1.8rem;
     letter-spacing: 1px;
+}
+
+/*-----/Widget/choose-where-to-show-example-----*/
+.choose-where-to-show-example{
+    margin:0.2rem 0.5rem;
+}
+.choose-where-to-show-example span{
+    margin:0 0.5rem;
 }
 
 /*-----/Widget/choose-where-to-show-----*/

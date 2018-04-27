@@ -46,9 +46,7 @@ export default class Marble extends React.PureComponent{
             isDragged:bool
         })
     }
-    restorePosition(e){
-        //e.stopPropagation()
-        //e.nativeEvent.stopImmediatePropagation();
+    restorePosition(){
         this.setState(prevState=>({
             restorePositionKey:prevState.restorePositionKey+1,
             isDragged:false
@@ -61,8 +59,8 @@ export default class Marble extends React.PureComponent{
         const {isDragged,restorePositionKey}=this.state
         const _marbleArr=marbleArr?marbleArr:[]
         const _marbleArrLastObj=_marbleArr[_marbleArr.length-1]
-        const lastObjLeft=_marbleArrLastObj?_marbleArrLastObj.left:0;
-        const hrMinWidth=this.marbleEle?this.marbleEle.offsetWidth:0;
+        const lastObjLeft=_marbleArrLastObj ? _marbleArrLastObj.left : 0;
+        const hrMinWidth=this.marbleEle ? this.marbleEle.offsetWidth : 0;
         const decideHrWidths=Math.max(lastObjLeft,hrMinWidth)
 
         let arr=new Array(line)

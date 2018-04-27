@@ -24,7 +24,6 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 4. 使用最新API `createContext` 和 `getDerivedStateFromProps`
 
 #### 程序功能
-
 1. 菜单：默认显示前10条，点击则显示全部。
 
 2. 开始动画：点击`开始(subscribe)`按钮，执行`subscribe`，按钮状态会根据当前订阅情况变更。
@@ -37,9 +36,11 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 9. 位置选择面板：可对当前操作符中`Observable`是否显示和显示位置进行调整，其中绿色checkBox是选择是否显示，select是对小球显示位置调整。
 9. 源码：只显示最核心的源码，关于`subscribe`部分的并未进行显示，但所有操作符都是订阅了`next,error,complete`。
 10. 源码EDIT：编辑源码功能，建议在`//editArea`里面编辑核心代码，save后对“选择面板”进行操作，选择显示位置。
+11. 源码自动订阅功能：开启后，代码编辑SAVE时，会先清空所有subscribe语句，再自动按顺序重新subscribe，如果需要自己手写则要关闭，默认为开启。
 11. hover小球：出现说明框，第一行为值(如果非基本类型则显示类型)，第二行对其值进行了`JSON.stringify`。
 
 #### 更新记录
+2018/4/27：增加代码自动订阅功能
 2018/4/27：增加开始按钮错误处理
 2018/4/26：添加功能：代码可编辑，减少re-render
 2018/4/25：添加功能：可自行选择每个发射源的显示及位置

@@ -1,8 +1,9 @@
 import React from 'react';
-import {ReuseButton} from '../Widget'
+import {ReuseButton,SlideCheckBox} from '../Widget'
 import CodeMirror from 'react-codemirror';
 import 'codemirror/mode/javascript/javascript'
 import {EDITRULES} from '../mock-data'
+import '../Css/codemirrorCus.css'
 
 export default class Code extends React.PureComponent{
     constructor(props){
@@ -11,9 +12,11 @@ export default class Code extends React.PureComponent{
         this.toSaved=this.toSaved.bind(this)
         this.toCancel=this.toCancel.bind(this)
         this.inputtingCode=this.inputtingCode.bind(this)
+        this.changeNeedAutoSubscribe=this.changeNeedAutoSubscribe.bind(this)
         this.state={
             code:props.code,
-            editing:false
+            editing:false,
+            needAutoSubscribe:true
         }
     }
 
@@ -24,7 +27,7 @@ export default class Code extends React.PureComponent{
         })
     }
     toSaved(){
-        this.props.editingCodeToSave(this.state.code)
+        this.props.editingCodeToSave(this.state.code,this.state.needAutoSubscribe)
         this.setState({
             editing:false
         })
@@ -39,20 +42,29 @@ export default class Code extends React.PureComponent{
             code:newValue
         })
     }
+    changeNeedAutoSubscribe(){
+        this.setState(prevState=>({
+            needAutoSubscribe:!prevState.needAutoSubscribe
+        }))
+    }
+
     render(){
         //console.log('Code')
-        const {editing,code}=this.state
+        const {editing,code,needAutoSubscribe}=this.state
         const {codeStr,}=this.props
         const options = {
             lineNumbers: true,
             mode:'javascript',
-            lineWrapping:true
+            lineWrapping:true,
+            theme:'base16-dark'
+            //gutters:['edit-gutter']
         };
         const optEditRules={
             mode:'javascript',
             readOnly:true,
             lineWrapping:true,
-            gutters:['edit-gutter']
+            gutters:['edit-gutter'],
+            theme:'base16-dark'
         }
         return(
             editing
@@ -62,8 +74,10 @@ export default class Code extends React.PureComponent{
                         <ReuseButton className={"code-change-button code-save"} handleClick={this.toSaved} text={"SAVE"} />
                         <ReuseButton className={"code-change-button"} handleClick={this.toCancel} text={"CANCEL"} />
                     </p>
+                    <SlideCheckBox text={'自动订阅功能'} id={'needAutoSubscribe'} size={'3rem'}
+                                   checkBoxStatus={needAutoSubscribe} checkBoxChange={this.changeNeedAutoSubscribe}/>
                     <CodeMirror value={EDITRULES}  options={optEditRules} className="edit-caption"/>
-                    <CodeMirror value={code}   onChange={this.inputtingCode} options={options}/>
+                    <CodeMirror value={code} onChange={this.inputtingCode} options={options}/>
                 </div>
                 :
                 <div className="code-wrap">

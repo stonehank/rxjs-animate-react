@@ -119,20 +119,22 @@ export const sortMethod=(sort,navArr)=>{
 
 /*对code方法*/
 
+/**
+ * 根据 ; 分割
+ * ; 后面可以跟 至少一个换行|任意空位符+Rx起头的变量名|任意\w后面接着(符号
+ */
 export function code2Obj(code){
     //console.time(1)
     var curFuncStr=code+'',
         rawArr=curFuncStr.split(/\s+\/\/editArea\s+/),
-        rawCodeStr=rawArr[1]
-            ?
-            rawArr[1].replace(/;(\s*Rx[^.=;&]+)|;(\s*$)/g,";;$1$2")
+        rawCodeStr=rawArr[1] ?
+            rawArr[1].replace(/;(\n+|\s*Rx[^.;=(),+\s]+|\s*\w+\$?\s*=[^)]*\()/g,";;$1")
                 .replace(/\B\s\B/g,'')
-                .replace(/({.*);;(.*})/g,'$1;$2')
-            :
+                .replace(/({.*);;(.*})/g,'$1;$2') :
             null,
         arr=rawCodeStr?rawCodeStr.split(/;;/g):rawArr[0]==='无数据'?[]:rawArr,
-        str=rawCodeStr?rawCodeStr.replace(/;;/g,';\n'):rawArr[0]==='无数据'?'':rawArr[0];
-    //console.log(rawArr)
+        str=rawCodeStr?rawCodeStr.replace(/;;(\n?)/g,'$1'==='\n'?';':';\n'):rawArr[0]==='无数据'?'':rawArr[0];
+    //console.log(rawCodeStr)
     //console.timeEnd(1)
     return {str,arr}
 };
@@ -224,6 +226,7 @@ export function setSearchList(v,deepList){
 }
 
 export function checkDidAllunSub(unSubMarble,unSubResult){
+    //console.time(1)
     let flagMarble=true;
     let flagResult=true;
     for(let i in unSubMarble){
@@ -238,6 +241,7 @@ export function checkDidAllunSub(unSubMarble,unSubResult){
             break;
         }
     }
+    //console.timeEnd(1)
     return flagMarble && flagResult
 }
 
@@ -254,42 +258,70 @@ export function subscriberToSimpleObj(unSubObj){
 }
 
 
-
-
 export function changeStatus(status,force){
     if(force || !this.isStopped){
         this.status=status
     }
 }
 
-export function getSubPositionFromCode(code){
-    let resultArr=[];
-    const editArea=code.split(/\s+\/\/editArea\s+/)[1]||'';
-    const variables=uniq(editArea.match(/Rx[^.;=(),+\s]+\b/g)) || [];
-    //console.time(1)
-    variables.forEach(e=>{
-        let obj={};
-        const subArr=code.match(new RegExp(e+'.subscribe.*','g')) ||[];
-        const subStr=subArr.join('');
-        let matchArr=subStr.match(/(^Rx[^.;=(),+\s]+\b).*showInMar\s*,?\s*'?(\d|last)?'?/) || [];
-        obj.name=matchArr[1] || e;
-        obj.showInMar=subStr.indexOf('showInMar')!==-1;
-        obj.showInRes=subStr.indexOf('showInRes')!==-1;
-        obj.line=matchArr[2]||1;
-        resultArr.push(obj)
-    });
-    //console.timeEnd(1)
-    return uniqWith(resultArr, (a,b)=>{
-        if(a.name===b.name){
-            a.showInRes=b.showInRes=a.showInRes||b.showInRes;
-            a.showInMar=b.showInMar=a.showInMar || b.showInMar;
-            a.line=b.line=a.line||b.line
+/**
+ * allShow为true时，先删除所有subscribe，再订阅存在的Rx变量
+ * @param code
+ * @param allShow
+ * @returns {{showInWhereArr: *, newCode: *}}
+ */
+export function getSubPositionFromCode(code,allShow){
+    let finalCode=code, reCalc=false;
+
+    function calcResultArr(){
+        let resultArr=[];
+        const codeArea=finalCode.split(/\s+\/\/editArea\s+/);
+        const editArea=codeArea[1]||'';
+        const variables=uniq(editArea.match(/Rx[^.;=(),+\s]+\b/g)) || [];
+        if(allShow && !reCalc){
+            const subscribeArea=codeArea[2]||'';
+            finalCode=finalCode.replace(subscribeArea,'');
         }
-        return a.name===b.name
-    });
-
+        reCalc=false;
+        variables.forEach((e,i)=>{
+            let obj={};
+            const subArr=finalCode.match(new RegExp(e+'.subscribe.*','g')) ||[];
+            const subStr=subArr.join('');
+            const matchArr=subStr.match(/(^Rx[^.;=(),+\s]+\b).*showInMar\s*,?\s*'?(\d|last)?'?/) || [];
+            obj.name=matchArr[1] || e;
+            obj.showInMar=subStr.indexOf('showInMar')!==-1;
+            obj.showInRes=subStr.indexOf('showInRes')!==-1;
+            obj.line=allShow?i+1:matchArr[2]||1;
+            if((!obj.showInMar ) && allShow){
+                finalCode=addSubscribe(finalCode,obj.name,obj.line,'showInMar')
+                if(obj.line===variables.length){
+                    finalCode=addSubscribe(finalCode,obj.name,null,'showInRes')
+                }
+                reCalc=true
+            }
+            resultArr.push(obj)
+        });
+        if(reCalc){
+            resultArr=calcResultArr()
+        }
+//console.log(resultArr)
+        return resultArr
+    }
+    //console.time(1)
+    return  {
+        showInWhereArr:uniqWith(calcResultArr(code), (a,b)=>{
+            if(a.name===b.name){
+                a.showInRes=b.showInRes=a.showInRes||b.showInRes;
+                a.showInMar=b.showInMar=a.showInMar || b.showInMar;
+                a.line=b.line=a.line||b.line
+            }
+            return a.name===b.name
+        }),
+        newCode:finalCode
+    };
+    //console.timeEnd(1)
+    //return a
 }
-
 export function delSubscribe(code,name,key){
     let regExp;
     regExp=new RegExp(`${key==='showInMar'?'marSub':'resSub'}.${name}.*?subscribe.*?${key}.*?;`)

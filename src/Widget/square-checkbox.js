@@ -12,15 +12,16 @@ export default class SquareCheckBox extends React.PureComponent{
 
     render(){
         //console.log('SquareCheckBox')
-        const {id,isChecked,setShowInMarble,eventParas}=this.props
+        const {id,isChecked,setShowInMarble,eventParas,readOnly}=this.props
         return (
             <React.Fragment>
                 <input className="inputCheckBox"
                        id={id}
                        type="checkbox"
                        checked={isChecked}
+                       readOnly={readOnly}
                        onClick={this.cancelBubble}
-                       onChange={setShowInMarble.bind(this,eventParas)} />
+                       onChange={setShowInMarble?setShowInMarble.bind(this,eventParas):null} />
                 <label htmlFor={id} className="square-checkbox" onClick={this.cancelBubble}/>
             </React.Fragment>
         )

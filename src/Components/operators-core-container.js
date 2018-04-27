@@ -13,7 +13,7 @@ import {fromJS,is} from 'immutable';
 export default class OperatorsCoreContainer extends React.Component{
     constructor(){
         super()
-        this.initSetData=this.initSetData.bind(this)
+        this.setOrUpdateData=this.setOrUpdateData.bind(this)
         this.fetchDataSetState=this.fetchDataSetState.bind(this)
         this.testStart=this.testStart.bind(this)
         this.clearStart=this.clearStart.bind(this)
@@ -53,81 +53,12 @@ export default class OperatorsCoreContainer extends React.Component{
         }
     }
 
-
-    initSetData(data,isUpdateCode){
-        if(isUpdateCode){
-            const code=data;
-            const showInWhereArr=getSubPositionFromCode(code)
-            const line=showInWhereArr.length;
-            this.setState({
-                showInWhereArr,
-                code,
-                isFetching:false,
-                line
-            })
-
-        }else{
-            const {title,name,caption,code,marbleText}=data;
-            this.clearStart()
-            this.unSubMarble={}
-            this.unSubResult={}
-            const showInWhereArr=getSubPositionFromCode(code)
-            const line=showInWhereArr.length;
-            this.setState({
-                showInWhereArr,
-                code,
-                isFetching:false,
-                basicData:{ title, name, caption},
-                line, marbleText
-            })
-        }
-    }
-
-    fetchDataSetState(operatorName){
-        this.fetch$=Rx.Observable.fromPromise(_fetchData(operatorName))
-            .subscribe(data=>this.initSetData(data))
-    }
-
-    setShowInWhereArr(i,key){
-        //console.log(i,key)
-        const {showInWhereArr,code,} = this.state
-        const currentShowStatus=showInWhereArr[i][key]
-        let newShowInWhereArr=fromJS(showInWhereArr).setIn([i,key],!currentShowStatus).toJS()
-        const needChange=showInWhereArr[i]
-        let newCode=currentShowStatus
-            ?
-            delSubscribe(code,needChange.name,key)
-            :
-            addSubscribe(code,needChange.name,needChange.line,key)
-        this.setState(prevState=>({
-            showInWhereArr:newShowInWhereArr,
-            code:newCode
-        }))
-    }
-
-    setMarbleLine(i,newLine){
-        let newShowInWhereArr=fromJS(this.state.showInWhereArr).setIn([i,'line'],newLine).toJS()
-        const needChange=this.state.showInWhereArr[i]
-        let newCode=changeLine(this.state.code,needChange.name,newLine)
-
-        this.setState(prevState=>({
-            showInWhereArr:newShowInWhereArr,
-            code:newCode
-        }))
-    }
-
-    editingCodeToSave(value){
-        this.setState({isFetching:true})
-       this.initSetData(value,true)
-    }
-
     componentWillUnmount(){
         this.fetch$.unsubscribe()
         clearTimeout(this.codeErrorTimer)
     }
+
     shouldComponentUpdate(nextProps,nextState){
-            //console.log(this.props,nextProps)
-        //console.log(this.state,nextState)
         return !is(fromJS(this.props),fromJS(nextProps))
              || !is(fromJS(this.state),fromJS(nextState))
     }
@@ -152,33 +83,6 @@ export default class OperatorsCoreContainer extends React.Component{
         return null;
     }
 
-
-    /**
-     * 清空result界面 &  清空marble界面
-     * 清空小球小球arr
-     */
-    refreshResultMarble(status){
-        this.newMarbleArr=[];
-        let _marbleArr,_resultValue
-        switch(status){
-            case 'clear':
-                _marbleArr=false;
-                _resultValue=false;
-                break;
-            case 'start':
-                _marbleArr=this.newMarbleArr;
-                _resultValue='';
-                break;
-            default:
-                throw new Error('参数status错误 应该为clear或者start')
-        }
-
-        this.setState({
-            marbleArr:_marbleArr,
-            resultValue:_resultValue
-        })
-    }
-
     /**
      * result checkbox事件
      */
@@ -196,6 +100,122 @@ export default class OperatorsCoreContainer extends React.Component{
         }))
     }
 
+    setOrUpdateData(data,isUpdateCode,needAutoSubscribe){
+        if(isUpdateCode){
+            const code=data;
+            this.unSubMarble={}
+            this.unSubResult={}
+            const getNewDataFromCode=getSubPositionFromCode(code,needAutoSubscribe);
+            const showInWhereArr=getNewDataFromCode.showInWhereArr;
+            const newCode=getNewDataFromCode.newCode;
+            const line=showInWhereArr.length;
+            this.setState({
+                showInWhereArr,
+                code:newCode,
+                isFetching:false,
+                line
+            })
+        }else{
+            const {title,name,caption,code,marbleText}=data;
+            this.clearStart()
+            this.unSubMarble={}
+            this.unSubResult={}
+            const getNewDataFromCode=getSubPositionFromCode(code);
+            const showInWhereArr=getNewDataFromCode.showInWhereArr;
+            const newCode=getNewDataFromCode.newCode;
+            const line=showInWhereArr.length;
+            this.setState({
+                showInWhereArr,
+                code:newCode,
+                isFetching:false,
+                basicData:{ title, name, caption},
+                line, marbleText
+            })
+        }
+    }
+
+    fetchDataSetState(operatorName){
+        this.fetch$=Rx.Observable.fromPromise(_fetchData(operatorName))
+            .subscribe(data=>this.setOrUpdateData(data))
+    }
+
+    setShowInWhereArr(i,key){
+        const {showInWhereArr,code,} = this.state
+        const currentShowStatus=showInWhereArr[i][key]
+        //console.time(1)
+        let newShowInWhereArr=fromJS(showInWhereArr).setIn([i,key],!currentShowStatus).toJS()
+        //console.timeEnd(1)
+        const needChange=showInWhereArr[i]
+        let newCode=currentShowStatus ?
+            delSubscribe(code,needChange.name,key) :
+            addSubscribe(code,needChange.name,needChange.line,key)
+        this.setState(prevState=>({
+            showInWhereArr:newShowInWhereArr,
+            code:newCode
+        }))
+    }
+
+    setMarbleLine(i,newLine){
+        //console.time(1)
+        let newShowInWhereArr=fromJS(this.state.showInWhereArr).setIn([i,'line'],newLine).toJS()
+        const needChange=this.state.showInWhereArr[i]
+        let newCode=changeLine(this.state.code,needChange.name,newLine)
+        //console.timeEnd(1)
+
+
+        this.setState(prevState=>({
+            showInWhereArr:newShowInWhereArr,
+            code:newCode
+        }))
+    }
+
+    editingCodeToSave(value,needAutoSubscribe){
+        this.setState({isFetching:true})
+        this.setOrUpdateData(value,true,needAutoSubscribe)
+    }
+
+    /**
+     * 开始按钮方法
+     * 清楚unsubscribe-》执行函数-》清空页面（放在最后可以刷新状态）
+     * @param e
+     */
+    testStart(){
+        if(this.state.code==="无数据"){alert('数据获取失败！请选择正确的操作符');return;}
+        this.timeStamp=new Date().getTime()
+
+        this.allUnsubscribe()
+        this.refreshResultMarble('retain')
+
+        //为了避免执行of操作符（立刻出现数据）， result的value出现又被以下清空，放到执行上面
+        this.setState(prevState=>({
+            showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult),
+        }))
+
+        /**
+         * 执行code内部函数
+         * 开始按钮事件错误处理
+         */
+        try {
+            Function(['NEC','resSub','marSub','showInRes','showInMar'],this.state.code)
+                .apply(this,[this.NEC,this.unSubResult,this.unSubMarble,this.showRxjsInResult,this.showRxjsInMarble])
+        } catch (error) {
+            clearTimeout(this.codeErrorTimer)
+            this.clearStart();
+            this.setState({
+                codErrorInfo:error.name+' : '+error.message,
+                codeRunError:true
+            });
+            this.codeErrorTimer=setTimeout(()=>{
+                this.setState({
+                    codErrorInfo:'',
+                    codeRunError:false
+                })
+            },5000)
+        }
+        //TODO:需要修正 传入不同的prop强制刷新result
+        this.resultRefreshTimeStamp=new Date().getTime()
+    }
+
     /**
      * Subscription订阅参数
      * N:next:()=>{}
@@ -209,68 +229,57 @@ export default class OperatorsCoreContainer extends React.Component{
             complete: ()=> {showInWhere('complete', whichLine)}
         }
     }
-    /**
-     * 开始按钮方法
-     * 清楚unsubscribe-》执行函数-》清空页面（放在最后可以刷新状态）
-     * @param e
-     */
-    testStart(e){
-        //if(e){
-        //    e.stopPropagation()
-        //    e.nativeEvent.stopImmediatePropagation();
-        //}
-        if(this.state.code==="无数据"){alert('数据获取失败！请选择正确的操作符');return;}
-        this.timeStamp=new Date().getTime()
 
-        this.allUnsubscribe()
-        this.refreshResultMarble('start')
-
-        //为了避免快速执行时 result的value出现又被以下清空，放到执行上面
-        this.setState(prevState=>({
-            showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult),
-        }))
-
-
-        /**
-         * 开始按钮事件错误处理
-         */
-        try {
-            Function(['NEC','resSub','marSub','showInRes','showInMar'],this.state.code)
-                .apply(this,[this.NEC,this.unSubResult,this.unSubMarble,this.showRxjsInResult,this.showRxjsInMarble])
-        } catch (error) {
-            this.setState({
-                codErrorInfo:error.name+' : '+error.message,
-                codeRunError:true
-            })
-            this.codeErrorTimer=setTimeout(()=>{
-                this.setState({
-                    codErrorInfo:'',
-                    codeRunError:false
-                })
-            },5000)
-
-        }
-
-        //TODO:需要修正 强制刷新result
-        this.resultRefreshTimeStamp=new Date().getTime()
-    }
-
-    refreshStartStopButton(){
-        this.setState({
-            showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult)
-        })
-    }
-
-    testStop(e){
-        //if(e){
-        //    e.stopPropagation()
-        //    e.nativeEvent.stopImmediatePropagation();
-        //}
+    testStop(){
         this.allUnsubscribe()
         this.refreshStartStopButton()
         //TODO:需要修正 强制刷新marble,result
         this.marbleRefreshTimeStamp=new Date().getTime()
         this.resultRefreshTimeStamp=new Date().getTime()
+    }
+
+    /**
+     * 清除按钮
+     * unsubscribe-》清空界面
+     */
+    clearStart(){
+        this.allUnsubscribe()
+        this.refreshResultMarble('clear')
+    }
+
+    /**
+     * 清空result界面 &  清空marble界面
+     * 清空小球小球arr
+     */
+    refreshResultMarble(status){
+        this.newMarbleArr=[];
+        let _marbleArr,_resultValue
+        switch(status){
+            case 'clear':
+                _marbleArr=false;
+                _resultValue=false;
+                break;
+            case 'retain':
+                _marbleArr=this.newMarbleArr;
+                _resultValue='';
+                break;
+            default:
+                throw new Error('参数status错误 应该为clear或者retain')
+        }
+
+        this.setState({
+            marbleArr:_marbleArr,
+            resultValue:_resultValue
+        })
+    }
+
+    /**
+     * 根据当前subscription状态调整'开始按钮'状态
+     */
+    refreshStartStopButton(){
+        this.setState({
+            showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult)
+        })
     }
 
     /**
@@ -281,20 +290,6 @@ export default class OperatorsCoreContainer extends React.Component{
         clearFunc(this.unSubResult);
     }
 
-    /**
-     * 清楚按钮
-     * unsubscribe-》清空界面
-     * @param e
-     */
-    clearStart(e){
-        //if(e){
-        //    e.stopPropagation()
-        //    e.nativeEvent.stopImmediatePropagation();
-        //}
-        this.allUnsubscribe()
-        this.refreshResultMarble('clear')
-
-    }
     /**
      * subscribe in marble方法
      * @param v
@@ -342,21 +337,20 @@ export default class OperatorsCoreContainer extends React.Component{
                     clearStart={this.clearStart}
                     testStart={this.testStart} />
                 <div className="show-wrap">
-                    {showMarble?
-                        <Marble
-                            timeStamp={this.marbleRefreshTimeStamp}
-                            refreshStartStopButton={this.refreshStartStopButton}
-                            unSubMarble={this.unSubMarble}
-                            marbleArr={marbleArr}
-                            line={line}
-                            marbleText={marbleText} />
-                        :null}
-                    {showResult?
-                        <Result
-                            resultRefreshTimeStamp={this.resultRefreshTimeStamp}
-                            refreshStartStopButton={this.refreshStartStopButton}
-                            unSubResult={this.unSubResult}
-                            value={resultValue}/>:null}
+                    {showMarble ?
+                        <Marble timeStamp={this.marbleRefreshTimeStamp}
+                                refreshStartStopButton={this.refreshStartStopButton}
+                                unSubMarble={this.unSubMarble}
+                                marbleArr={marbleArr}
+                                line={line}
+                                marbleText={marbleText} /> :
+                        null}
+                    {showResult ?
+                        <Result resultRefreshTimeStamp={this.resultRefreshTimeStamp}
+                                refreshStartStopButton={this.refreshStartStopButton}
+                                unSubResult={this.unSubResult}
+                                value={resultValue}/> :
+                        null}
                 </div>
             </React.Fragment>
         )
