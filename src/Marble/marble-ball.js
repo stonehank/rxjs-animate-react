@@ -10,9 +10,10 @@ export default class MarbleBall extends React.PureComponent{
         this.setDropLeft=this.setDropLeft.bind(this)
         const {marbleBallObj,restorePositionKey}=this.props
         const {data,text,left,background,color,top}=marbleBallObj
+
         this.state={
             restorePositionKey,
-            left,data,text,background,color,top:0,
+            left,data,text,background,color,top:top-30,
             showPopText:false
         }
     }

@@ -322,10 +322,11 @@ button:focus {
     background-color:#fff;
     border:1px solid rgba(0,0,0,0.15);
     display:inline-block;
+    position:relative;
     border-radius:5px;
-    height:1.2rem;
     vertical-align:middle;
-    width:1.2rem;
+    width:1.5rem;
+    height:1.5rem;
 }
 .square-checkbox:after{
     content:"";
@@ -333,8 +334,11 @@ button:focus {
     transition:all .2s linear;
     display:inline-block;
     border-radius:5px;
-    height:1.2rem;
-    width:1.2rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 .inputCheckBox:checked + .square-checkbox:after {
     background-color:#57ad68;
@@ -420,30 +424,32 @@ button:focus {
     letter-spacing: 1px;
 }
 
-/*-----/Widget/choose-where-to-show-example-----*/
-.choose-where-to-show-example{
+/*-----/Widget/choose-show-position-example-----*/
+.choose-show-position-example{
     margin:0.2rem 0.5rem;
+    background: #161616;
 }
-.choose-where-to-show-example span{
+.choose-show-position-example span{
     margin:0 0.5rem;
 }
 
-/*-----/Widget/choose-where-to-show-----*/
 
-.choose-where-to-show{
-    /*border:1px solid #ccc;*/
+/*-----/Section/choose-show-position-----*/
+
+.choose-show-position{
+    line-height: 2rem;
     width:100%;
 
 
 }
-.choose-where-to-show td:not(:first-child){
+.choose-show-position td:not(:first-child){
     border:1px solid #515151;
 }
-.choose-where-to-show thead th:not(:first-child){
+.choose-show-position thead th:not(:first-child){
     background-color: #111111
 }
 
-.choose-where-to-show tbody tr td:first-child{
+.choose-show-position tbody tr td:first-child{
     background-color:#111111;
     font-weight:bold;
     text-align:center;

@@ -324,7 +324,7 @@ export function getSubPositionFromCode(code,allShow){
 }
 export function delSubscribe(code,name,key){
     let regExp;
-    regExp=new RegExp(`${key==='showInMar'?'marSub':'resSub'}.${name}.*?subscribe.*?${key}.*?;`)
+    regExp=new RegExp(`${key==='showInMar'?'marSub':'resSub'}.${name}.*?subscribe.*?${key}.*?;\n`)
     return code.replace(regExp,'')
 }
 export function addSubscribe(code,name,line,key){

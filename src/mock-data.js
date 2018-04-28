@@ -353,7 +353,7 @@ export const Data = [
 
     //editArea
 
-    let RxTimer0_1000, RxClick, RxAudit;
+    let RxClick, RxTimer0_1000, RxAudit;
     RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
     RxClick = Rx.Observable.fromEvent(document, 'click');
     RxAudit = RxTimer0_1000.audit(()=>RxClick);
@@ -501,10 +501,10 @@ export const Data = [
 
     //editArea
 
-    let RxClick,RxInterval,RxConcatMap;
+    let RxClick,interval$,RxConcatMap;
     RxClick = Rx.Observable.fromEvent(document,'click').take(3);
-    RxInterval = Rx.Observable.interval(1000).take(3);
-    RxConcatMap = RxClick.concatMap(ev=>RxInterval);
+    interval$ = Rx.Observable.interval(1000).take(3);
+    RxConcatMap = RxClick.concatMap(ev=>interval$);
 
     //editArea
 
@@ -554,10 +554,10 @@ export const Data = [
 
     //editArea
 
-    let RxClick,RxInterval,RxConcat;
+    let RxClick,interval$,RxConcat;
     RxClick = Rx.Observable.fromEvent(document,'click').take(3);
-    RxInterval = Rx.Observable.interval(1000).take(3);
-    RxConcat = RxClick.concat(RxInterval);
+    interval$ = Rx.Observable.interval(1000).take(3);
+    RxConcat = RxClick.concat(interval$);
 
     //editArea
 

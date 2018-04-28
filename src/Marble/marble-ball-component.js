@@ -10,7 +10,7 @@ class MarbleBallComponent extends React.PureComponent{
     //        || this.props.isDragging !==prevProps.isDragging
     //}
     render(){
-        console.log('marbleBallComponent')
+        //console.log('marbleBallComponent')
         const {left,text,top,background,color,connectDragSource,closePop,showPop,cancelBubble,isDragging}=this.props
         const curStyle=isDragging ? {left,top,background,color,opacity:0.7} :{left,top,background,color}
         return connectDragSource(

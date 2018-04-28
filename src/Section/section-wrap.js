@@ -7,7 +7,6 @@ import {fromJS,is} from 'immutable';
 export default class SectionWrap extends React.Component{
 
     shouldComponentUpdate(nextProps){
-        //console.log((nextProps),(this.props))
         return !is(fromJS(nextProps),fromJS(this.props))
     }
     render(){
@@ -38,7 +37,7 @@ export default class SectionWrap extends React.Component{
                         code={code}
                         basicData={basicData}/>
                 }
-                <div className="clearfix">
+                <React.Fragment>
                     {showStartButton
                         ?
                         <ReuseButton className={"testStartRxjs"} handleClick={testStart} text={"开始(subscribe)"} />
@@ -46,7 +45,7 @@ export default class SectionWrap extends React.Component{
                         <ReuseButton className={"testStopRxjs"} handleClick={testStop} text={"停止(unsubscribe)"} />
                     }
                     <ReuseButton className={"clearRxjs"} handleClick={clearStart} text={"清除(unsubscribe&clear)"} />
-                </div>
+                </React.Fragment>
             </section>
         )
     }

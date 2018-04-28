@@ -12,7 +12,15 @@ export default class SquareCheckBox extends React.PureComponent{
 
     render(){
         //console.log('SquareCheckBox')
-        const {id,isChecked,setShowInMarble,eventParas,readOnly}=this.props
+        const {id,isChecked,setShowInMarble,eventParas,readOnly,size}=this.props
+        let sizeVU,sizeValue,sizeUnit,slideW,slideH;
+        if(size){
+            sizeVU=size.match(/'?"?`?(\d+\.?\d*)(px|rem|em|vh|vw|[a-z]*)/)||[]
+            sizeValue=sizeVU[1];
+            sizeUnit=sizeVU[2]||"";
+            slideW=sizeValue+sizeUnit;
+            slideH=slideW;
+        }
         return (
             <React.Fragment>
                 <input className="inputCheckBox"
@@ -22,7 +30,10 @@ export default class SquareCheckBox extends React.PureComponent{
                        readOnly={readOnly}
                        onClick={this.cancelBubble}
                        onChange={setShowInMarble?setShowInMarble.bind(this,eventParas):null} />
-                <label htmlFor={id} className="square-checkbox" onClick={this.cancelBubble}/>
+                <label htmlFor={id}
+                       className="square-checkbox"
+                       style={sizeValue?{width:slideW,height:slideH}:null}
+                       onClick={this.cancelBubble}/>
             </React.Fragment>
         )
     }

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Plus,Minus,ReuseButton} from '../Widget'
 import Code from './code'
-import ChooseWhereToShow from './choose-where-to-show'
-import ChooseWhereToShowExample from './choose-where-to-show-example'
+import ChooseShowPosition from './choose-show-position'
+import ChooseShowPositionExample from './choose-show-position-example'
 import {calcCodeStrArrPlusMinus} from '../tools'
 import {fromJS,is} from 'immutable';
 
@@ -13,8 +13,12 @@ export default class SectionContent extends React.Component{
         this.toggleCode=this.toggleCode.bind(this)
         this.togglePlusMinus=this.togglePlusMinus.bind(this)
         this.toggleChooseWhereToShow=this.toggleChooseWhereToShow.bind(this)
+        this.getSectionWidth=this.getSectionWidth.bind(this)
+        this.getTableWidth=this.getTableWidth.bind(this)
+        this._editingCodeToSave=this._editingCodeToSave.bind(this)
         this.prevCodeArr=[]
         this.state={
+            tableAdjToStacked:false,
             showCode:true,
             showPlusMinus:false,
             showChooseWhereToShow:true,
@@ -25,9 +29,7 @@ export default class SectionContent extends React.Component{
             prevCodeArr:[]
         }
     }
-    togglePlusMinus(e){
-        //e.stopPropagation()
-        //e.nativeEvent.stopImmediatePropagation();
+    togglePlusMinus(){
         this.setState(prevState=>({
             showPlusMinus:!prevState.showPlusMinus
         }))
@@ -37,14 +39,35 @@ export default class SectionContent extends React.Component{
             showCode:!prevState.showCode
         }))
     }
-    toggleChooseWhereToShow(e){
-        //e.stopPropagation()
-        //e.nativeEvent.stopImmediatePropagation();
+    toggleChooseWhereToShow(){
         this.setState(prevState=>({
             showChooseWhereToShow:!prevState.showChooseWhereToShow
         }))
     }
+    getTableWidth(width){
+        const {tableAdjToStacked}=this.state
+        //console.log(width,this.sectionContentWidth)
+        if(width && this.sectionContentWidth && !tableAdjToStacked){
+            if(width>this.sectionContentWidth+10){
+                this.setState({
+                    tableAdjToStacked:true
+                })
+            }
+        }
+    }
 
+    _editingCodeToSave(code,needAutoSubscribe){
+        this.props.editingCodeToSave(code,needAutoSubscribe)
+        if(this.state.tableAdjToStacked){
+            this.setState({
+                tableAdjToStacked:false
+            })
+        }
+    }
+
+    getSectionWidth(e){
+        return this.sectionContentWidth=e?e.offsetWidth:null;
+    }
     shouldComponentUpdate(nextProps,nextState){
         return !is(fromJS(this.props),fromJS(nextProps))
             || !is(fromJS(this.state),fromJS(nextState))
@@ -57,6 +80,7 @@ export default class SectionContent extends React.Component{
             codeStr=codeObj.str,
             minus=codeObj.minus,
             plus=codeObj.plus;
+        //console.log(code,prevState.prevCodeArr,codeObj)
         return {
             prevCodeArr:codeObj.arr,
             code,
@@ -69,10 +93,10 @@ export default class SectionContent extends React.Component{
     render(){
         //console.log('SectionContent')
         const {title,caption}=this.props.basicData
-        const {showInWhereArr,setShowInWhereArr,setMarbleLine,editingCodeToSave}=this.props
-        const {plus,minus,codeStr,code} =this.state
+        const {showInWhereArr,setShowInWhereArr,setMarbleLine}=this.props
+        const {plus,minus,codeStr,code,tableAdjToStacked} =this.state
         return (
-            <div>
+            <div ref={this.getSectionWidth}>
                 <p className="section-title">{title}</p>
                 <p dangerouslySetInnerHTML={{__html: caption}}
                    className="section-caption"/>
@@ -93,8 +117,12 @@ export default class SectionContent extends React.Component{
                         ?
                         <React.Fragment>
                             <ReuseButton handleClick={this.toggleChooseWhereToShow} text={"关闭位置选择面板"} />
-                            <ChooseWhereToShowExample />
-                            <ChooseWhereToShow showInWhereArr={showInWhereArr} setShowInWhereArr={setShowInWhereArr} setMarbleLine={setMarbleLine}/>
+                            <ChooseShowPositionExample />
+                            <ChooseShowPosition showInWhereArr={showInWhereArr}
+                                               tableAdjToStacked={tableAdjToStacked}
+                                               setShowInWhereArr={setShowInWhereArr}
+                                               setMarbleLine={setMarbleLine}
+                                               getTableWidth={this.getTableWidth}/>
                         </React.Fragment>
                         :
                         <ReuseButton handleClick={this.toggleChooseWhereToShow} text={"打开位置选择面板"} />
@@ -105,7 +133,7 @@ export default class SectionContent extends React.Component{
                     ?
                     <React.Fragment>
                         <ReuseButton handleClick={this.toggleCode} text={"隐藏源码"} />
-                        <Code codeStr={codeStr} code={code} editingCodeToSave={editingCodeToSave} />
+                        <Code codeStr={codeStr} code={code} editingCodeToSave={this._editingCodeToSave} />
                     </React.Fragment>
                     :
                     <ReuseButton handleClick={this.toggleCode} text={"显示源码"} />
