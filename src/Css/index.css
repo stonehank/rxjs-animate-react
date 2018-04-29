@@ -134,7 +134,32 @@ button:focus {
 }
 
 /*-----/Marble/marble-ball-----*/
-
+.complete-ball{
+    background-color:#00810e;
+    width: 3px;
+    height:20px;
+    position:absolute;
+    top:0;
+    color:transparent;
+    transform:translate3d(0,0,0);
+    transition: top 0.2s linear;
+    cursor:-webkit-grab;
+}
+.error-ball{
+    width: 20px;
+    height: 20px;
+    position:absolute;
+    top:0;
+    color:#cd0002;
+    line-height:1rem;
+    vertical-align: middle;
+    transform:translate3d(0,0,0);
+    transition: top 0.2s linear;
+    cursor:-webkit-grab;
+    font-weight:bold;
+    text-align: center;
+    font-size:2rem;
+}
 .colorBall {
     width: 20px;
     height: 20px;
@@ -165,6 +190,14 @@ button:focus {
 /*.text-white{ color:white;}*/
 /*.text-black{ color:black;}*/
 
+.special-status-ball{
+    position:static;
+    display: inline-block;
+    margin:0 0.2rem 0 0.5rem;
+    cursor:auto;
+}
+
+
 .colorBallExample {
     line-height: 20px;
     width: 20px;
@@ -175,18 +208,19 @@ button:focus {
     margin-left: 0.5rem;
 }
 
-.completeMarbleBall {
-    background-color: #008f0f;
-    color: lightgreen;
-    font-weight: bold;
-    letter-spacing: -1.5px
-}
 
-.errorMarbleBall {
-    background-color: red;
-    color: #fff;
-    font-weight: bold;
-}
+/*.completeMarbleBall {*/
+    /*background-color: #008f0f;*/
+    /*color: lightgreen;*/
+    /*font-weight: bold;*/
+    /*letter-spacing: -1.5px*/
+/*}*/
+
+/*.errorMarbleBall {*/
+    /*background-color: red;*/
+    /*color: #fff;*/
+    /*font-weight: bold;*/
+/*}*/
 
 .blueMarbleBall {
     background-color: blue;

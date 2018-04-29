@@ -70,6 +70,54 @@ export const EDITRULES=`
 
 export const Data = [
     {
+        name: 'scan',
+        title: 'scan 每次计算返回结果',
+        caption: '说明：' + '与reduce不同处在于返回结果的次数；参数1是一个function(累积器)，参数2是初始值；' +
+        '其中参数1function有2个参数，function(acc,cur)，其中acc第一次为初始值 || 当前值，后续则为 累计值，' +
+        'cur则是 当前值，函数内容为自定义计算方式；直到complete，每次计算都会结果',
+        hits: 715,
+        useful: 412,
+        //line: 3,
+        marbleText: 'scan',
+        code: `
+
+    //editArea
+
+    let RxInterval_Take,RxReduce;
+    RxInterval_Take = Rx.Observable.interval(1000).take(5);
+    RxReduce = RxInterval_Take.scan((acc, cur) => acc + cur);
+
+    //editArea
+
+    marSub.RxInterval_Take = RxInterval_Take.subscribe(NEC(showInMar, 1));
+    marSub.RxReduce = RxReduce.subscribe(NEC(showInMar, 2));
+    resSub.RxReduce = RxReduce.subscribe(NEC(showInRes));
+         `},
+    {
+        name: 'reduce',
+        title: 'reduce 最终返回一次结果',
+        caption: '说明：' + '与scan不同处在于返回结果的次数；参数1是一个function(累积器)，参数2是初始值；' +
+        '其中参数1function有2个参数，function(acc,cur)，其中acc第一次为初始值 || 当前值，后续则为 累计值，' +
+        'cur则是 当前值，函数内容为自定义计算方式；直到complete，返回 1 次结果',
+        hits: 715,
+        useful: 412,
+        //line: 3,
+        marbleText: 'reduce',
+        code: `
+
+    //editArea
+
+    let RxInterval_Take,RxReduce;
+    RxInterval_Take = Rx.Observable.interval(1000).take(5);
+    RxReduce = RxInterval_Take.reduce((acc, cur) => acc + cur);
+
+    //editArea
+
+    marSub.RxInterval_Take = RxInterval_Take.subscribe(NEC(showInMar, 1));
+    marSub.RxReduce = RxReduce.subscribe(NEC(showInMar, 2));
+    resSub.RxReduce = RxReduce.subscribe(NEC(showInRes));
+         `},
+    {
         name: 'takeUntil',
         title: 'takeUntil:参数为另一个发射源，当发射值时，发出complete',
         caption: '说明：' + '参数隔3秒发出1，当1发出，立刻complete',
@@ -120,7 +168,7 @@ export const Data = [
     {
         name: 'retryWhen',
         title: 'retryWhen:重复发射源，直到内部源(条件源)发出complete或者error',
-        caption: '说明：' + '在重复条件下，retryWhen总是能重复发射源的镜像，但不包括error；此处条件为interval值<3，此处第一行为发射源' +
+        caption: '说明：' + '在重复条件下，retryWhen总是能重复发射源的镜像，但不包括error；此处条件为interval值>=3时发出error，此处第一行为发射源' +
         '虽然很快error，但是error并不影响retryWhen，第二行为重复的条件，即条件发射源一旦触发并且符合重复的条件（未complete，未error），' +
         '立刻开始重复一次发射源的镜像  ',
         hits: 715,
@@ -148,7 +196,7 @@ export const Data = [
     {
         name: 'repeatWhen',
         title: 'repeatWhen:重复发射源，直到内部源(条件源)发出complete或者error',
-        caption: '说明：' + '在重复条件下，repeatWhen总是能重复发射源的镜像，但不包括complete；此处条件为interval值<3，此处第一行为发射源' +
+        caption: '说明：' + '在重复条件下，repeatWhen总是能重复发射源的镜像，但不包括complete；此处条件为interval值>=3则发出complete，此处第一行为发射源' +
         '虽然很快complete，但是complete并不影响repeatWhen，第二行为重复的条件，即条件发射源一旦触发并且符合重复的条件（未complete，未error），' +
         '立刻开始重复一次发射源的镜像 ',
         hits: 915,
@@ -159,10 +207,10 @@ export const Data = [
 
     //editArea
 
-    let RxInterval, RxTimer0_100, RxRepeatWhen;
+    let RxInterval_takeWhile, RxTimer0_100, RxRepeatWhen;
     RxTimer0_100=Rx.Observable.timer(0,100).take(3);
-    RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<5);
-    RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval);
+    RxInterval_takeWhile = Rx.Observable.interval(1000).takeWhile(x=>x<5);
+    RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval_takeWhile);
 
     //editArea
 
@@ -354,8 +402,8 @@ export const Data = [
     //editArea
 
     let RxClick, RxTimer0_1000, RxAudit;
-    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
     RxClick = Rx.Observable.fromEvent(document, 'click');
+    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
     RxAudit = RxTimer0_1000.audit(()=>RxClick);
 
     //editArea

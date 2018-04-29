@@ -184,9 +184,11 @@ function getArgument(v,curTimeGap){
     let distanceEachSec=50;
     let left=curTimeGap/1000*distanceEachSec;
     if(v==="complete") {
-        obj.data=v;obj.text='com';obj.background='#008f0f';obj.left=left+20;obj.color='lightgreen';obj.fontWeight='bold';obj.letterSpacing='-1.5px';
+        obj.data=v;obj.text='com';obj.left=left+20;
+        //obj.data=v;obj.text='com';obj.background='#008f0f';obj.left=left+20;obj.color='lightgreen';obj.fontWeight='bold';obj.letterSpacing='-1.5px';
     } else if(v==="error") {
-        obj.data=v;obj.text='err';obj.background='red';obj.left=left+20;obj.color='#fff';obj.fontWeight='bold';
+        obj.data=v;obj.text='err';obj.left=left+20;
+        //obj.data=v;obj.text='err';obj.background='red';obj.left=left+20;obj.color='#fff';obj.fontWeight='bold';
     } else if(typeof v==='number') {
         obj.data=v;obj.text=v;obj.background='blue';obj.left=left;obj.top=LINETOP*2;obj.color='#fff';
     } else if(typeof v==='string') {

@@ -14,12 +14,12 @@ class MarbleBallComponent extends React.PureComponent{
         const {left,text,top,background,color,connectDragSource,closePop,showPop,cancelBubble,isDragging}=this.props
         const curStyle=isDragging ? {left,top,background,color,opacity:0.7} :{left,top,background,color}
         return connectDragSource(
-            <div className="colorBall"
+            <div className={text==="com"?"complete-ball":text==="err"?"error-ball":"colorBall"}
                  onMouseOut={closePop}
                  onMouseOver={showPop}
                  onMouseDown={closePop}
                  onClick={cancelBubble}
-                 style={curStyle}>{text}</div>
+                 style={curStyle}>{text==='com' ? '' : text==="err" ? "×" : text}</div>
         )
     }
 }
