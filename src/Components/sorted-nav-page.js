@@ -1,7 +1,6 @@
 import React from 'react';
-import {getPath} from '../tools'
+import {getPath,deepEqual} from '../tools'
 import {Consumer} from '../index'
-import  {fromJS,is}  from 'immutable';
 import {ReuseNavLink} from '../Widget'
 
 
@@ -13,7 +12,7 @@ export default class SortedNavPage extends React.Component{
     shouldComponentUpdate(nextProps){
         var {location,...curOtherProps}=this.props;
         var {location,...nextOtherProps}=nextProps;
-        return !is(fromJS(curOtherProps),fromJS(nextOtherProps))
+        return !deepEqual(curOtherProps,nextOtherProps)
     }
     render(){
         //console.log('AllSortPages')

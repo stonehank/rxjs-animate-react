@@ -1,13 +1,14 @@
 import React from 'react';
 import {SlideCheckBox,ReuseButton} from '../Widget'
 import SectionContent from './section-content'
-import {fromJS,is} from 'immutable';
+import {deepEqual} from '../tools'
+
 
 
 export default class SectionWrap extends React.Component{
 
     shouldComponentUpdate(nextProps){
-        return !is(fromJS(nextProps),fromJS(this.props))
+        return !deepEqual(this.props,nextProps)
     }
     render(){
         //console.log('SectionWrap')

@@ -11,7 +11,7 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 1. react
 2. react-router-dom v4
 3. rxjs
-4. 部分使用immutable
+4. ~~部分使用immutable~~
 5. react-dnd
 6. react-codemirror
 
@@ -40,6 +40,7 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 11. hover小球：出现说明框，第一行为值(如果非基本类型则显示类型)，第二行对其值进行了`JSON.stringify`。
 
 #### 更新记录
+* 2018/5/1： 暂时取消immutable使用(fromJS占用很多性能)
 * 2018/4/27：增加代码自动订阅功能
 * 2018/4/27：增加开始按钮错误处理
 * 2018/4/26：添加功能：代码可编辑，减少re-render

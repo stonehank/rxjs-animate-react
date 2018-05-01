@@ -70,10 +70,33 @@ export const EDITRULES=`
 
 export const Data = [
     {
+        name: '测试性能',
+        title: '测试性能',
+        caption: '说明：' + '三行同时刷出小球 timer(0,30)',
+        hits: 0,
+        useful: 0,
+        //line: 3,
+        marbleText: '测试性能',
+        code: `
+
+    //editArea
+
+    let RxTimer1,RxTimer2,RxTimer3;
+    RxTimer1 = Rx.Observable.timer(0,30).take(100);
+    RxTimer2 = Rx.Observable.timer(0,30).take(100);
+    RxTimer3 = Rx.Observable.timer(0,30).take(100);
+    //editArea
+    let initTime=new Date().getTime();
+    marSub.RxTimer1 = RxTimer1.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer2 = RxTimer2.subscribe(NEC(showInMar, 2));
+    marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
+
+         `},
+    {
         name: 'scan',
         title: 'scan 每次计算返回结果',
         caption: '说明：' + '与reduce不同处在于返回结果的次数；参数1是一个function(累积器)，参数2是初始值；' +
-        '其中参数1function有2个参数，function(acc,cur)，其中acc第一次为初始值 || 当前值，后续则为 累计值，' +
+        '其中参数1function有2个参数，function(acc,cur)，其中acc第一次为初始值 || 当前值，后续则为 上一次计算得出的值，' +
         'cur则是 当前值，函数内容为自定义计算方式；直到complete，每次计算都会结果',
         hits: 715,
         useful: 412,
@@ -84,7 +107,7 @@ export const Data = [
     //editArea
 
     let RxInterval_Take,RxReduce;
-    RxInterval_Take = Rx.Observable.interval(1000).take(5);
+    RxInterval_Take = Rx.Observable.timer(1000).take(4);
     RxReduce = RxInterval_Take.scan((acc, cur) => acc + cur);
 
     //editArea
@@ -97,7 +120,7 @@ export const Data = [
         name: 'reduce',
         title: 'reduce 最终返回一次结果',
         caption: '说明：' + '与scan不同处在于返回结果的次数；参数1是一个function(累积器)，参数2是初始值；' +
-        '其中参数1function有2个参数，function(acc,cur)，其中acc第一次为初始值 || 当前值，后续则为 累计值，' +
+        '其中参数1function有2个参数，function(acc,cur)，其中acc第一次为初始值 || 当前值，后续则为 上一次计算得出的值，' +
         'cur则是 当前值，函数内容为自定义计算方式；直到complete，返回 1 次结果',
         hits: 715,
         useful: 412,

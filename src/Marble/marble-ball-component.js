@@ -1,14 +1,9 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
-//import {fromJS,is} from 'immutable';
 
 
 class MarbleBallComponent extends React.PureComponent{
 
-    //shouldComponentUpdate(prevProps){
-    //    return !is(fromJS(this.props._curStyle),fromJS(prevProps._curStyle))
-    //        || this.props.isDragging !==prevProps.isDragging
-    //}
     render(){
         //console.log('marbleBallComponent')
         const {left,text,top,background,color,connectDragSource,closePop,showPop,cancelBubble,isDragging}=this.props

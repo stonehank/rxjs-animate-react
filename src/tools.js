@@ -82,6 +82,93 @@ export function getPath(pathname,i,getAllBehind){
 }
 
 
+function checkType(obj){
+    let os=Object.prototype.toString;
+    if(os.call(obj)==='[object Object]'){return 'object'}
+    if(os.call(obj)==='[object Array]'){return 'array'}
+    return 'other';
+}
+function newObjAdd(newObj,path,value){
+    if(path.length===1){
+        newObj[path[0]]=value
+    }else{
+        newObj[path[0]]=deepSet({},path.slice(1),value,true)
+    }
+}
+/**
+ * 有则改，无则加（immutable）
+ * @param obj:*
+ * @param path:[]
+ * @param value:*
+ * @param objIsNewObj:boolean
+ * @returns {*}
+ */
+export function deepSet(obj,path,value,objIsNewObj){
+    if(path.length<1){
+        return value;
+    }
+    let newObj;
+    if(objIsNewObj){
+        newObj=obj;
+        newObjAdd(newObj,path,value)
+    }else{
+        const keys=Object.keys(obj),type=checkType(obj);
+        if(type==='array'){
+            newObj=[]
+        }else if(type==='object'){
+            newObj={}
+        }else{
+            return value
+        }
+        if(keys.length>0) {
+            keys.forEach(key=>{
+                if(key==path[0]){
+                    newObj[path[0]]=deepSet(obj[key],path.slice(1),value)
+                }else{
+                    newObj[key]=obj[key]
+                }
+            });
+            if(obj[path[0]]===undefined){
+                newObjAdd(newObj,path,value)
+            }
+        }else{
+            newObjAdd(newObj,path,value)
+        }
+    }
+    return newObj
+}
+
+
+/**
+ * 深比较
+ * @param obj1
+ * @param obj2
+ * @returns {boolean}
+ */
+export function deepEqual(obj1,obj2){
+    let os=Object.prototype.toString,result=true;
+    for(let key in obj1){
+        if(os.call(obj1[key])==='[object Array]' && os.call(obj2[key])==='[object Array]'){
+            if(obj1[key].length!==obj2[key].length){ return false}
+            result=deepEqual(obj1[key],obj2[key])
+        }else if(os.call(obj1[key])==='[object Object]' && os.call(obj2[key])==='[object Object]'){
+            if(Object.keys(obj1[key]).length!==Object.keys(obj2[key]).length){ return false}
+            result=deepEqual(obj1[key],obj2[key])
+        }else if(typeof obj1[key]==='function' && typeof obj2[key]==='function'){
+            if(obj1[key].toString()!==obj2[key].toString()){
+                return false
+            }
+        }else if(Number.isNaN(obj1[key]) && Number.isNaN(obj2[key])){
+            result=true;
+        }else if(obj1[key]!==obj2[key]){
+            return false;
+        }
+        if(!result){
+            return false;
+        }
+    }
+    return true
+}
 
 /*菜单方法*/
 export const sortMethod=(sort,navArr)=>{
@@ -258,6 +345,9 @@ export function subscriberToSimpleObj(unSubObj){
     })
     return obj;
 }
+
+
+
 
 
 export function changeStatus(status,force){

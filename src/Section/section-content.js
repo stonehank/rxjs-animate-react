@@ -3,8 +3,7 @@ import {Plus,Minus,ReuseButton} from '../Widget'
 import Code from './code'
 import ChooseShowPosition from './choose-show-position'
 import ChooseShowPositionExample from './choose-show-position-example'
-import {calcCodeStrArrPlusMinus} from '../tools'
-import {fromJS,is} from 'immutable';
+import {calcCodeStrArrPlusMinus,deepEqual} from '../tools'
 
 
 export default class SectionContent extends React.Component{
@@ -69,8 +68,7 @@ export default class SectionContent extends React.Component{
         return this.sectionContentWidth=e?e.offsetWidth:null;
     }
     shouldComponentUpdate(nextProps,nextState){
-        return !is(fromJS(this.props),fromJS(nextProps))
-            || !is(fromJS(this.state),fromJS(nextState))
+        return !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
     }
 
     static getDerivedStateFromProps(nextProps,prevState){
@@ -91,7 +89,7 @@ export default class SectionContent extends React.Component{
     }
 
     render(){
-        //console.log('SectionContent')
+        console.log('SectionContent')
         const {title,caption}=this.props.basicData
         const {showInWhereArr,setShowInWhereArr,setMarbleLine}=this.props
         const {plus,minus,codeStr,code,tableAdjToStacked} =this.state

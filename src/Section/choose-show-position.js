@@ -1,5 +1,5 @@
 import React from 'react';
-import {fromJS,is} from 'immutable';
+import {deepEqual} from '../tools';
 import  ChooseShowPositionAdjacent from './choose-show-position-adjacent'
 import  ChooseShowPositionStacked from './choose-show-position-stacked'
 
@@ -14,8 +14,7 @@ export default class ChooseShowPosition extends React.Component{
     }
 
     shouldComponentUpdate(nextProps){
-
-        return !is(fromJS(this.props),fromJS(nextProps))
+        return !deepEqual(this.props,nextProps)
     }
 
     setShowInMarble(i){

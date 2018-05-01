@@ -1,12 +1,10 @@
 import React from 'react';
-import {clearFunc,calcColorBallNewPosition,checkDidAllunSub,_fetchData,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine} from '../tools'
+import {deepSet,clearFunc,calcColorBallNewPosition,checkDidAllunSub,_fetchData,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine,deepEqual} from '../tools'
 import SectionWrap from '../Section/section-wrap'
 import {PopText} from '../Widget'
 import Marble from '../Marble'
 import Result from '../Result'
 import Rx from 'rxjs/Rx'
-import {fromJS,is} from 'immutable';
-
 
 
 
@@ -58,9 +56,15 @@ export default class OperatorsCoreContainer extends React.Component{
         clearTimeout(this.codeErrorTimer)
     }
 
+    /**
+     * 使用fromJS消耗很高，暂时用深比较
+     * 如果用redux可以用redux-immutable
+     */
     shouldComponentUpdate(nextProps,nextState){
-        return !is(fromJS(this.props),fromJS(nextProps))
-             || !is(fromJS(this.state),fromJS(nextState))
+        return !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
+        //return !is(fromJS(this.props),fromJS(nextProps))
+        //     || !is(fromJS(this.state),fromJS(nextState))
+
     }
 
     /**
@@ -140,10 +144,10 @@ export default class OperatorsCoreContainer extends React.Component{
     }
 
     setShowInWhereArr(i,key){
-        const {showInWhereArr,code,} = this.state
+        const {showInWhereArr,code} = this.state
         const currentShowStatus=showInWhereArr[i][key]
         //console.time(1)
-        let newShowInWhereArr=fromJS(showInWhereArr).setIn([i,key],!currentShowStatus).toJS()
+        let newShowInWhereArr=deepSet(showInWhereArr,[i,key],!currentShowStatus);
         //console.timeEnd(1)
         const needChange=showInWhereArr[i]
         let newCode=currentShowStatus ?
@@ -156,13 +160,12 @@ export default class OperatorsCoreContainer extends React.Component{
     }
 
     setMarbleLine(i,newLine){
+        const {showInWhereArr,code}=this.state
         //console.time(1)
-        let newShowInWhereArr=fromJS(this.state.showInWhereArr).setIn([i,'line'],newLine).toJS()
-        const needChange=this.state.showInWhereArr[i]
-        let newCode=changeLine(this.state.code,needChange.name,newLine)
+        let newShowInWhereArr=deepSet(showInWhereArr,[i,'line'],newLine)
+        const needChange=showInWhereArr[i]
+        let newCode=changeLine(code,needChange.name,newLine)
         //console.timeEnd(1)
-
-
         this.setState(prevState=>({
             showInWhereArr:newShowInWhereArr,
             code:newCode

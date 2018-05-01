@@ -1,6 +1,6 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
-//import {fromJS,is} from 'immutable';
+import {deepEqual} from '../tools';
 
 export default class ReuseNavLink extends React.Component{
 
@@ -9,11 +9,7 @@ export default class ReuseNavLink extends React.Component{
      * 使用stringify比经过immutable转换后对比更快一点
      */
     shouldComponentUpdate(nextProps){
-        //let t0=performance.now()
-        //is(fromJS(this.props),fromJS(nextProps))
-        return JSON.stringify(nextProps)!==JSON.stringify(this.props)
-        //console.log(performance.now()-t0)
-        //return true;
+        return !deepEqual(this.props,nextProps)
     }
     render(){
         //console.log('ReuseNavLink')
