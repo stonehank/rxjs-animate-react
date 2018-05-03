@@ -93,6 +93,107 @@ export const Data = [
 
          `},
     {
+        name: 'publish-refCount',
+        title: 'publish().refCount()，不需要connect，共享数据',
+        caption: '说明：' + '此处前3行发射源是"publish$"，后2行发射源是"publish2$"；<br>' +
+        '第1行为立即订阅；<br>' +
+        '第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>' +
+        '第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>' +
+        '第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>' +
+        '第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>直接进入complete</strong>；<br>' +
+        '<strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，complete；前面数据error，error</strong>',
+        hits: 452,
+        useful: 842,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'publish-refCount',
+        code: `
+
+    //editArea
+
+    let RxPublish1,RxPublish2,RxPublish3,RxPublish4,RxPublish5,publish$,publish2$;
+    publish$ = Rx.Observable.timer(0,1000).take(4).publish().refCount();
+    publish2$ = Rx.Observable.timer(0,1000).take(4).publish().refCount();
+    
+    //editArea
+    
+    marSub.RxPublish1 = publish$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout1 = setTimeout(()=>{marSub.RxPublish2 = publish$.subscribe(NEC(showInMar, 2))},2000);
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxPublish3 = publish$.subscribe(NEC(showInMar, 3))},4000);
+    marSub.RxTimeout3 = setTimeout(()=>{marSub.RxPublish4 = publish2$.subscribe(NEC(showInMar, 4))},6000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxPublish4.unsubscribe()},7000);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxPublish5 = publish2$.subscribe(NEC(showInMar, 5))},8000);
+
+         `},
+    {
+        name: 'publish-connect',
+        title: 'publish 共享数据，直到connect方法被调用才会开始把值发送给那些订阅它的观察者',
+        caption: '说明：' + '此处前3行发射源是"publish$"，后2行发射源是"publish2$"；<br>' +
+        '第1行为立即订阅；<br>' +
+        '第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>' +
+        '第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>' +
+        '第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>' +
+        '第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>共享数据</strong>；<br>' +
+        '<strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error</strong>',
+
+        hits: 452,
+        useful: 842,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'publish-connect',
+        code: `
+
+    //editArea
+
+    let RxPublish1,RxPublish2,RxPublish3,RxPublish4,RxPublish5,publish$,publish2$;
+    publish$ = Rx.Observable.timer(0,1000).take(4).publish();
+    publish2$ = Rx.Observable.timer(0,1000).take(4).publish();
+    
+    //editArea
+    
+    publish$.connect();
+    marSub.RxPublish1 = publish$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout1 = setTimeout(()=>{marSub.RxPublish2 = publish$.subscribe(NEC(showInMar, 2))},2000);
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxPublish3 = publish$.subscribe(NEC(showInMar, 3))},4000);
+    marSub.RxTimeout3 = setTimeout(()=>{publish2$.connect();marSub.RxPublish4 = publish2$.subscribe(NEC(showInMar, 4))},6000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxPublish4.unsubscribe()},7000);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxPublish5 = publish2$.subscribe(NEC(showInMar, 5))},8000);
+
+         `},
+    {
+        name: 'share',
+        title: 'share 返回一个新的 Observable，该 Observable 多播(共享)源 Observable',
+        caption: '说明：' + '此处前3行发射源是"share$"，后2行发射源是"share2$"；<br>' +
+        '第1行为立即订阅；<br>' +
+        '第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>' +
+        '第3行隔4秒订阅，此时之前发射源状态是complete，<strong>从头开始</strong>；<br>' +
+        '第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>' +
+        '第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>从头开始</strong>；<br>' +
+        '<strong>结论：共享数据；前面数据complete，从头开始；前面数据unsubscribe，从头开始；前面数据error，error</strong>',
+        hits: 452,
+        useful: 842,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'share',
+        code: `
+
+    //editArea
+
+    let RxShare1,RxShare2,RxShare3,RxShare4,RxShare5,share$,share2$;
+    share$ = Rx.Observable.timer(0,1000).take(4).share();
+    share2$ = Rx.Observable.timer(0,1000).take(4).share();
+    
+    //editArea
+    
+    marSub.RxShare1 = share$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout1 = setTimeout(()=>{marSub.RxShare2 = share$.subscribe(NEC(showInMar, 2))},2000);
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxShare3 = share$.subscribe(NEC(showInMar, 3))},4000);
+    marSub.RxTimeout3 = setTimeout(()=>{marSub.RxShare4 = share2$.subscribe(NEC(showInMar, 4))},6000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxShare4.unsubscribe()},7000);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxShare5 = share2$.subscribe(NEC(showInMar, 5))},8000);
+
+         `},
+    {
         name: 'scan',
         title: 'scan 每次计算返回结果',
         caption: '说明：' + '与reduce不同处在于返回结果的次数；参数1是一个function(累积器)，参数2是初始值；' +

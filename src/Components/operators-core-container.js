@@ -124,6 +124,7 @@ export default class OperatorsCoreContainer extends React.Component{
             this.clearStart()
             this.unSubMarble={}
             this.unSubResult={}
+            this.doNotNeedAuto=data.doNotNeedAuto;
             const getNewDataFromCode=getSubPositionFromCode(code);
             const showInWhereArr=getNewDataFromCode.showInWhereArr;
             const newCode=getNewDataFromCode.newCode;
@@ -174,6 +175,7 @@ export default class OperatorsCoreContainer extends React.Component{
 
     editingCodeToSave(value,needAutoSubscribe){
         this.setState({isFetching:true})
+        console.log(this.doNotNeedAuto)
         this.setOrUpdateData(value,true,needAutoSubscribe)
     }
 
@@ -289,6 +291,7 @@ export default class OperatorsCoreContainer extends React.Component{
      * 全部unsubscribe，但不更新页面
      */
     allUnsubscribe(){
+        console.log(this.unSubMarble)
         clearFunc(this.unSubMarble);
         clearFunc(this.unSubResult);
     }
@@ -330,6 +333,7 @@ export default class OperatorsCoreContainer extends React.Component{
                     showInWhereArr={showInWhereArr}
                     setShowInWhereArr={this.setShowInWhereArr}
                     setMarbleLine={this.setMarbleLine}
+                    operatorDoNotNeedAuto={this.doNotNeedAuto}
                     editingCodeToSave={this.editingCodeToSave}
                     resultCheckChange={this.resultCheckChange}
                     marbleCheckChange={this.marbleCheckChange}

@@ -55,12 +55,14 @@ export default class ShowSubscribeStatus extends React.Component{
                         Object.keys(unSubSimpleObj).map((e,i)=>{
                             const curStatus=unSubSimpleObj[e].status?unSubSimpleObj[e].status:'error'
                            return (
-                               <p className="unSubStatus" key={i}>{e}:{unSubSimpleObj[e].isStopped!==true
-                                    ?
-                                    <b style={{color:'#00147f'}}>subscribe</b>
-                                    :
-                                    <b className={curStatus}>{curStatus}</b>}
-                               </p>
+                               unSubSimpleObj[e].isStopped!==undefined ?
+                                   <p className="unSubStatus" key={i}>{e}:{unSubSimpleObj[e].isStopped!==true
+                                        ?
+                                        <b style={{color:'#00147f'}}>subscribe</b>
+                                        :
+                                        <b className={curStatus}>{curStatus}</b>}
+                                   </p> :
+                               null
                            )})
                         :
                         <p>请点击开始</p>}

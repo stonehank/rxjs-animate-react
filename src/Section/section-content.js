@@ -56,8 +56,10 @@ export default class SectionContent extends React.Component{
     }
 
     _editingCodeToSave(code,needAutoSubscribe){
-        this.props.editingCodeToSave(code,needAutoSubscribe)
-        if(this.state.tableAdjToStacked){
+        const {editingCodeToSave}=this.props
+        const {tableAdjToStacked}=this.state;
+        editingCodeToSave(code,needAutoSubscribe)
+        if(tableAdjToStacked){
             this.setState({
                 tableAdjToStacked:false
             })
@@ -91,7 +93,7 @@ export default class SectionContent extends React.Component{
     render(){
         console.log('SectionContent')
         const {title,caption}=this.props.basicData
-        const {showInWhereArr,setShowInWhereArr,setMarbleLine}=this.props
+        const {showInWhereArr,setShowInWhereArr,setMarbleLine,operatorDoNotNeedAuto}=this.props
         const {plus,minus,codeStr,code,tableAdjToStacked} =this.state
         return (
             <div ref={this.getSectionWidth}>
@@ -131,7 +133,9 @@ export default class SectionContent extends React.Component{
                     ?
                     <React.Fragment>
                         <ReuseButton handleClick={this.toggleCode} text={"隐藏源码"} />
-                        <Code codeStr={codeStr} code={code} editingCodeToSave={this._editingCodeToSave} />
+                        <Code codeStr={codeStr} code={code}
+                              editingCodeToSave={this._editingCodeToSave}
+                              operatorDoNotNeedAuto={operatorDoNotNeedAuto} />
                     </React.Fragment>
                     :
                     <ReuseButton handleClick={this.toggleCode} text={"显示源码"} />

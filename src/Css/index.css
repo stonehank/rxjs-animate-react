@@ -458,6 +458,11 @@ button:focus {
     letter-spacing: 1px;
 }
 
+.section-caption strong{
+    color:#ccc;
+    font-style:normal;
+}
+
 /*-----/Widget/choose-show-position-example-----*/
 .choose-show-position-example{
     margin:0.2rem 0.5rem;

@@ -237,6 +237,7 @@ export function code2Obj(code){
 
 
 function clearWhich(unSub){
+    console.log(unSub)
     if(!unSub){return}
     unSub.unsubscribe? unSub.unsubscribe(): clearTimeout(unSub)
 
@@ -314,20 +315,30 @@ export function setSearchList(v,deepList){
     return arr;
 }
 
+/**
+ * true &=true      //1
+ * true &=false     //0
+ * true &=undefined //0
+ * true &=null      //0
+ */
 export function checkDidAllunSub(unSubMarble,unSubResult){
     //console.time(1)
     let flagMarble=true;
     let flagResult=true;
     for(let i in unSubMarble){
-        flagMarble &=unSubMarble[i].isStopped
-        if(flagMarble===0){
-            break;
+        if(unSubMarble[i].isStopped!==undefined){
+            flagMarble &=unSubMarble[i].isStopped
+            if(flagMarble===0){
+                break;
+            }
         }
     }
     for(let i in unSubResult){
-        flagResult &=unSubResult[i].isStopped
-        if(flagResult===0){
-            break;
+        if(unSubResult[i].isStopped!==undefined){
+            flagResult &=unSubResult[i].isStopped
+            if(flagResult===0){
+                break;
+            }
         }
     }
     //console.timeEnd(1)
@@ -377,9 +388,9 @@ export function getSubPositionFromCode(code,allShow){
         reCalc=false;
         variables.forEach((e,i)=>{
             let obj={};
-            const subArr=finalCode.match(new RegExp(e+'.subscribe.*','g')) ||[];
+            const subArr=finalCode.match(new RegExp('(mar|res)Sub\.'+e+'[^.]+'+'.subscribe.*','g')) ||[];
             const subStr=subArr.join('');
-            const matchArr=subStr.match(/(^Rx[^.;=(),+\s]+\b).*showInMar\s*,?\s*'?(\d|last)?'?/) || [];
+            const matchArr=subStr.match(/^(?:mar|res)Sub.(Rx[^.;=(),+\s]+\b)\s*=.*?showInMar\s*,?\s*'?(\d|last)?'?/) || [];
             obj.name=matchArr[1] || e;
             obj.showInMar=subStr.indexOf('showInMar')!==-1;
             obj.showInRes=subStr.indexOf('showInRes')!==-1;

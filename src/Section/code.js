@@ -16,7 +16,7 @@ export default class Code extends React.PureComponent{
         this.state={
             code:props.code,
             editing:false,
-            needAutoSubscribe:true
+            needAutoSubscribe:!props.operatorDoNotNeedAuto
         }
     }
 
@@ -27,7 +27,9 @@ export default class Code extends React.PureComponent{
         })
     }
     toSaved(){
-        this.props.editingCodeToSave(this.state.code,this.state.needAutoSubscribe)
+        const {editingCodeToSave}=this.props
+        const {code,needAutoSubscribe}=this.state
+        editingCodeToSave(code,needAutoSubscribe)
         this.setState({
             editing:false
         })
@@ -57,7 +59,6 @@ export default class Code extends React.PureComponent{
             mode:'javascript',
             lineWrapping:true,
             theme:'base16-dark'
-            //gutters:['edit-gutter']
         };
         const optEditRules={
             mode:'javascript',

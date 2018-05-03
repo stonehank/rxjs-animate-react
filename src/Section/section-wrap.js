@@ -13,7 +13,7 @@ export default class SectionWrap extends React.Component{
     render(){
         //console.log('SectionWrap')
         const {isFetching,basicData,code,showStartButton,testStop,showInWhereArr,setShowInWhereArr,setMarbleLine,editingCodeToSave,
-            showResult,showMarble,testStart,clearStart,marbleCheckChange,resultCheckChange}=this.props
+            operatorDoNotNeedAuto,showResult,showMarble,testStart,clearStart,marbleCheckChange,resultCheckChange}=this.props
         return(
             <section className="section clearfix">
                 <SlideCheckBox
@@ -34,6 +34,7 @@ export default class SectionWrap extends React.Component{
                         setShowInWhereArr={setShowInWhereArr}
                         showInWhereArr={showInWhereArr}
                         setMarbleLine={setMarbleLine}
+                        operatorDoNotNeedAuto={operatorDoNotNeedAuto}
                         editingCodeToSave={editingCodeToSave}
                         code={code}
                         basicData={basicData}/>
