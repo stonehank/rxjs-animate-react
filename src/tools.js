@@ -1,7 +1,7 @@
-import {Data,notFoundData,deepList,shallowList} from './mock-data'
+import {Data,notFoundData,deepList,shallowList,LINETOP,distanceEachSec} from './mock-data'
 //import Rx from 'rxjs/Rx';
 import {uniqWith,uniq} from 'lodash'
-const LINETOP=30
+
 
 
 /**
@@ -237,7 +237,6 @@ export function code2Obj(code){
 
 
 function clearWhich(unSub){
-    console.log(unSub)
     if(!unSub){return}
     unSub.unsubscribe? unSub.unsubscribe(): clearTimeout(unSub)
 
@@ -269,7 +268,6 @@ export function calcColorBallNewPosition(line,whichLine,v,curTimeGap){
 function getArgument(v,curTimeGap){
     let obj={};
     let ts=Object.prototype.toString
-    let distanceEachSec=50;
     let left=curTimeGap/1000*distanceEachSec;
     if(v==="complete") {
         obj.data=v;obj.text='com';obj.left=left+20;

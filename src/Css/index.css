@@ -19,6 +19,7 @@ a{
 
 pre {
     white-space: pre-line;
+    word-break: break-all;
     background-color: #111;
     font-family: Consolas, Inconsolata, Courier, monospace;
     font-size: 14px;
@@ -429,7 +430,7 @@ button:focus {
     width: 100%;
     position: relative;
     display: flex;
-    min-height:70vh;
+    min-height:80vh;
     justify-content: space-around;
     flex-flow: column;
 }
@@ -505,6 +506,7 @@ button:focus {
     position: absolute;
     margin: 0 0.5rem 0 0 ;
     right: 0;
+    top:0;
     padding: 0;
 }
 

@@ -1,8 +1,12 @@
 import Rx from 'rxjs/Rx';
 import {changeStatus} from './tools'
 let count = 0
-let _deepList = [];
+let _deepList = []
 
+
+export const smallScreen=false
+export const LINETOP=30
+export const distanceEachSec=smallScreen ? 30 : 50
 window.Rx=Rx;
 /**
  * 此处为 Rx.Subscriber 底下的三个命令进行添加，为了能精确显示当前状态
@@ -26,7 +30,11 @@ function addCEUStatus(){
 }
 addCEUStatus()
 
-export const shallowList = [
+export const shallowList =smallScreen ?
+    [
+        {shallowTitle: '全部(按字母顺序)', sort: 'name', pathname: 'operators', notShowChild: true}
+    ] :
+    [
     {shallowTitle: '全部(按字母顺序)', sort: 'name', pathname: 'operators', notShowChild: true},
     {shallowTitle: '按点击量排序', sort: 'hits', pathname: 'hits'},
     {shallowTitle: '按常用程度排序', sort: 'useful', pathname: 'useful'}
@@ -591,8 +599,9 @@ export const Data = [
      `,},
     {
         name: 'auditTime',
-        title: 'auditTime:类似throttleTime，收到第一个源不会立刻发送最新值，而是等待间隔时间后发送最新值',
-        caption: '说明：' + '此处最后一行不论点击多少次会等1秒才会发送最新值',
+        title: 'auditTime(duration: number, scheduler: Scheduler): Observable\<\T\>',
+        caption: '说明：' + 'duration 毫秒内忽略源值，然后发出源 Observable 的最新值， 并且重复此过程。<br>' +
+        '此处理解：收到第一个源不会立刻发送最新值，而是等待间隔时间后发送最新值，此处最后一行不论点击多少次会等1秒才会发送最新值',
         hits: 762,
         useful: 875,
         //line: 2,
@@ -614,8 +623,9 @@ export const Data = [
      `,},
     {
         name: 'throttleTime',
-        title: 'throttleTime:有click就取消上一次的，这里间隔时间最多1秒，收到第一个源立刻发送',
-        caption: '说明：' + '此处最后一行一旦有点击立刻会发出一个事件',
+        title: 'throttleTime(duration: number, scheduler: Scheduler): Observable\<\T\>',
+        caption: '说明：' + '从源 Observable 中发出一个值，然后在 duration 毫秒内忽略随后发出的源值， 然后重复此过程。<br>' +
+        '此处理解:收到第一个源立刻发送此处，有click就取消上一次的，这里间隔时间最多1秒',
         hits: 762,
         useful: 875,
         //line: 2,
@@ -639,8 +649,9 @@ export const Data = [
      `,},
     {
         name: 'debounceTime',
-        title: 'debounceTime:有click就取消上一次的，间隔时间可超过1秒，最后发送最新值',
-        caption: '说明：' + '最后一行为实际发出的事件',
+        title: 'debounceTime(dueTime: number, scheduler: Scheduler): Observable',
+        caption: '说明：' + '只有在特定的一段时间经过后并且没有发出另一个源值，才从源 Observable 中发出一个值。<br>' +
+        '此处理解:有click就取消上一次的，间隔时间可超过1秒，最后发送最新值',
         hits: 762,
         useful: 875,
         //line: 2,
@@ -663,8 +674,9 @@ export const Data = [
      `,},
     {
         name: 'concatMap',
-        title: 'concatMap:先转换成高阶observable（map），再转换成一阶observable',
-        caption: '说明：此处累计click的次数，然后按顺序依次执行',
+        title: ' concatMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any): Observable',
+        caption: '说明：将源值投射为一个合并到输出 Observable 的 Observable,以串行的方式等待前一个完成再合并下一个 Observable。<br>' +
+        '此处理解:先转换成高阶observable（map），再转换成一阶observable，此处累计click的次数，然后按顺序依次执行',
         hits: 762,
         useful: 875,
         //line: 2,
@@ -689,8 +701,9 @@ export const Data = [
      `,},
     {
         name: 'concatAll',
-        title: 'concatAll：将高阶observable(类似obs1$.map(obs2$))转换成一阶observable',
-        caption: '说明：此处所展示效果相当于使用了concatMap，此处用的是先map 后concatAll',
+        title: 'concatAll(): Observable',
+        caption: '说明：通过顺序地连接内部 Observable，将高阶 Observable 转化为一阶 Observable 。<br>' +
+        '此处理解：将高阶observable(类似obs1$.map(obs2$))转换成一阶observable，此处所展示效果相当于使用了concatMap，此处用的是先map 后concatAll',
         hits: 762,
         useful: 875,
         //line: 2,
@@ -716,8 +729,9 @@ export const Data = [
     },
     {
         name: 'concat',
-        title: 'concat:将2个源按顺序合并,点击3次鼠标后合并interval',
-        caption: '',
+        title: 'concat(other: ObservableInput, scheduler: Scheduler): Observable',
+        caption: '说明：创建一个输出 Observable，它在当前 Observable 之后顺序地发出每个给定的输入 Observable 中的所有值。<br>' +
+        '此处理解:将2个源按顺序合并，点击3次鼠标后开始interval，这两个发射源结果是合并的',
         hits: 1235,
         useful: 451,
         //line: 2,

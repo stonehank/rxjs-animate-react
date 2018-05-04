@@ -48,11 +48,11 @@ export default class SectionWrapCompatible extends React.Component{
                 <React.Fragment>
                     {showStartButton
                         ?
-                        <ReuseButton className={"testStartRxjs"} handleClick={testStart} text={"开始(subscribe)"} />
+                        <ReuseButton className={"testStartRxjs"} handleClick={testStart} text={smallScreen ? "开始(subscribe)/展开" : "开始(subscribe)"} />
                         :
                         <ReuseButton className={"testStopRxjs"} handleClick={testStop} text={"停止(unsubscribe)"} />
                     }
-                    <ReuseButton className={"clearRxjs"} handleClick={clearStart} text={"清除(unsubscribe&clear)"} />
+                    <ReuseButton className={"clearRxjs"} handleClick={clearStart} text={smallScreen ? "清除/收起(unsubscribe&clear)" : "清除(unsubscribe&clear)"} />
                 </React.Fragment>
             </section>
         )

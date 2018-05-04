@@ -5,7 +5,7 @@ import {PopText} from '../Widget'
 import MarbleCompatible from '../Marble'
 import Result from '../Result'
 import Rx from 'rxjs/Rx'
-const smallScreen=false
+import {smallScreen} from '../mock-data'
 
 
 export default class OperatorsCoreContainer extends React.Component{

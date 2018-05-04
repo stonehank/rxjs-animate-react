@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
-    "immutable": "^3.8.2",
     "lodash": "^4.17.5",
     "react": "^16.3.1",
     "react-codemirror": "^1.0.0",
