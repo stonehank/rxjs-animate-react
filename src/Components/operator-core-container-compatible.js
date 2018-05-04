@@ -1,11 +1,11 @@
 import React from 'react';
 import {deepSet,clearFunc,calcColorBallNewPosition,checkDidAllunSub,_fetchData,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine,deepEqual} from '../tools'
-import SectionWrap from '../Section/section-wrap'
+import SectionWrapCompatible from '../Section/section-wrap-compatible'
 import {PopText} from '../Widget'
-import Marble from '../Marble'
+import MarbleCompatible from '../Marble'
 import Result from '../Result'
 import Rx from 'rxjs/Rx'
-
+const smallScreen=false
 
 
 export default class OperatorsCoreContainer extends React.Component{
@@ -37,9 +37,10 @@ export default class OperatorsCoreContainer extends React.Component{
         this.unSubResult={}
         this.newMarbleArr=[]
         this.state={
+            smallScreen:smallScreen,
             codeRunError:false,
             codErrorInfo:'',
-            showMarble:true,
+            showMarble:!smallScreen,
             showResult:true,
             marbleText:'', line:0,
             isFetching:true,
@@ -191,6 +192,13 @@ export default class OperatorsCoreContainer extends React.Component{
         this.allUnsubscribe()
         this.refreshResultMarble('retain')
 
+        const {smallScreen}=this.state
+        if(smallScreen){
+            this.setState({
+                showMarble:true
+            })
+        }
+
         //为了避免执行of操作符（立刻出现数据）， result的value出现又被以下清空，放到执行上面
         this.setState(prevState=>({
             showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult),
@@ -250,6 +258,11 @@ export default class OperatorsCoreContainer extends React.Component{
     clearStart(){
         this.allUnsubscribe()
         this.refreshResultMarble('clear')
+        if(smallScreen){
+            this.setState({
+                showMarble:false
+            })
+        }
     }
 
     /**
@@ -319,14 +332,15 @@ export default class OperatorsCoreContainer extends React.Component{
     }
     render(){
         //console.log('OperatorsCoreContainer')
-        const {isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,code,
+        const {smallScreen,isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,code,
             marbleArr,line,marbleText,resultValue,codeRunError,codErrorInfo}=this.state
         return(
             <React.Fragment>
                 {codeRunError ?
                     <PopText data={'Something error in code!<br>'+codErrorInfo} className="code-run-error" /> : null}
-                <SectionWrap
+                <SectionWrapCompatible
                     isFetching={isFetching}
+                    smallScreen={smallScreen}
                     basicData={basicData}
                     code={code}
                     showInWhereArr={showInWhereArr}
@@ -342,16 +356,17 @@ export default class OperatorsCoreContainer extends React.Component{
                     testStop={this.testStop}
                     clearStart={this.clearStart}
                     testStart={this.testStart} />
-                <div className="show-wrap">
+                <div className={smallScreen ? "show-wrap-wap" : "show-wrap"}>
                     {showMarble ?
-                        <Marble timeStamp={this.marbleRefreshTimeStamp}
-                                refreshStartStopButton={this.refreshStartStopButton}
-                                unSubMarble={this.unSubMarble}
-                                marbleArr={marbleArr}
-                                line={line}
-                                marbleText={marbleText} /> :
+                        <MarbleCompatible timeStamp={this.marbleRefreshTimeStamp}
+                                          smallScreen={smallScreen}
+                                          refreshStartStopButton={this.refreshStartStopButton}
+                                          unSubMarble={this.unSubMarble}
+                                          marbleArr={marbleArr}
+                                          line={line}
+                                          marbleText={marbleText} /> :
                         null}
-                    {showResult ?
+                    {showResult && !smallScreen ?
                         <Result resultRefreshTimeStamp={this.resultRefreshTimeStamp}
                                 refreshStartStopButton={this.refreshStartStopButton}
                                 unSubResult={this.unSubResult}

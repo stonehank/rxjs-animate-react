@@ -1,13 +1,13 @@
 import React from 'react';
 import {Plus,Minus,ReuseButton} from '../Widget'
-import Code from './code'
+import CodeCompatible from './code-compatible'
 import ChooseShowPosition from './choose-show-position'
 import ChooseShowPositionExample from './choose-show-position-example'
-import SectionTitle from './section-title'
+import SectionTitleCompatible from './section-title-compatible'
 import {calcCodeStrArrPlusMinus,deepEqual} from '../tools'
 
 
-export default class SectionContent extends React.Component{
+export default class SectionContentCompatible extends React.Component{
     constructor(){
         super()
         this.toggleCode=this.toggleCode.bind(this)
@@ -94,52 +94,57 @@ export default class SectionContent extends React.Component{
     render(){
         console.log('SectionContent')
         const {title,caption}=this.props.basicData
-        const {showInWhereArr,setShowInWhereArr,setMarbleLine,operatorDoNotNeedAuto}=this.props
+        const {showInWhereArr,setShowInWhereArr,setMarbleLine,operatorDoNotNeedAuto,smallScreen}=this.props
         const {plus,minus,codeStr,code,tableAdjToStacked} =this.state
         return (
-            <div ref={this.getSectionWidth}>
-                <SectionTitle title={title} caption={caption}/>
-                <div>
-                    {this.state.showPlusMinus
-                        ?
-                        <React.Fragment>
-                            <ReuseButton handleClick={this.togglePlusMinus} text={"隐藏增减行"} />
-                            <Plus plus={plus}/>
-                            <Minus minus={minus}/>
-                        </React.Fragment>
-                        :
-                        <ReuseButton handleClick={this.togglePlusMinus} text={"显示增减行"} />
-                    }
-                </div>
-                <div>
-                    {this.state.showChooseWhereToShow
-                        ?
-                        <React.Fragment>
-                            <ReuseButton handleClick={this.toggleChooseWhereToShow} text={"关闭位置选择面板"} />
-                            <ChooseShowPositionExample />
-                            <ChooseShowPosition showInWhereArr={showInWhereArr}
-                                               tableAdjToStacked={tableAdjToStacked}
-                                               setShowInWhereArr={setShowInWhereArr}
-                                               setMarbleLine={setMarbleLine}
-                                               getTableWidth={this.getTableWidth}/>
-                        </React.Fragment>
-                        :
-                        <ReuseButton handleClick={this.toggleChooseWhereToShow} text={"打开位置选择面板"} />
-                    }
-                </div>
+            smallScreen ?
+                <React.Fragment>
+                    <SectionTitleCompatible title={title} caption={caption} smallScreen={smallScreen}/>
+                    <CodeCompatible codeStr={codeStr} code={code} smallScreen={smallScreen}/>
+                </React.Fragment> :
+                <div ref={this.getSectionWidth}>
+                    <SectionTitleCompatible title={title} caption={caption}/>
+                    <div>
+                        {this.state.showPlusMinus
+                            ?
+                            <React.Fragment>
+                                <ReuseButton handleClick={this.togglePlusMinus} text={"隐藏增减行"} />
+                                <Plus plus={plus}/>
+                                <Minus minus={minus}/>
+                            </React.Fragment>
+                            :
+                            <ReuseButton handleClick={this.togglePlusMinus} text={"显示增减行"} />
+                        }
+                    </div>
+                    <div>
+                        {this.state.showChooseWhereToShow
+                            ?
+                            <React.Fragment>
+                                <ReuseButton handleClick={this.toggleChooseWhereToShow} text={"关闭位置选择面板"} />
+                                <ChooseShowPositionExample />
+                                <ChooseShowPosition showInWhereArr={showInWhereArr}
+                                                    tableAdjToStacked={tableAdjToStacked}
+                                                    setShowInWhereArr={setShowInWhereArr}
+                                                    setMarbleLine={setMarbleLine}
+                                                    getTableWidth={this.getTableWidth}/>
+                            </React.Fragment>
+                            :
+                            <ReuseButton handleClick={this.toggleChooseWhereToShow} text={"打开位置选择面板"} />
+                        }
+                    </div>
 
-                {this.state.showCode
-                    ?
-                    <React.Fragment>
-                        <ReuseButton handleClick={this.toggleCode} text={"隐藏源码"} />
-                        <Code codeStr={codeStr} code={code}
-                              editingCodeToSave={this._editingCodeToSave}
-                              operatorDoNotNeedAuto={operatorDoNotNeedAuto} />
-                    </React.Fragment>
-                    :
-                    <ReuseButton handleClick={this.toggleCode} text={"显示源码"} />
-                }
-            </div>
+                    {this.state.showCode
+                        ?
+                        <React.Fragment>
+                            <ReuseButton handleClick={this.toggleCode} text={"隐藏源码"} />
+                            <CodeCompatible codeStr={codeStr} code={code}
+                                  editingCodeToSave={this._editingCodeToSave}
+                                  operatorDoNotNeedAuto={operatorDoNotNeedAuto} />
+                        </React.Fragment>
+                        :
+                        <ReuseButton handleClick={this.toggleCode} text={"显示源码"} />
+                    }
+                </div>
         )
     }
 }

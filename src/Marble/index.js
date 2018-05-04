@@ -1,5 +1,5 @@
-import Marble from './marble'
+import MarbleCompatible from './marble-compatible'
 
 
 
-export default Marble
+export default MarbleCompatible
