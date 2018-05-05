@@ -63,10 +63,8 @@ export default class MarbleBall extends React.PureComponent{
      * 扁平数据传递给drag-source，可省去不必要的渲染
      */
     componentDidMount(){
-        //console.log('MarbleBall didmount')
         const {marbleBallObj}=this.props
         const {top}=marbleBallObj
-        //const {data,text,left,...style}=marbleBallObj
         this.timer=setTimeout(()=>{
             this.setState({
                 top

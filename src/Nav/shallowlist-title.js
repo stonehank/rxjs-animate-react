@@ -1,7 +1,7 @@
 import React from 'react'
 import DeepListTitle from './deeplist-title'
 import {ReuseNavLink} from '../Widget'
-
+import {NavLink} from 'react-router-dom'
 
 export default class ShallowListTitle extends React.PureComponent {
     constructor(){
@@ -22,14 +22,14 @@ export default class ShallowListTitle extends React.PureComponent {
     }
     render() {
         //console.log('ShallowListTitle')
-        let {name,secondLi,secondUl,pathname,sortDeepList}=this.props
+        let {name,secondLi,secondUl,pathname,sortDeepList,activeStyle}=this.props
         const {showDeepListNav}=this.state
         return (
             <div onMouseEnter={this.handleMouseEnter}
                  onMouseLeave={this.handleMouseLeave}>
-                <ReuseNavLink toPath={`/${pathname}`}
-                              activeStyle={{borderBottom:'3px solid #dadada'}}
-                              name={name} />
+                <NavLink to={`/${pathname}`}
+                              activeStyle={activeStyle}
+                >{name}</NavLink>
                 {showDeepListNav
                     ?
                     <DeepListTitle

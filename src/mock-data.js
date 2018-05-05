@@ -1,13 +1,15 @@
 import Rx from 'rxjs/Rx';
-import {changeStatus} from './tools'
+import {changeStatus,checkScreen,checkIsPhone} from './tools'
 let count = 0
 let _deepList = []
-
-
-export const smallScreen=false
-export const LINETOP=30
-export const distanceEachSec=smallScreen ? 30 : 50
+let isPhone=checkIsPhone();
 window.Rx=Rx;
+
+
+export const initSmallScreen=isPhone || checkScreen();
+export const EACHLINEGAP=30
+export const distanceEachSec=50
+
 /**
  * 此处为 Rx.Subscriber 底下的三个命令进行添加，为了能精确显示当前状态
  * @param addFunc
@@ -30,11 +32,7 @@ function addCEUStatus(){
 }
 addCEUStatus()
 
-export const shallowList =smallScreen ?
-    [
-        {shallowTitle: '全部(按字母顺序)', sort: 'name', pathname: 'operators', notShowChild: true}
-    ] :
-    [
+export const shallowList = [
     {shallowTitle: '全部(按字母顺序)', sort: 'name', pathname: 'operators', notShowChild: true},
     {shallowTitle: '按点击量排序', sort: 'hits', pathname: 'hits'},
     {shallowTitle: '按常用程度排序', sort: 'useful', pathname: 'useful'}
@@ -263,7 +261,7 @@ export const Data = [
 
     let RxIntervalTake5,RxOfDelay, RxTakeUntil;
     RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
-    RxOfDelay = Rx.Observable.of(1).delay(3000);
+    RxOfDelay = Rx.Observable.of(1).delay(3500);
     RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay);
 
     //editArea

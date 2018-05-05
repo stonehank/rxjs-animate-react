@@ -10,14 +10,11 @@ export default class SortedNavPage extends React.Component{
         this.lastCapitalAlpha=''
     }
     shouldComponentUpdate(nextProps){
-        var {location,...curOtherProps}=this.props;
-        var {location,...nextOtherProps}=nextProps;
-        return !deepEqual(curOtherProps,nextOtherProps)
+        return !deepEqual(this.props,nextProps)
     }
     render(){
-        //console.log('AllSortPages')
+        console.log('AllSortPages')
         return(
-            /*context——Consumer*/
             <Consumer>
                 {({sortDeepList})=>{
                     const {match}=this.props,
@@ -40,8 +37,6 @@ export default class SortedNavPage extends React.Component{
                                         {showCapital?<p>{firstCapital}</p>:null}
                                         <ReuseNavLink   toPath={`operators/${e.name}`}
                                                         name={sortType!=='operators'?`${e.name}(${sortType}:${e[sortType]})`:`${e.name}`} />
-
-
                                     </li>
                                 )
                             })}

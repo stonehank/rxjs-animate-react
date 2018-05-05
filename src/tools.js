@@ -1,7 +1,23 @@
-import {Data,notFoundData,deepList,shallowList,LINETOP,distanceEachSec} from './mock-data'
+import {Data,notFoundData,deepList,shallowList,EACHLINEGAP,distanceEachSec} from './mock-data'
 //import Rx from 'rxjs/Rx';
 import {uniqWith,uniq} from 'lodash'
 
+
+export function checkScreen(){
+    let smallScreen;
+    window.outerWidth>=1024 ?
+        smallScreen=false :
+        smallScreen=true;
+    return smallScreen;
+}
+
+
+export function checkIsPhone(){
+    return /Android|Windows Phone|webOS|iPhone|iPod|BlackBerry|AppleWebKit.*Mobile|.*Mobile/i
+            .test(navigator.userAgent)
+        || /SymbianOS|MeeGo|MIDP|NOKIA|SAMSUNG|LG|NEC|TCL|UCBrowser|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/
+            .test(navigator.userAgent)
+}
 
 
 /**
@@ -148,23 +164,25 @@ export function deepSet(obj,path,value,objIsNewObj){
 export function deepEqual(obj1,obj2){
     let os=Object.prototype.toString,result=true;
     for(let key in obj1){
-        if(os.call(obj1[key])==='[object Array]' && os.call(obj2[key])==='[object Array]'){
-            if(obj1[key].length!==obj2[key].length){ return false}
-            result=deepEqual(obj1[key],obj2[key])
-        }else if(os.call(obj1[key])==='[object Object]' && os.call(obj2[key])==='[object Object]'){
-            if(Object.keys(obj1[key]).length!==Object.keys(obj2[key]).length){ return false}
-            result=deepEqual(obj1[key],obj2[key])
-        }else if(typeof obj1[key]==='function' && typeof obj2[key]==='function'){
-            if(obj1[key].toString()!==obj2[key].toString()){
-                return false
+        if(obj1.hasOwnProperty(key)){
+            if(os.call(obj1[key])==='[object Array]' && os.call(obj2[key])==='[object Array]'){
+                if(obj1[key].length!==obj2[key].length){ return false}
+                result=deepEqual(obj1[key],obj2[key])
+            }else if(os.call(obj1[key])==='[object Object]' && os.call(obj2[key])==='[object Object]'){
+                if(Object.keys(obj1[key]).length!==Object.keys(obj2[key]).length){ return false}
+                result=deepEqual(obj1[key],obj2[key])
+            }else if(typeof obj1[key]==='function' && typeof obj2[key]==='function'){
+                if(obj1[key].toString()!==obj2[key].toString()){
+                    return false
+                }
+            }else if(Number.isNaN(obj1[key]) && Number.isNaN(obj2[key])){
+                result=true;
+            }else if(obj1[key]!==obj2[key]){
+                return false;
             }
-        }else if(Number.isNaN(obj1[key]) && Number.isNaN(obj2[key])){
-            result=true;
-        }else if(obj1[key]!==obj2[key]){
-            return false;
-        }
-        if(!result){
-            return false;
+            if(!result){
+                return false;
+            }
         }
     }
     return true
@@ -249,43 +267,93 @@ export function clearFunc(unSubObj){
 
 
 
-export function calcColorBallNewPosition(line,whichLine,v,curTimeGap){
+export function calcColorBallNewPosition(line,whichLine,v,curTimeGap,isSmallScreen){
     let newObj;
     const numberWhichLine=parseInt(whichLine,10)
     let rightWhichLine=(numberWhichLine>0 && numberWhichLine<line);
     let lastLine=(whichLine==='last'|| numberWhichLine===line);
     let errorOrComplete=(v==='error'|| v==='complete');
     if(rightWhichLine){
-        newObj = Object.assign(getArgument(v,curTimeGap), {top: numberWhichLine * LINETOP})
+        newObj = Object.assign(getArgument(v,curTimeGap,isSmallScreen), {top: numberWhichLine * EACHLINEGAP})
     }else if(!rightWhichLine && !errorOrComplete && !lastLine){
-        newObj = getArgument(v,curTimeGap)
+        newObj = getArgument(v,curTimeGap,isSmallScreen)
     }else{
-        newObj = Object.assign(getArgument(v,curTimeGap), {top: line * LINETOP + 73})
+        newObj = Object.assign(getArgument(v,curTimeGap,isSmallScreen), {top: line * EACHLINEGAP + 63})
     }
     return newObj
 }
 
-function getArgument(v,curTimeGap){
+function getArgument(v,curTimeGap,isSmallScreen){
+    // console.time(1)
     let obj={};
-    let ts=Object.prototype.toString
-    let left=curTimeGap/1000*distanceEachSec;
+    let os=Object.prototype.toString
+    let left=curTimeGap/1000*(isSmallScreen ? distanceEachSec*0.6 : distanceEachSec);
     if(v==="complete") {
-        obj.data=v;obj.text='com';obj.left=left+20;
-        //obj.data=v;obj.text='com';obj.background='#008f0f';obj.left=left+20;obj.color='lightgreen';obj.fontWeight='bold';obj.letterSpacing='-1.5px';
+        obj={
+            data:v,
+            text:'com',
+            left:left+20,
+        }
+        // obj.data=v;obj.text='com';obj.left=left+20;
     } else if(v==="error") {
-        obj.data=v;obj.text='err';obj.left=left+20;
-        //obj.data=v;obj.text='err';obj.background='red';obj.left=left+20;obj.color='#fff';obj.fontWeight='bold';
+        obj={
+            data:v,
+            text:'err',
+            left:left+20,
+        }
+        // obj.data=v;obj.text='err';obj.left=left+20;
     } else if(typeof v==='number') {
-        obj.data=v;obj.text=v;obj.background='blue';obj.left=left;obj.top=LINETOP*2;obj.color='#fff';
+        obj={
+            data:v,
+            text:v,
+            background:'blue',
+            left:left,
+            top:EACHLINEGAP*2,
+            color:'#fff'
+        }
+        // obj.data=v;obj.text=v;obj.background='blue';obj.left=left;obj.top=EACHLINEGAP*2;obj.color='#fff';
     } else if(typeof v==='string') {
-        obj.data=v;obj.text=v;obj.background='green';obj.left=left;obj.top=LINETOP*2;obj.color='#000';
-    } else if(typeof v==='object' && ts.call(v).indexOf("Event")!==-1) {
-        obj.data=v;obj.text='ev';obj.background='yellow';obj.left=left;obj.top=LINETOP;obj.color='#000';
-    } else if(typeof v==='object' && ts.call(v)==='[object Object]') {
-        obj.data=v;obj.text='obj';obj.background='purple';obj.left=left;obj.top=LINETOP;obj.color='#fff';
-    } else if(typeof v==='object' && ts.call(v)==='[object Array]') {
-        obj.data=v;obj.text='arr';obj.background='orange';obj.left=left;obj.top=LINETOP;obj.color='#fff';
+        obj={
+            data:v,
+            text:v,
+            background:'green',
+            left:left,
+            top:EACHLINEGAP*2,
+            color:'#000'
+        }
+        // obj.data=v;obj.text=v;obj.background='green';obj.left=left;obj.top=EACHLINEGAP*2;obj.color='#000';
+    } else if(typeof v==='object' && os.call(v).indexOf("Event")!==-1) {
+        obj={
+            data:v,
+            text:'ev',
+            background:'yellow',
+            left:left,
+            top:EACHLINEGAP,
+            color:'#000'
+        }
+        // obj.data=v;obj.text='ev';obj.background='yellow';obj.left=left;obj.top=EACHLINEGAP;obj.color='#000';
+    } else if(typeof v==='object' && os.call(v)==='[object Object]') {
+        obj={
+            data:v,
+            text:'obj',
+            background:'purple',
+            left:left,
+            top:EACHLINEGAP,
+            color:'#fff'
+        }
+        // obj.data=v;obj.text='obj';obj.background='purple';obj.left=left;obj.top=EACHLINEGAP;obj.color='#fff';
+    } else if(typeof v==='object' && os.call(v)==='[object Array]') {
+        obj={
+            data:v,
+            text:'arr',
+            background:'orange',
+            left:left,
+            top:EACHLINEGAP,
+            color:'#fff'
+        }
+        // obj.data=v;obj.text='arr';obj.background='orange';obj.left=left;obj.top=EACHLINEGAP;obj.color='#fff';
     }
+    // console.timeEnd(1)
     return obj
 }
 
@@ -386,7 +454,7 @@ export function getSubPositionFromCode(code,allShow){
         reCalc=false;
         variables.forEach((e,i)=>{
             let obj={};
-            const subArr=finalCode.match(new RegExp('(mar|res)Sub\.'+e+'[^.]+'+'.subscribe.*','g')) ||[];
+            const subArr=finalCode.match(new RegExp('(mar|res)Sub.'+e+'[^.]+'+'.subscribe.*','g')) ||[];
             const subStr=subArr.join('');
             const matchArr=subStr.match(/^(?:mar|res)Sub.(Rx[^.;=(),+\s]+\b)\s*=.*?showInMar\s*,?\s*'?(\d|last)?'?/) || [];
             obj.name=matchArr[1] || e;

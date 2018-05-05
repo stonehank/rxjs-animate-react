@@ -2,6 +2,10 @@ import React from 'react'
 import {ReuseNavLink} from '../Widget'
 
 export default class DeepListTitle extends React.PureComponent{
+    constructor(){
+        super()
+        this.deepListActiveStyle={borderLeft:'4px solid #fff',paddingLeft:'0.5rem',background:'#B9BDB5',color:'#272926'}
+    }
     render(){
         //console.log('DeepListTitle')
         let {sortDeepList,secondLi,secondUl,pathname}=this.props;
@@ -12,7 +16,7 @@ export default class DeepListTitle extends React.PureComponent{
                     {sortDeepList.map((e)=>(
                         <li key={e.id} className={secondLi} onClick={this.props.deepListClick} >
                             <ReuseNavLink toPath={`/operators/${e.name}`}
-                                          activeStyle={{borderLeft:'4px solid #fff',paddingLeft:'0.5rem',background:'#B9BDB5',color:'#272926'}}
+                                          activeStyle={this.deepListActiveStyle}
                                           name={`${e.name}(${e[pathname]})`} />
                         </li>
                     ))}

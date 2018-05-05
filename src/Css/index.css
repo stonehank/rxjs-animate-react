@@ -105,7 +105,7 @@ button:focus {
 }
 
 #marble span {
-    height: 40px;
+    height: 30px;
     margin: 30px 0 0 2rem;
     border: 1px solid #000;
     width: 15rem;
@@ -271,7 +271,7 @@ button:focus {
 .show-wrap-wap{
     position: absolute;
     width: 100%;
-    top: 4rem;
+    top: 3.5rem;
     right: 0;
 }
 /*-----/Section/code-----*/
@@ -430,8 +430,8 @@ button:focus {
     width: 100%;
     position: relative;
     display: flex;
-    min-height:80vh;
-    justify-content: space-around;
+    min-height:70vh;
+    justify-content:start;
     flex-flow: column;
 }
 .section-sm button{

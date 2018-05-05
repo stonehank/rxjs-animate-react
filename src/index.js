@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router,withRouter}  from 'react-router-dom'
 import Rx from 'rxjs/Rx'
 import 'codemirror/lib/codemirror.css'
+
 import './Css/index.css'
 import Nav from './Nav'
 import Routes from './Routes/routes'
-import {sortMethod,_fetchNav} from './tools'
+import {checkIsPhone,checkScreen,sortMethod, _fetchNav} from './tools'
+import {initSmallScreen} from './mock-data'
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -24,11 +26,29 @@ class App extends React.Component{
         super()
         this.sortDeepList={};
         this.sortNavDeepList={};
-        this.state={isFetchingNav:true}
+        this.state={isFetchingNav:true,smallScreen:initSmallScreen}
+        if(!checkIsPhone()){
+            this.resize$=Rx.Observable.fromEvent(window,'resize')
+                .debounceTime(500)
+                .subscribe(()=>{
+                    const {smallScreen}=this.state,
+                        curRes=checkScreen()
+                    console.log(curRes,smallScreen)
+                    if(curRes!==smallScreen){
+                        this.setState({
+                            smallScreen:curRes
+                        })
+                    }
+                })
+        }
     }
     componentWillUnmount(){
+        if(this.resize$){
+            this.resize$.unsubscribe()
+        }
         this.fetch$.unsubscribe()
     }
+
     componentDidMount(){
         this.fetch$=Rx.Observable.fromPromise(_fetchNav())
             .subscribe(({deepList,shallowList})=>{
@@ -40,22 +60,29 @@ class App extends React.Component{
                 this.shallowList=shallowList;
                 this.setState({isFetchingNav:false})
             })
+
+    }
+    shouldComponentUpdate(nextProps,nextState){
+        const curPathName=this.props.location.pathname,
+            nextPathName=nextProps.location.pathname
+        return curPathName!==nextPathName || this.state!==nextState
+        // return !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
     }
     render(){
-        //console.log('app')
-        const {isFetchingNav}=this.state
+        // console.log('app')
+        const {isFetchingNav,smallScreen}=this.state
         const {sortDeepList,shallowList,sortNavDeepList}=this
+        const compatibleShallowList=smallScreen && shallowList?shallowList.slice(0,1):shallowList
         const curPathname=this.props.location.pathname.substr(1)
-        const contextProps={sortDeepList,sortNavDeepList,shallowList,curPathname}
+        const contextProps={sortDeepList,sortNavDeepList,compatibleShallowList,curPathname,smallScreen}
         return(
             isFetchingNav
                 ?
                 <p>loading..</p>
                 :
-                /*context——Provider*/
                 <Provider value={contextProps}>
                     <Nav type="webNav" orient="horizontal" showChild={true}/>
-                    <Routes shallowList={shallowList} curPathname={curPathname}/>
+                    <Routes shallowList={compatibleShallowList} curPathname={curPathname}/>
                 </Provider>
         )
     }

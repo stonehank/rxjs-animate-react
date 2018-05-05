@@ -1,10 +1,16 @@
 import React from 'react'
 import ShallowListTitle from './shallowlist-title'
+//此处不用reuse，否则activestyle 不更新
 import {ReuseNavLink} from '../Widget'
 import Search from '../Search'
 import {Consumer} from '../index'
+import {NavLink} from 'react-router-dom'
 
 export default class NavCore extends React.PureComponent {
+    constructor(){
+        super()
+        this.shallowListActiveStyle={borderBottom:'3px solid #dadada'}
+    }
 
     render() {
         let {css,showChild}=this.props
@@ -13,11 +19,11 @@ export default class NavCore extends React.PureComponent {
         return (
         /*context——Consumer*/
         <Consumer>
-            {({sortDeepList,sortNavDeepList,shallowList,curPathname})=>(
+            {({sortDeepList,sortNavDeepList,compatibleShallowList,curPathname})=>(
                 <React.Fragment>
                 <nav className={nav}>
                     <ul className={firstUl}>
-                        {shallowList.map((e, i)=>(
+                        {compatibleShallowList.map((e, i)=>(
                             <li key={i} className={firstLi}>
                                 {showChild && !e.notShowChild
                                     ?
@@ -27,11 +33,12 @@ export default class NavCore extends React.PureComponent {
                                                       secondLi={secondLi}
                                                       secondUl={secondUl}
                                                       curPathname={curPathname}
+                                                      activeStyle={this.shallowListActiveStyle}
                                                       i={i}/>
                                     :
-                                    <ReuseNavLink toPath={`/${e.pathname}`}
-                                                  activeStyle={{borderBottom:'3px solid #dadada'}}
-                                                  name={e.shallowTitle} />
+                                    <NavLink to={`/${e.pathname}`}
+                                                  activeStyle={this.shallowListActiveStyle}
+                                             >{e.shallowTitle}</NavLink>
                                 }
                             </li>
                         ))}
