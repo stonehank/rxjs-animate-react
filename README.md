@@ -1,6 +1,6 @@
 USE [Create React App](https://github.com/facebookincubator/create-react-app).
 
-### [DEMO](https://codesandbox.io/s/github/stonehank/animateRxjs-react)(建议大屏操作，暂未做分辨率适配)
+### [DEMO](https://codesandbox.io/s/github/stonehank/animateRxjs-react)
 
 #### 运行
 `npm install`
