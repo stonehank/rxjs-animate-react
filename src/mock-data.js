@@ -2,11 +2,10 @@ import Rx from 'rxjs/Rx';
 import {changeStatus,checkScreen,checkIsPhone} from './tools'
 let count = 0
 let _deepList = []
-let isPhone=checkIsPhone();
 window.Rx=Rx;
 
 
-export const initSmallScreen=isPhone || checkScreen();
+export const initSmallScreen=checkIsPhone() || checkScreen();
 export const EACHLINEGAP=30
 export const distanceEachSec=50
 
@@ -81,6 +80,7 @@ export const Data = [
         caption: '说明：' + '三行同时刷出小球 timer(0,30)',
         hits: 0,
         useful: 0,
+        doNotNeedAuto:true,
         //line: 3,
         marbleText: '测试性能',
         code: `

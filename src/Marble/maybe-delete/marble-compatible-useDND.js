@@ -1,5 +1,5 @@
 import React from 'react';
-import {clearFunc,checkDidAllunSub} from '../tools'
+import {clearFunc,checkDidAllunSub,shallowEqual} from '../tools'
 import MarbleComponent from './marble-component'
 import MarbleBall from './marble-ball'
 import ShowSubscribeStatus from './../Widget/show-subscribe-status';
@@ -8,7 +8,7 @@ import MarbleCaption from './marble-caption'
 import HrLine from './hr-line'
 import {ReuseButton} from '../Widget'
 
-export default class Marble extends React.PureComponent{
+export default class MarbleCompatible extends React.PureComponent{
     constructor(){
         super()
         this.state={
@@ -19,6 +19,9 @@ export default class Marble extends React.PureComponent{
         this.restorePosition=this.restorePosition.bind(this)
     }
 
+    // shouldComponentUpdate(nextProps){
+    //     return !shallowEqual(this.props,nextProps)
+    // }
     /**
      * 此处不unsubscribe会内存泄露
      */
@@ -55,7 +58,7 @@ export default class Marble extends React.PureComponent{
 
     render(){
         //console.log('Marble')
-        const {line,marbleText,marbleArr,unSubMarble}=this.props
+        const {line,marbleText,marbleArr,unSubMarble,smallScreen}=this.props
         const {isDragged,restorePositionKey}=this.state
         const _marbleArr=marbleArr?marbleArr:[]
         const _marbleArrLastObj=_marbleArr[_marbleArr.length-1]
@@ -65,7 +68,7 @@ export default class Marble extends React.PureComponent{
 
         let arr=new Array(line)
         if(Array.prototype.fill){
-             arr.fill(1)
+            arr.fill(1)
         }else{
             for(var i=0;i<arr.length;i++){
                 arr[i]=1

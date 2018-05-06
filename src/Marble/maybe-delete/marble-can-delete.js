@@ -1,13 +1,14 @@
 import React from 'react';
 import {clearFunc,checkDidAllunSub} from '../tools'
-import MarbleBallContainer from './marble-ball-container'
+import MarbleComponent from './marble-component'
+import MarbleBallUseDND from './marble-ball'
 import ShowSubscribeStatus from './../Widget/show-subscribe-status';
 import ShowExampleMarbleBall from './show-example-marbleball';
 import MarbleCaption from './marble-caption'
 import HrLine from './hr-line'
 import {ReuseButton} from '../Widget'
 
-export default class MarbleCompatible extends React.PureComponent{
+export default class MarbleCanDelete extends React.PureComponent{
     constructor(){
         super()
         this.state={
@@ -64,14 +65,14 @@ export default class MarbleCompatible extends React.PureComponent{
 
         let arr=new Array(line)
         if(Array.prototype.fill){
-            arr.fill(1)
+             arr.fill(1)
         }else{
             for(var i=0;i<arr.length;i++){
                 arr[i]=1
             }
         }
         return  (
-            <div id="marbleWrap" >
+            <MarbleComponent>
                 <div style={{fontSize:"1.2rem",color:"#000"}}>
                     <ShowExampleMarbleBall />
                     <ReuseButton className={"restore-pos"} handleClick={this.restorePosition} text={"拖拽还原"} disabled={!isDragged}/>
@@ -86,13 +87,13 @@ export default class MarbleCompatible extends React.PureComponent{
                     )}
                     <div id="dragMarble"></div>
                     {_marbleArr.map((e,i)=>
-                        <MarbleBallContainer marbleBallObj={e} key={i}
-                                    setIsDragged={this.setIsDragged}
-                                    restorePositionKey={restorePositionKey}
-                                    dragMaxLeft={decideHrWidths} />
+                        <MarbleBallUseDND marbleBallObj={e} key={i}
+                                          setIsDragged={this.setIsDragged}
+                                          restorePositionKey={restorePositionKey}
+                                          dragMaxLeft={decideHrWidths} />
                     )}
                 </div>
-            </div>
+            </MarbleComponent>
         )
     }
 }

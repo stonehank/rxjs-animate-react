@@ -3,10 +3,10 @@ import classNames from 'classnames'
 
 export default class PopText extends React.PureComponent{
     render(){
-        const {data,cssStyle,needStringify,className}=this.props
+        const {data,top,left,needStringify,className}=this.props
         const newClassName=classNames("pop-data",className?className:null)
         return(
-            <div className={newClassName}  style={cssStyle}>
+            <div className={newClassName}  style={{top,left}}>
                 <p dangerouslySetInnerHTML={{__html: data}} />
                 {needStringify
                     ?

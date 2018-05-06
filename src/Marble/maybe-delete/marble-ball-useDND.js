@@ -2,7 +2,7 @@ import React from 'react';
 import PopText from './../Widget/poptext'
 import MarbleBallComponent from './marble-ball-component';
 
-export default class MarbleBall extends React.PureComponent{
+export default class MarbleBallUseDND extends React.PureComponent{
     constructor(props){
         super(props)
         this.showPop=this.showPop.bind(this)

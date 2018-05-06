@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropTarget } from 'react-dnd';
 
-class MarbleComponent extends React.PureComponent{
+class MarbleComponentUseDNDNewAdd extends React.PureComponent{
     render(){
         const {connectDropTarget}=this.props
         return connectDropTarget(
@@ -24,4 +24,4 @@ const collect=(connect)=>{
     }
 }
 
-export default DropTarget(types, spec, collect)(MarbleComponent);
+export default DropTarget(types, spec, collect)(MarbleComponentUseDNDNewAdd);

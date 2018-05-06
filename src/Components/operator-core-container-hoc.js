@@ -1,15 +1,15 @@
 import React from 'react';
 import {Consumer} from '../index'
 import OperatorsCoreContainerCompatible from "./operator-core-container-compatible";
-let WithSmallScreenHoc;
+let OperatorCoreContainerHoc;
 
  function _HOC(props){
     return function(Component){
         return(
             <Consumer>
-                {({smallScreen})=>{
+                {({smallScreen,isPhone})=>{
                     return (
-                        <Component smallScreen={smallScreen} operatorName={props.match.params.section}/>
+                        <Component smallScreen={smallScreen} isPhone={isPhone} operatorName={props.match.params.section}/>
                     )
                 }}
             </Consumer>
@@ -18,6 +18,6 @@ let WithSmallScreenHoc;
 }
 
 
-export default  WithSmallScreenHoc=(props)=>{
+export default  OperatorCoreContainerHoc=(props)=>{
    return _HOC(props)(OperatorsCoreContainerCompatible)
 }

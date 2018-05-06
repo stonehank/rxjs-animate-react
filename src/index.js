@@ -27,13 +27,13 @@ class App extends React.Component{
         this.sortDeepList={};
         this.sortNavDeepList={};
         this.state={isFetchingNav:true,smallScreen:initSmallScreen}
-        if(!checkIsPhone()){
+        this.isPhone=checkIsPhone();
+        if(!this.isPhone){
             this.resize$=Rx.Observable.fromEvent(window,'resize')
                 .debounceTime(500)
                 .subscribe(()=>{
                     const {smallScreen}=this.state,
                         curRes=checkScreen()
-                    console.log(curRes,smallScreen)
                     if(curRes!==smallScreen){
                         this.setState({
                             smallScreen:curRes
@@ -71,10 +71,10 @@ class App extends React.Component{
     render(){
         // console.log('app')
         const {isFetchingNav,smallScreen}=this.state
-        const {sortDeepList,shallowList,sortNavDeepList}=this
+        const {sortDeepList,shallowList,sortNavDeepList,isPhone}=this
         const compatibleShallowList=smallScreen && shallowList?shallowList.slice(0,1):shallowList
         const curPathname=this.props.location.pathname.substr(1)
-        const contextProps={sortDeepList,sortNavDeepList,compatibleShallowList,curPathname,smallScreen}
+        const contextProps={sortDeepList,sortNavDeepList,compatibleShallowList,curPathname,smallScreen,isPhone}
         return(
             isFetchingNav
                 ?

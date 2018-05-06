@@ -352,7 +352,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
     }
     render(){
         //console.log('OperatorsCoreContainer')
-        const {smallScreen}=this.props
+        const {smallScreen,isPhone}=this.props
         const {isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,code,
             marbleArr,line,marbleText,resultValue,codeRunError,codErrorInfo}=this.state
         return(
@@ -381,7 +381,6 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
                             <div className={smallScreen ? "show-wrap-wap" : "show-wrap"}>
                                 {showMarble ?
                                     <MarbleCompatible timeStamp={this.marbleRefreshTimeStamp}
-                                                      smallScreen={smallScreen}
                                                       refreshStartStopButton={this.refreshStartStopButton}
                                                       unSubMarble={this.unSubMarble}
                                                       marbleArr={marbleArr}
