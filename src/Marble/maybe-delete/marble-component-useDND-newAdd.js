@@ -1,5 +1,5 @@
-import React from 'react';
-import { DropTarget } from 'react-dnd';
+// import React from 'react';
+// import { DropTarget } from 'react-dnd';
 
 class MarbleComponentUseDNDNewAdd extends React.PureComponent{
     render(){

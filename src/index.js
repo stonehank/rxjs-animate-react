@@ -11,10 +11,10 @@ import {checkIsPhone,checkScreen,sortMethod, _fetchNav} from './tools'
 import {initSmallScreen} from './mock-data'
 
 
-if (process.env.NODE_ENV !== 'production') {
-    const {whyDidYouUpdate} = require('why-did-you-update');
-    whyDidYouUpdate(React);
-}
+// if (process.env.NODE_ENV !== 'production') {
+//     const {whyDidYouUpdate} = require('why-did-you-update');
+//     whyDidYouUpdate(React);
+// }
 
 /**
  * 新API 创建context

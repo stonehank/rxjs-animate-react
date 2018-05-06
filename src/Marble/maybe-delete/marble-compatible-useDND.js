@@ -1,12 +1,12 @@
-import React from 'react';
-import {clearFunc,checkDidAllunSub,shallowEqual} from '../tools'
-import MarbleComponent from './marble-component'
-import MarbleBall from './marble-ball'
-import ShowSubscribeStatus from './../Widget/show-subscribe-status';
-import ShowExampleMarbleBall from './show-example-marbleball';
-import MarbleCaption from './marble-caption'
-import HrLine from './hr-line'
-import {ReuseButton} from '../Widget'
+// import React from 'react';
+// import {clearFunc,checkDidAllunSub,shallowEqual} from '../tools'
+// import MarbleComponent from './marble-component'
+// import MarbleBall from './marble-ball'
+// import ShowSubscribeStatus from './../Widget/show-subscribe-status';
+// import ShowExampleMarbleBall from './show-example-marbleball';
+// import MarbleCaption from './marble-caption'
+// import HrLine from './hr-line'
+// import {ReuseButton} from '../Widget'
 
 export default class MarbleCompatible extends React.PureComponent{
     constructor(){

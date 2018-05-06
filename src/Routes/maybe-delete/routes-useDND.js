@@ -1,12 +1,12 @@
-import React from 'react';
-import {Route,Switch}  from 'react-router-dom'
-import Overview from '../Components/overview'
-import SortedNavPage from '../Components/sorted-nav-page'
-import Page404 from '../Components/page404'
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-dnd';
-import WithSmallScreenHoc from "../Components/operator-core-container-hoc";
-import {deepEqual} from '../tools'
+// import React from 'react';
+// import {Route,Switch}  from 'react-router-dom'
+// import Overview from '../Components/overview'
+// import SortedNavPage from '../Components/sorted-nav-page'
+// import Page404 from '../Components/page404'
+// import HTML5Backend from 'react-dnd-html5-backend';
+// import { DragDropContext } from 'react-dnd';
+// import WithSmallScreenHoc from "../Components/operator-core-container-hoc";
+// import {deepEqual} from '../tools'
 
 export default class Routes extends React.Component{
 

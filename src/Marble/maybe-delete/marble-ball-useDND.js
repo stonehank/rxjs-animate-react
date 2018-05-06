@@ -1,6 +1,6 @@
-import React from 'react';
-import PopText from './../Widget/poptext'
-import MarbleBallComponent from './marble-ball-component';
+// import React from 'react';
+// import PopText from './../Widget/poptext'
+// import MarbleBallComponent from './marble-ball-component';
 
 export default class MarbleBallUseDND extends React.PureComponent{
     constructor(props){
