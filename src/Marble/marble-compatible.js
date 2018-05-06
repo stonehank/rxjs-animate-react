@@ -33,7 +33,7 @@ export default class MarbleCompatible extends React.PureComponent{
         const {marbleArr,unSubMarble,refreshStartStopButton}=this.props
         const _marbleArr=marbleArr?marbleArr:[]
 
-        if(Object.keys(unSubMarble).length>0 && checkDidAllunSub(unSubMarble)){
+        if(Object.keys(unSubMarble).length>0 ){
             refreshStartStopButton()
         }
         if(this.marbleArrLen===_marbleArr.length){return}
