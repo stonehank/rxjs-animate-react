@@ -1,5 +1,5 @@
 import React from 'react';
-import {deepSet,clearFunc,calcColorBallNewPosition,checkDidAllunSub,_fetchData,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine,deepEqual} from '../tools'
+import {deepEqual,shallowEqual,deepSet,clearFunc,calcColorBallNewPosition,checkDidAllunSub,_fetchData,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine} from '../tools'
 import SectionWrapCompatible from '../Section/section-wrap-compatible'
 import {PopText} from '../Widget'
 import MarbleCompatible from '../Marble'
@@ -61,7 +61,17 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * 如果用redux可以用redux-immutable
      */
     shouldComponentUpdate(nextProps,nextState){
-        return !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
+        // console.log(nextProps,nextState)
+        // console.time(1)
+        // nextProps.smallScreen?
+        //     !shallowEqual(this.props,nextProps) || !shallowEqual(this.state,nextState):
+        //     !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
+        // console.timeEnd(1)
+        // console.log(nextProps.smallScreen)
+
+        return nextProps.smallScreen ?
+         !shallowEqual(this.props,nextProps) || !shallowEqual(this.state,nextState) :
+         !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
         //return !is(fromJS(this.props),fromJS(nextProps))
         //     || !is(fromJS(this.state),fromJS(nextState))
 
@@ -75,7 +85,8 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      */
     static getDerivedStateFromProps(nextProps,prevState){
         const curOperatorName=prevState.curOperatorName,
-            nextOperatorName=nextProps.match.params.section;
+            nextOperatorName=nextProps.operatorName;
+            // nextOperatorName=nextProps.match.params.section;
         if(curOperatorName!==nextOperatorName){
             prevState.fetchDataSetState(nextOperatorName)
             return {
@@ -90,6 +101,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
                 smallScreen:nextProps.smallScreen
             }
         }
+
         return null;
     }
 

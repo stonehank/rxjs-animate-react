@@ -1,5 +1,5 @@
 import React from 'react';
-import {clearFunc,checkDidAllunSub} from '../tools'
+import {clearFunc,checkDidAllunSub,shallowEqual} from '../tools'
 import MarbleComponent from './marble-component'
 import MarbleBall from './marble-ball'
 import ShowSubscribeStatus from './../Widget/show-subscribe-status';
@@ -19,6 +19,9 @@ export default class MarbleCompatible extends React.PureComponent{
         this.restorePosition=this.restorePosition.bind(this)
     }
 
+    // shouldComponentUpdate(nextProps){
+    //     return !shallowEqual(this.props,nextProps)
+    // }
     /**
      * 此处不unsubscribe会内存泄露
      */

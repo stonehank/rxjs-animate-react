@@ -1,14 +1,16 @@
 import React from 'react';
 import {SlideCheckBox,ReuseButton} from '../Widget'
 import SectionContentCompatible from './section-content-compatible'
-import {deepEqual} from '../tools'
+import {deepEqual,shallowEqual} from '../tools'
 
 
 
 export default class SectionWrapCompatible extends React.Component{
 
     shouldComponentUpdate(nextProps){
-        return !deepEqual(this.props,nextProps)
+        return nextProps.smallScreen ?
+            !shallowEqual(this.props,nextProps) :
+            !deepEqual(this.props,nextProps)
     }
     render(){
         //console.log('SectionWrap')

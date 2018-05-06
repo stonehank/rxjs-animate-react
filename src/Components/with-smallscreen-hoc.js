@@ -9,7 +9,7 @@ let WithSmallScreenHoc;
             <Consumer>
                 {({smallScreen})=>{
                     return (
-                        <Component smallScreen={smallScreen} {...props}/>
+                        <Component smallScreen={smallScreen} operatorName={props.match.params.section}/>
                     )
                 }}
             </Consumer>

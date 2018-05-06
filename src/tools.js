@@ -154,6 +154,16 @@ export function deepSet(obj,path,value,objIsNewObj){
     return newObj
 }
 
+export function shallowEqual(obj1,obj2){
+    for(let key in obj1){
+        if(obj1.hasOwnProperty(key)){
+            if(obj1[key]!==obj2[key]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
 /**
  * 深比较
