@@ -5,7 +5,7 @@ import { Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/fromEvent'
 import 'rxjs/add/operator/debounceTime'
-import 'codemirror/lib/codemirror.css'
+
 
 import './Css/index.css'
 import Nav from './Nav'

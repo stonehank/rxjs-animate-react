@@ -1,7 +1,7 @@
 import React from 'react'
 import ShallowListTitle from './shallowlist-title'
 //此处不用reuse，否则activestyle 不更新
-import {ReuseNavLink} from '../Widget'
+// import {ReuseNavLink} from '../Widget'
 import Search from '../Search'
 import {Consumer} from '../index'
 import {NavLink} from 'react-router-dom'

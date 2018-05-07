@@ -3,9 +3,10 @@ import {ReuseButton,SlideCheckBox} from '../Widget'
 import CodeMirror from 'react-codemirror';
 import 'codemirror/mode/javascript/javascript'
 import {EDITRULES} from '../mock-data'
+import 'codemirror/lib/codemirror.css'
 import '../Css/codemirrorCus.css'
 
-export default class CodeCompatible extends React.PureComponent{
+export default class CodeEditable extends React.PureComponent{
     constructor(props){
         super(props)
         this.toEditing=this.toEditing.bind(this)
@@ -53,7 +54,7 @@ export default class CodeCompatible extends React.PureComponent{
     render(){
         //console.log('Code')
         const {editing,code,needAutoSubscribe}=this.state
-        const {codeStr,smallScreen}=this.props
+        const {codeStr}=this.props
         const options = {
             lineNumbers: true,
             mode:'javascript',
@@ -68,10 +69,6 @@ export default class CodeCompatible extends React.PureComponent{
             theme:'base16-dark'
         }
         return(
-            smallScreen ?
-                <div className="code-wrap">
-                    <pre>{codeStr}</pre>
-                </div> :
             editing
                 ?
                 <div className="code-wrap">

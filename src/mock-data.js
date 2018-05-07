@@ -543,8 +543,9 @@ export const Data = [
      `,},
     {
         name: 'debounce',
-        title: 'debounce:等待时间由另一个observable决定，不会立刻发送第一个源',
-        caption: '说明：' + '点击后会立刻输出最新值，而不像throttle等待下一次的最新值，此处是1秒内任意多次点击也只发出1次值，' +
+        title: ' debounce(durationSelector: function(value: T): SubscribableOrPromise): Observable',
+        caption: '说明：' + '只有在另一个 Observable 决定的一段特定时间经过后并且没有发出另一个源值之后，才从源 Observable 中发出一个值。<br>' +
+        '此处理解：当接受到第一个值，不会立刻发送。后续点击后立刻发出当前值，而不像throttle等待下一次的最新值，此处是1秒内任意多次点击也只发出1次值，' +
         '第二行为timer的行动（可以忽略），第三行为结果数据输出行，结合第二行可以更清楚的看出结果数据来源',
         hits: 762,
         useful: 875,
@@ -569,8 +570,9 @@ export const Data = [
      `,},
     {
         name: 'throttle',
-        title: 'throttle:等待时间由另一个observable决定，立刻发送第一个源',
-        caption: '说明：' + '点击后不立刻发出，而是会等下一个发射源，再发射出去，此处是1秒内任意多次点击也只发出1次值，' +
+        title: ' throttle(durationSelector: function(value: T): SubscribableOrPromise, config: Object): Observable\<\T\>',
+        caption: '说明：' + '从源 Observable 中发出一个值，然后在由另一个 Observable 决定的期间内忽略 随后发出的源值，然后重复此过程。<br>' +
+        '此处理解：当收到第一个值，不等待直接立刻发出，后续点击后不立刻发出，而是会等下一个发射源，再发射出去，此处是1秒内任意多次点击也只发出1次值，' +
         '第二行为timer的行动（可以忽略），第三行为结果数据输出行，结合第二行可以更清楚的看出结果数据来源',
         hits: 762,
         useful: 875,
@@ -621,7 +623,7 @@ export const Data = [
         name: 'throttleTime',
         title: 'throttleTime(duration: number, scheduler: Scheduler): Observable\<\T\>',
         caption: '说明：' + '从源 Observable 中发出一个值，然后在 duration 毫秒内忽略随后发出的源值， 然后重复此过程。<br>' +
-        '此处理解:收到第一个源立刻发送此处，有click就取消上一次的，这里间隔时间最多1秒',
+        '此处理解：收到第一个源立刻发送此处，有click就取消上一次的，这里间隔时间最多1秒',
         hits: 762,
         useful: 875,
         //line: 2,
@@ -647,7 +649,7 @@ export const Data = [
         name: 'debounceTime',
         title: 'debounceTime(dueTime: number, scheduler: Scheduler): Observable',
         caption: '说明：' + '只有在特定的一段时间经过后并且没有发出另一个源值，才从源 Observable 中发出一个值。<br>' +
-        '此处理解:有click就取消上一次的，间隔时间可超过1秒，最后发送最新值',
+        '此处理解：有click就取消上一次的，间隔时间可超过1秒，最后发送最新值',
         hits: 762,
         useful: 875,
         //line: 2,
@@ -672,7 +674,7 @@ export const Data = [
         name: 'concatMap',
         title: ' concatMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any): Observable',
         caption: '说明：将源值投射为一个合并到输出 Observable 的 Observable,以串行的方式等待前一个完成再合并下一个 Observable。<br>' +
-        '此处理解:先转换成高阶observable（map），再转换成一阶observable，此处累计click的次数，然后按顺序依次执行',
+        '此处理解：先转换成高阶observable（map），再转换成一阶observable，此处累计click的次数，然后按顺序依次执行',
         hits: 762,
         useful: 875,
         //line: 2,
@@ -727,7 +729,7 @@ export const Data = [
         name: 'concat',
         title: 'concat(other: ObservableInput, scheduler: Scheduler): Observable',
         caption: '说明：创建一个输出 Observable，它在当前 Observable 之后顺序地发出每个给定的输入 Observable 中的所有值。<br>' +
-        '此处理解:将2个源按顺序合并，点击3次鼠标后开始interval，这两个发射源结果是合并的',
+        '此处理解：将2个源按顺序合并，点击3次鼠标后开始interval，这两个发射源结果是合并的',
         hits: 1235,
         useful: 451,
         //line: 2,

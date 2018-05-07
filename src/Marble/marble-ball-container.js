@@ -67,7 +67,12 @@ export default class MarbleBallContainer extends React.PureComponent{
         this.draggingBall=null;
         ReactDOM.render(this.draggingBall,document.getElementById('dragMarble'))
 
-        if(isNaN(this.finalX)){return}
+        if(isNaN(this.finalX)){
+            this.setState({
+                opacity:1
+            })
+            return
+        }
         this.props.setIsDragged(true)
         this.setState(prevState=>({
             left:prevState.left+this.finalX,

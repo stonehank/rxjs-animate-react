@@ -1,10 +1,12 @@
 import React from 'react';
 import {Plus,Minus,ReuseButton} from '../Widget'
-import CodeCompatible from './code-compatible'
+// import CodeEditable from './code-editable'
 import ChooseShowPosition from './choose-show-position'
 import ChooseShowPositionExample from './choose-show-position-example'
 import SectionTitleCompatible from './section-title-compatible'
 import {calcCodeStrArrPlusMinus,deepEqual} from '../tools'
+import CodeSmallScreen from "./code-small-screen";
+import LazyOperatorsCoreContainer from "../LazyComponents/lazy-code-editable";
 
 
 export default class SectionContentCompatible extends React.Component{
@@ -100,7 +102,7 @@ export default class SectionContentCompatible extends React.Component{
             smallScreen ?
                 <React.Fragment>
                     <SectionTitleCompatible title={title} caption={caption} smallScreen={smallScreen}/>
-                    <CodeCompatible codeStr={codeStr} code={code} smallScreen={smallScreen}/>
+                    <CodeSmallScreen codeStr={codeStr}/>
                 </React.Fragment> :
                 <div ref={this.getSectionWidth}>
                     <SectionTitleCompatible title={title} caption={caption}/>
@@ -137,9 +139,9 @@ export default class SectionContentCompatible extends React.Component{
                         ?
                         <React.Fragment>
                             <ReuseButton handleClick={this.toggleCode} text={"隐藏源码"} />
-                            <CodeCompatible codeStr={codeStr} code={code}
-                                  editingCodeToSave={this._editingCodeToSave}
-                                  operatorDoNotNeedAuto={operatorDoNotNeedAuto} />
+                            <LazyOperatorsCoreContainer codeStr={codeStr} code={code}
+                                          editingCodeToSave={this._editingCodeToSave}
+                                          operatorDoNotNeedAuto={operatorDoNotNeedAuto} />
                         </React.Fragment>
                         :
                         <ReuseButton handleClick={this.toggleCode} text={"显示源码"} />

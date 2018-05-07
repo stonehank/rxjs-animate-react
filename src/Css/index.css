@@ -262,7 +262,7 @@ button:focus {
 }
 
 .show-wrap{
-    position: absolute;
+    position: fixed;
     width: 50%;
     top: 4rem;
     right: 0;
@@ -484,6 +484,9 @@ button:focus {
     font-weight: bold;
     margin-top: 0.5rem;
     position:relative;
+    display:flex;
+    flex-flow:row;
+    justify-content: space-between;
 }
 
 .section-caption{
@@ -503,11 +506,11 @@ button:focus {
     display: inline-block;
     width: 3rem;
     height: 100%;
-    position: absolute;
-    margin: 0 0.5rem 0 0 ;
-    right: 0;
-    top:0;
-    padding: 0;
+    /* position: absolute; */
+    margin: 0 0.5rem 0 0;
+    /* right: 0; */
+    /* top: 0; */
+    /* padding: 0; */
 }
 
 /*-----/Widget/choose-show-position-example-----*/
