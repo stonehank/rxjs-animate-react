@@ -13,14 +13,9 @@ export default class SortedNavPage extends React.Component{
         return !deepEqual(this.props,nextProps)
     }
     render(){
-        console.log('AllSortPages')
-        return(
-            <Consumer>
-                {({sortDeepList})=>{
-                    const {match}=this.props,
-                        curUrl=match.url,
-                        sortType=getPath(curUrl,0)
-                    const curSortDeepList=sortDeepList[sortType]
+        // console.log('SortedNavPage')
+        const {sortType,sortDeepList}=this.props
+        const curSortDeepList=sortDeepList[sortType]
                     return (
                         <div>
                             {curSortDeepList.map(e=>{
@@ -42,8 +37,5 @@ export default class SortedNavPage extends React.Component{
                             })}
                         </div>
                     )
-                }}
-            </Consumer>
-        )
     }
 }

@@ -1,9 +1,7 @@
-import Rx from 'rxjs/Rx';
+import { Subscriber} from 'rxjs/Subscriber';
 import {changeStatus,checkScreen,checkIsPhone} from './tools'
 let count = 0
 let _deepList = []
-window.Rx=Rx;
-
 
 export const initSmallScreen=checkIsPhone() || checkScreen();
 export const EACHLINEGAP=30
@@ -25,9 +23,9 @@ Function.prototype.addBefore=function(addFunc,status){
 }
 
 function addCEUStatus(){
-    Rx.Subscriber.prototype.complete=Rx.Subscriber.prototype.complete.addBefore(changeStatus,'complete')
-    Rx.Subscriber.prototype.error=Rx.Subscriber.prototype.error.addBefore(changeStatus,'error')
-    Rx.Subscriber.prototype.unsubscribe=Rx.Subscriber.prototype.unsubscribe.addBefore(changeStatus,'unsubscribe')
+    Subscriber.prototype.complete=Subscriber.prototype.complete.addBefore(changeStatus,'complete')
+    Subscriber.prototype.error=Subscriber.prototype.error.addBefore(changeStatus,'error')
+    Subscriber.prototype.unsubscribe=Subscriber.prototype.unsubscribe.addBefore(changeStatus,'unsubscribe')
 }
 addCEUStatus()
 

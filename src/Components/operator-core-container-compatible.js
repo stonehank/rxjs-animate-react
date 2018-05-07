@@ -1,10 +1,11 @@
 import React from 'react';
+import Rx from 'rxjs/Rx'
 import {deepEqual,shallowEqual,deepSet,clearFunc,calcColorBallNewPosition,checkDidAllunSub,_fetchData,getSubPositionFromCode,delSubscribe,addSubscribe,changeLine} from '../tools'
 import SectionWrapCompatible from '../Section/section-wrap-compatible'
 import {PopText} from '../Widget'
 import MarbleCompatible from '../Marble'
 import Result from '../Result'
-import Rx from 'rxjs/Rx'
+window.Rx=Rx;
 
 export default class OperatorsCoreContainerCompatible extends React.Component{
     constructor(props){

@@ -1,10 +1,10 @@
 import React from 'react';
 import {Route,Switch}  from 'react-router-dom'
 import Overview from '../Components/overview'
-import SortedNavPage from '../Components/sorted-nav-page'
 import Page404 from '../Components/page404'
-import OperatorCoreContainerHoc from "../Components/operator-core-container-hoc";
 import {deepEqual} from '../tools'
+import {LazySortedNavPage,LazyOperatorsCoreContainer} from '../LazyComponents'
+
 
 export default class Routes extends React.Component{
 
@@ -19,9 +19,9 @@ export default class Routes extends React.Component{
             <Switch>
                 <Route exact={true} path="/" component={Overview} />
                 {shallowList.map((e,i)=>(
-                    <Route exact={true} key={i} path={`/${e.pathname}`} component={SortedNavPage}/>
+                    <Route exact={true} key={i} path={`/${e.pathname}`} component={LazySortedNavPage}/>
                 ))}
-                <Route path='/operators/:section+' component={OperatorCoreContainerHoc}/>
+                <Route path='/operators/:section+' component={LazyOperatorsCoreContainer}/>
                 <Route component={Page404} />
             </Switch>
         )

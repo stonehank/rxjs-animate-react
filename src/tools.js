@@ -1,5 +1,4 @@
 import {Data,notFoundData,deepList,shallowList,EACHLINEGAP,distanceEachSec} from './mock-data'
-//import Rx from 'rxjs/Rx';
 import {uniqWith,uniq} from 'lodash'
 
 

@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router,withRouter}  from 'react-router-dom'
-import Rx from 'rxjs/Rx'
+import { Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/fromEvent'
+import 'rxjs/add/operator/debounceTime'
 import 'codemirror/lib/codemirror.css'
 
 import './Css/index.css'
@@ -11,10 +14,10 @@ import {checkIsPhone,checkScreen,sortMethod, _fetchNav} from './tools'
 import {initSmallScreen} from './mock-data'
 
 
-// if (process.env.NODE_ENV !== 'production') {
-//     const {whyDidYouUpdate} = require('why-did-you-update');
-//     whyDidYouUpdate(React);
-// }
+if (process.env.NODE_ENV !== 'production') {
+    const {whyDidYouUpdate} = require('why-did-you-update');
+    whyDidYouUpdate(React);
+}
 
 /**
  * 新API 创建context
@@ -29,7 +32,7 @@ class App extends React.Component{
         this.state={isFetchingNav:true,smallScreen:initSmallScreen}
         this.isPhone=checkIsPhone();
         if(!this.isPhone){
-            this.resize$=Rx.Observable.fromEvent(window,'resize')
+            this.resize$=Observable.fromEvent(window,'resize')
                 .debounceTime(500)
                 .subscribe(()=>{
                     const {smallScreen}=this.state,
@@ -50,7 +53,7 @@ class App extends React.Component{
     }
 
     componentDidMount(){
-        this.fetch$=Rx.Observable.fromPromise(_fetchNav())
+        this.fetch$=Observable.fromPromise(_fetchNav())
             .subscribe(({deepList,shallowList})=>{
                 shallowList.forEach(e=>{
                     let sortedList=sortMethod(e.sort,deepList)
