@@ -126,14 +126,12 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
     }
 
     setOrUpdateData(data,isUpdateCode,needAutoSubscribe){
+        const {code}=data
+        const getNewDataFromCode=getSubPositionFromCode(code,needAutoSubscribe);
+        const showInWhereArr=getNewDataFromCode.showInWhereArr;
+        const newCode=getNewDataFromCode.newCode;
+        const line=showInWhereArr.length;
         if(isUpdateCode){
-            const code=data;
-            this.unSubMarble={}
-            this.unSubResult={}
-            const getNewDataFromCode=getSubPositionFromCode(code,needAutoSubscribe);
-            const showInWhereArr=getNewDataFromCode.showInWhereArr;
-            const newCode=getNewDataFromCode.newCode;
-            const line=showInWhereArr.length;
             this.setState({
                 showInWhereArr,
                 code:newCode,
@@ -141,15 +139,11 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
                 line
             })
         }else{
-            const {title,name,caption,code,marbleText}=data;
+            const {title,name,caption,marbleText,doNotNeedAuto}=data;
             this.clearStart()
             this.unSubMarble={}
             this.unSubResult={}
-            this.doNotNeedAuto=data.doNotNeedAuto;
-            const getNewDataFromCode=getSubPositionFromCode(code);
-            const showInWhereArr=getNewDataFromCode.showInWhereArr;
-            const newCode=getNewDataFromCode.newCode;
-            const line=showInWhereArr.length;
+            this.doNotNeedAuto=doNotNeedAuto;
             this.setState({
                 showInWhereArr,
                 code:newCode,
@@ -196,7 +190,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
 
     editingCodeToSave(value,needAutoSubscribe){
         this.setState({isFetching:true})
-        this.setOrUpdateData(value,true,needAutoSubscribe)
+        this.setOrUpdateData({code:value},true,needAutoSubscribe)
     }
 
     /**
@@ -220,9 +214,9 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
         }
 
         //为了避免执行of操作符（立刻出现数据）， result的value出现又被以下清空，放到执行上面
-        this.setState(prevState=>({
+        this.setState({
             showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult),
-        }))
+        })
 
         /**
          * 执行code内部函数
@@ -315,8 +309,9 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * 根据当前subscription状态调整'开始按钮'状态
      */
     refreshStartStopButton(){
+        const {smallScreen,isPhone}=this.props
         this.setState({
-            showStartButton:checkDidAllunSub(this.unSubMarble,this.unSubResult)
+            showStartButton:smallScreen ? checkDidAllunSub(this.unSubMarble) : checkDidAllunSub(this.unSubMarble,this.unSubResult)
         })
     }
 

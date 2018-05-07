@@ -212,7 +212,7 @@ export const Data = [
     //editArea
 
     let RxInterval_Take,RxReduce;
-    RxInterval_Take = Rx.Observable.timer(1000).take(4);
+    RxInterval_Take = Rx.Observable.interval(1000).take(4);
     RxReduce = RxInterval_Take.scan((acc, cur) => acc + cur);
 
     //editArea
