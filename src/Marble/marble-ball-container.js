@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {PopText} from '../Widget'
 import MarbleBallComponent from './marble-ball-component'
-import {checkIsPhone} from "../tools";
+import {checkIsPhone} from '../tools'
 
 /**
  * 此处用pure而不用shouldComponentUpdate
@@ -17,10 +17,9 @@ export default class MarbleBallContainer extends React.PureComponent{
         this.dragStart=this.dragStart.bind(this)
         this.dragging=this.dragging.bind(this)
         this.dragOver=this.dragOver.bind(this);
-        this.isPhone=checkIsPhone()
         this.currentEventName=null;
-        this.phoneEvent={start:'onTouchStart',move:'touchmove',end:'touchend',eventX:(e)=>e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX}
-        this.desktopEvent={start:'onMouseDown',move:'mousemove',end:'mouseup',eventX:(e)=>e.clientX}
+        this.phoneEvent={move:'touchmove',end:'touchend',eventX:(e)=>e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX}
+        this.desktopEvent={move:'mousemove',end:'mouseup',eventX:(e)=>e.clientX}
         const {marbleBallObj,restorePositionKey}=this.props
         const {data,text,left,background,color,top}=marbleBallObj
         this.state={
@@ -49,7 +48,9 @@ export default class MarbleBallContainer extends React.PureComponent{
     dragStart(e){
         // e.stopPropagation()
         e.nativeEvent.stopImmediatePropagation()
-        this.currentEventName=this.isPhone ? this.phoneEvent : this.desktopEvent
+        // const {smallScreen}=this.state
+        const smallScreen=checkIsPhone();
+        this.currentEventName=smallScreen ? this.phoneEvent : this.desktopEvent
         this.initX=this.currentEventName.eventX(e)
         document.getElementById('root').style.cursor='-webkit-grabbing';
         document.addEventListener(this.currentEventName.move,this.dragging)

@@ -1,6 +1,7 @@
 import {Data,notFoundData,deepList,shallowList,EACHLINEGAP,distanceEachSec} from './mock-data'
-import {uniqWith,uniq} from 'lodash'
-
+// import {uniqWith,uniq} from 'lodash'
+const uniq=require('lodash/uniq')
+const uniqWith=require('lodash/uniqWith')
 
 export function checkScreen(){
     let smallScreen;

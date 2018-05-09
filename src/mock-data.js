@@ -1,9 +1,9 @@
 import { Subscriber} from 'rxjs/Subscriber';
-import {changeStatus,checkScreen,checkIsPhone} from './tools'
+import {changeStatus} from './tools'
 let count = 0
 let _deepList = []
 
-export const initSmallScreen=checkIsPhone() || checkScreen();
+// export const initSmallScreen=checkIsPhone() || checkScreen();
 export const EACHLINEGAP=30
 export const distanceEachSec=50
 

@@ -48,7 +48,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
             showStartButton:true,
             curOperatorName:'',
             fetchDataSetState:this.fetchDataSetState,
-            smallScreenRO:props.smallScreen
+            smallScreen:props.smallScreen
         }
     }
 
@@ -199,8 +199,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * @param e
      */
     testStart(){
-        const {smallScreen}=this.props
-        const {code}=this.state
+        const {smallScreen,code}=this.state
 
         if(code==="无数据"){alert('数据获取失败！请选择正确的操作符');return;}
         this.timeStamp=new Date().getTime()
@@ -272,7 +271,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
     clearStart(){
         this.allUnsubscribe()
         this.refreshResultMarble('clear')
-        if(this.props.smallScreen){
+        if(this.state.smallScreen){
             this.setState({
                 showMarble:false
             })
@@ -309,7 +308,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * 根据当前subscription状态调整'开始按钮'状态
      */
     refreshStartStopButton(){
-        const {smallScreen,isPhone}=this.props
+        const {smallScreen}=this.state
         this.setState({
             showStartButton:smallScreen ? checkDidAllunSub(this.unSubMarble) : checkDidAllunSub(this.unSubMarble,this.unSubResult)
         })
@@ -330,7 +329,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      */
     showRxjsInMarble(v,whichLine){
         const {line}=this.state;
-        const {smallScreen}=this.props
+        const {smallScreen}=this.state
         let curTimeStamp=new Date().getTime();
         let timeGap=curTimeStamp-this.timeStamp
         let marbleBallObj=calcColorBallNewPosition(line,whichLine,v,timeGap,smallScreen);
@@ -342,14 +341,15 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * @param v
      */
     showRxjsInResult(v){
+        const {smallScreen}=this.state
+        if(smallScreen){return}
         this.setState(prevState=>({
             resultValue:`${prevState.resultValue || ''}value:${v}&nbsp;&nbsp;stringify:${JSON.stringify(v)}<br>`
         }))
     }
     render(){
-        //console.log('OperatorsCoreContainer')
-        const {smallScreen,isPhone}=this.props
-        const {isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,code,
+        // console.log('OperatorsCoreContainer')
+        const {smallScreen,isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,code,
             marbleArr,line,marbleText,resultValue,codeRunError,codErrorInfo}=this.state
         return(
 
@@ -358,9 +358,9 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
                                     <PopText data={'Something error in code!<br>'+codErrorInfo} className="code-run-error" /> : null}
                             <SectionWrapCompatible
                                 isFetching={isFetching}
-                                smallScreen={smallScreen}
                                 basicData={basicData}
                                 code={code}
+                                smallScreen={smallScreen}
                                 showInWhereArr={showInWhereArr}
                                 setShowInWhereArr={this.setShowInWhereArr}
                                 setMarbleLine={this.setMarbleLine}
@@ -381,6 +381,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
                                                       unSubMarble={this.unSubMarble}
                                                       marbleArr={marbleArr}
                                                       line={line}
+                                                      smallScreen={smallScreen}
                                                       marbleText={marbleText} /> :
                                     null}
                                 {showResult && !smallScreen ?

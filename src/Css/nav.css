@@ -15,18 +15,18 @@
 
 
 .wapNavButtonHor{
-    width:3rem;
-    height:3rem;
+    width:2.5rem;
+    height:2.5rem;
     background:#BDC0BA;
     position: absolute;
-    top: 1rem;
+    top: 0.5rem;
     left: 1rem;
     border-radius:5px;
 }
 .wapNavButtonHor span{
     margin:0 auto;
     display:block;
-    padding-top:0.7rem;
+    padding-top:0.6rem;
     width:80%;
     border-bottom:1px solid #000;
 }
@@ -93,10 +93,19 @@
     line-height:2.5rem;
     vertical-align: middle;
     text-align: center;
-    border:3px #fff solid;
-    width:8rem;
-    background:#69b0ac;
+    border:1px #868686 solid;
+    background:#262626;
 }
+.firstLiHorWap:first-child{
+    border-radius:5px 5px 0 0;
+}
+.firstLiHorWap:last-child{
+    border-radius:0 0 5px 5px;
+}
+.firstLiHorWap:not(:last-child){
+    border-bottom:0
+}
+
 .secondLiHorWap{
     box-sizing:border-box;
     line-height:1.5rem;

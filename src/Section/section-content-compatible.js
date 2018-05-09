@@ -94,7 +94,7 @@ export default class SectionContentCompatible extends React.Component{
     }
 
     render(){
-        // console.log('SectionContent')
+        // console.log('SectionContentCompatible')
         const {title,caption}=this.props.basicData
         const {showInWhereArr,setShowInWhereArr,setMarbleLine,operatorDoNotNeedAuto,smallScreen}=this.props
         const {plus,minus,codeStr,code,tableAdjToStacked} =this.state

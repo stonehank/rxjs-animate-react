@@ -1,6 +1,9 @@
 import React from 'react'
+import { Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
+import {deepEqual} from '../tools'
 
-export default class Bundle extends React.PureComponent{
+export default class Bundle extends React.Component{
     constructor(props){
         super(props)
         this.loadMod=this.loadMod.bind(this)
@@ -11,6 +14,9 @@ export default class Bundle extends React.PureComponent{
             name:null
         }
     }
+    shouldComponentUpdate(nextProps,nextState){
+        return !deepEqual(nextProps,this.props) ||!deepEqual(nextState,this.state)
+    }
 
     static getDerivedStateFromProps(nextProps,prevState){
 
@@ -20,12 +26,16 @@ export default class Bundle extends React.PureComponent{
         return null
     }
 
+    componentWillUnmount(){
+         this.lazyLoad$.unsubscribe();
+    }
+
     loadMod(prop){
         this.setState({
             mod:null,
             err:null
         });
-        prop().then((mod)=>{
+        this.lazyLoad$=Observable.fromPromise(prop()).subscribe((mod)=>{
             this.setState({
                 mod:mod.default?mod.default:mod
             })
@@ -33,7 +43,7 @@ export default class Bundle extends React.PureComponent{
             this.setState({
                 err:err
             })
-        }).catch(err=>alert(err))
+        })
     }
     render(){
         const {mod,err}=this.state

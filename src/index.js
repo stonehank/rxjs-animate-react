@@ -6,12 +6,12 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/fromEvent'
 import 'rxjs/add/operator/debounceTime'
 
-
+import {ReuseButton} from './Widget'
 import './Css/index.css'
 import Nav from './Nav'
 import Routes from './Routes/routes'
-import {checkIsPhone,checkScreen,sortMethod, _fetchNav} from './tools'
-import {initSmallScreen} from './mock-data'
+import {checkIsPhone,checkScreen,sortMethod, _fetchNav,shallowEqual} from './tools'
+// import {initSmallScreen} from './mock-data'
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -27,11 +27,18 @@ export const {Provider,Consumer}=React.createContext()
 class App extends React.Component{
     constructor(){
         super()
+        // this.toggleScreen=this.toggleScreen.bind(this)
+        // this.closeWapNav=this.closeWapNav.bind(this)
+        // this.changeWapHorNav=this.changeWapHorNav.bind(this)
         this.sortDeepList={};
         this.sortNavDeepList={};
-        this.state={isFetchingNav:true,smallScreen:initSmallScreen}
-        this.isPhone=checkIsPhone();
-        if(!this.isPhone){
+        this.state={
+            isFetchingNav:true,
+            smallScreen:checkIsPhone(),
+            showWapHorNav:false
+        }
+        // this.isPhone=checkIsPhone();
+        // if(!this.isPhone){
             this.resize$=Observable.fromEvent(window,'resize')
                 .debounceTime(500)
                 .subscribe(()=>{
@@ -43,8 +50,24 @@ class App extends React.Component{
                         })
                     }
                 })
-        }
+        // }
     }
+
+    // toggleScreen(){
+    //     this.setState(prevState=>({
+    //         smallScreen:!prevState.smallScreen
+    //     }))
+    // }
+    // closeWapNav(){
+    //     if(this.state.showWapHorNav){
+    //          this.changeWapHorNav(false)
+    //     }
+    // }
+    // changeWapHorNav(bool){
+    //     this.setState({
+    //         showWapHorNav:bool
+    //     })
+    // }
     componentWillUnmount(){
         if(this.resize$){
             this.resize$.unsubscribe()
@@ -68,24 +91,28 @@ class App extends React.Component{
     shouldComponentUpdate(nextProps,nextState){
         const curPathName=this.props.location.pathname,
             nextPathName=nextProps.location.pathname
-        return curPathName!==nextPathName || this.state!==nextState
+        return curPathName!==nextPathName || !shallowEqual(this.state,nextState)
         // return !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
     }
     render(){
         // console.log('app')
         const {isFetchingNav,smallScreen}=this.state
-        const {sortDeepList,shallowList,sortNavDeepList,isPhone}=this
+        const {sortDeepList,shallowList,sortNavDeepList}=this
         const compatibleShallowList=smallScreen && shallowList?shallowList.slice(0,1):shallowList
         const curPathname=this.props.location.pathname.substr(1)
-        const contextProps={sortDeepList,sortNavDeepList,compatibleShallowList,curPathname,smallScreen,isPhone}
+        const contextProps={sortDeepList,sortNavDeepList,shallowList,curPathname,smallScreen}
         return(
             isFetchingNav
                 ?
                 <p>loading..</p>
                 :
                 <Provider value={contextProps}>
-                    <Nav type="webNav" orient="horizontal" showChild={true}/>
-                    <Routes shallowList={compatibleShallowList} curPathname={curPathname}/>
+                <div onClick={this.closeWapNav}>
+                    <Nav type={smallScreen ? "wapNav" : "webNav"}
+                         orient="horizontal" 
+                         showChild={smallScreen ? false : true}/>
+                    <Routes shallowList={shallowList} curPathname={curPathname}/>
+                </div>
                 </Provider>
         )
     }

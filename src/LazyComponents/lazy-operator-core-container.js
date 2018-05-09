@@ -10,7 +10,7 @@ export default class LazyOperatorsCoreContainer extends React.Component{
         const lazyPath=()=>import('../Components/operator-core-container-compatible')
         return(
             <Consumer>
-                {({smallScreen,isPhone})=>createSectionLazy(lazyPath, operatorName, {operatorName,smallScreen,isPhone})}
+                {({smallScreen})=>createSectionLazy(lazyPath, operatorName, {operatorName,smallScreen})}
             </Consumer>
         )
     }

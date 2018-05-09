@@ -87,9 +87,9 @@ export default class MarbleCompatible extends React.PureComponent{
                     <div id="dragMarble"></div>
                     {_marbleArr.map((e,i)=>
                         <MarbleBallContainer marbleBallObj={e} key={i}
-                                    setIsDragged={this.setIsDragged}
-                                    restorePositionKey={restorePositionKey}
-                                    dragMaxLeft={decideHrWidths} />
+                                             setIsDragged={this.setIsDragged}
+                                             restorePositionKey={restorePositionKey} 
+                                             dragMaxLeft={decideHrWidths} />
                     )}
                 </div>
             </div>
