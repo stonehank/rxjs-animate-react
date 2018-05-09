@@ -8,23 +8,26 @@ export default class WapNav extends React.PureComponent {
         this.state={
             showNav:false
         }
-        // this.closeWapNav=this.closeWapNav.bind(this)
+        this.closeWapNav=this.closeWapNav.bind(this)
         this.clickButton=this.clickButton.bind(this)
     }
-
-    // static getDerivedStateFromProps(nextProps,prevState){
-    //     if(nextProps.showWapHorNav!==prevState.showNav){
-    //         return {
-    //             showNav:nextProps.showWapHorNav
-    //         }
-    //     }
-    //     return null;
-    // }
+    componentDidMount(){
+        document.addEventListener('click',this.closeWapNav)
+    }
+    componentWillUnmount(){
+        document.removeEventListener('click',this.closeWapNav)
+    }
+    closeWapNav(){
+        this.setState({
+            showNav:false
+        })
+    }
 
     clickButton(e){
         e.stopPropagation()
         e.nativeEvent.stopImmediatePropagation();
         // this.props.changeWapHorNav(!this.state.showNav)
+
         this.setState((prevState)=>({
             showNav:!prevState.showNav
         }))
