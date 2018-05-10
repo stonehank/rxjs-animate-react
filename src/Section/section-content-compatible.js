@@ -142,12 +142,12 @@ export default class SectionContentCompatible extends React.Component{
                         {this.state.showPlusMinus
                             ?
                             <React.Fragment>
-                                <ReuseButton handleClick={this.togglePlusMinus} text={"隐藏增减行"} />
+                                <ReuseButton handleClick={this.togglePlusMinus} text={"隐藏代码edit差异"} />
                                 <Plus plus={plus}/>
                                 <Minus minus={minus}/>
                             </React.Fragment>
                             :
-                            <ReuseButton handleClick={this.togglePlusMinus} text={"显示增减行"} />
+                            <ReuseButton handleClick={this.togglePlusMinus} text={"显示代码edit差异"} />
                         }
                     </div>
                 </div>

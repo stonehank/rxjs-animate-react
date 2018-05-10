@@ -96,6 +96,63 @@ export const Data = [
     marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
 
          `},
+     {
+        name: 'bufferWhen',
+        title: 'bufferWhen(closingSelector: function(): Observable): Observable<T[]>',
+        caption: '说明：' + '缓冲源 Observable 的值, 使用关闭 Observable 的工厂函数来决定何时关闭、发出和重置缓冲区。<br>'+
+        '此处理解：第一行为发射源的值，每秒递增1，源值一发射立刻开启缓冲区，当鼠标click，结束当前缓冲区，发出缓冲值，然后立刻开启新的缓冲区，一直重复。',
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'bufferWhen()',
+        code: `
+
+    //editArea
+  
+    let RxInterval,RxClick,RxBufferWhen;
+    RxInterval = Rx.Observable.timer(0,1000).take(10);
+    RxClick = Rx.Observable.fromEvent(document,'click');    
+    RxBufferWhen = RxInterval.bufferWhen(()=>RxClick);
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 2));
+    marSub.RxBufferWhen = RxBufferWhen.subscribe(NEC(showInMar, 'last'));
+    resSub.RxBufferWhen = RxBufferWhen.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'bufferToggle',
+        title: 'bufferToggle(openings: SubscribableOrPromise<O>, closingSelector: function(value: O): SubscribableOrPromise): Observable<T[]>',
+        caption: '说明：' + '缓冲源 Observable 的值，openings 发送的时候开始缓冲，closingSelector 发送的时候结束缓冲。<br>'+
+        '此处理解：第一行为发射源的值，每秒递增1，这里opening是第一次click，closingSelector是click之后3秒，结果为之间的值(Array)。',
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'bufferToggle()',
+        code: `
+
+    //editArea
+  
+    let RxInterval,RxClick,RxBufferToggle,of$;
+    RxInterval = Rx.Observable.timer(0,1000).take(10);
+    RxClick = Rx.Observable.fromEvent(document,'click').take(1);      
+    of$ = Rx.Observable.of(1).delay(3000);
+    RxBufferToggle = RxInterval.bufferToggle(RxClick,()=>of$);
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 2));
+    marSub.RxBufferToggle = RxBufferToggle.subscribe(NEC(showInMar, 'last'));
+    resSub.RxBufferToggle = RxBufferToggle.subscribe(NEC(showInRes));
+
+
+         `},
     {
         name: 'bufferTime',
         title: 'bufferTime(bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler: Scheduler): Observable<T[]>',
@@ -109,20 +166,20 @@ export const Data = [
         '特别注意：此处一定要弄清楚第二个参数是创建新缓冲区，而不是清空旧的缓冲区，因此缓冲区可以有很多个。',
         hits: 152,
         useful: 562,
-        doNotNeedAuto:true,
+        doNotNeedAuto:false,
         //line: 3,
         marbleText: 'bufferTime(2200,3300)',
         code: `
 
     //editArea
   
-    let RxInterval,RxBufferTime;
-    RxInterval = Rx.Observable.timer(0,1000).take(10);
-    RxBufferTime = RxInterval.bufferTime(2200,3300);
+    let RxTimer,RxBufferTime;
+    RxTimer = Rx.Observable.timer(0,1000).take(10);
+    RxBufferTime = RxTimer.bufferTime(2200,3300);
 
     //editArea
 
-    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer = RxTimer.subscribe(NEC(showInMar, 1));
     marSub.RxBufferTime = RxBufferTime.subscribe(NEC(showInMar, 2));
     resSub.RxBufferTime = RxBufferTime.subscribe(NEC(showInRes));
 
@@ -139,18 +196,18 @@ export const Data = [
         '特别注意：此处一定要弄清楚第二个参数是创建新缓冲区，而不是清空旧的缓冲区，因此缓冲区可以有很多个。',
         hits: 152,
         useful: 562,
-        doNotNeedAuto:true,
+        doNotNeedAuto:false,
         //line: 3,
         marbleText: 'bufferCount(3,4)',
         code: `
 
     //editArea
   
-    let RxInterval,RxBufferCount;
-    RxInterval = Rx.Observable.timer(0,1000).take(10);
-    RxBufferCount = RxInterval.bufferCount(3,4);
+    let RxTimer,RxBufferCount;
+    RxTimer = Rx.Observable.timer(0,1000).take(10);
+    RxBufferCount = RxTimer.bufferCount(3,4);
     //editArea
-    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer = RxTimer.subscribe(NEC(showInMar, 1));
     marSub.RxBufferCount = RxBufferCount.subscribe(NEC(showInMar, 2));
     resSub.RxBufferCount = RxBufferCount.subscribe(NEC(showInRes));
 
@@ -164,20 +221,20 @@ export const Data = [
         '特别注意：buffer的缓冲区只有1个，每次发出缓冲值后即清空缓冲区再等待接受新的缓冲值，与bufferCount和bufferTime不同。',
         hits: 0,
         useful: 0,
-        doNotNeedAuto:true,
+        doNotNeedAuto:false,
         //line: 3,
         marbleText: 'buffer',
         code: `
 
     //editArea
   
-    let RxClick,RxInterval,RxBuffer;
+    let RxClick,RxTimer,RxBuffer;
     RxClick = Rx.Observable.fromEvent(document, 'click');
-    RxInterval = Rx.Observable.timer(0,1000).take(10);
-    RxBuffer = RxInterval.buffer(RxClick);
+    RxTimer = Rx.Observable.timer(0,1000).take(10);
+    RxBuffer = RxTimer.buffer(RxClick);
     //editArea
     marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 2));
+    marSub.RxTimer = RxTimer.subscribe(NEC(showInMar, 2));
     marSub.RxBuffer = RxBuffer.subscribe(NEC(showInMar, 3));
     resSub.RxBuffer = RxBuffer.subscribe(NEC(showInRes));
 

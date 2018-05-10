@@ -61,6 +61,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * 使用fromJS消耗很高，暂时用深比较
      * 如果用redux可以用redux-immutable
      */
+     //只检查state来更新，因为lazyload，props有变化则会重新加载
     shouldComponentUpdate(nextProps,nextState){
 
         return nextProps.smallScreen ?
@@ -102,7 +103,6 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
     // }
 
     componentDidMount(){
-       console.log(1)
          if(this.props.smallScreen!==this.state.smallScreen){
             this.setState({
                 showMarble:!this.props.smallScreen,
@@ -357,7 +357,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
         }))
     }
     render(){
-        console.log('OperatorsCoreContainer')
+        // console.log('OperatorsCoreContainer')
         const {smallScreen,isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,code,
             marbleArr,line,marbleText,resultValue,codeRunError,codErrorInfo}=this.state
         return(
