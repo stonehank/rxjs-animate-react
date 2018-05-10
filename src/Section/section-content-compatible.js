@@ -1,5 +1,5 @@
 import React from 'react';
-import {Plus,Minus,ReuseButton} from '../Widget'
+import {ReuseButton} from '../Widget'
 // import CodeEditable from './code-editable'
 import ChooseShowPosition from './choose-show-position'
 import ChooseShowPositionExample from './choose-show-position-example'
@@ -7,7 +7,7 @@ import SectionTitleCompatible from './section-title-compatible'
 import {calcCodeStrArrPlusMinus,deepEqual} from '../tools'
 import CodeSmallScreen from "./code-small-screen";
 import LazyOperatorsCoreContainer from "../LazyComponents/lazy-code-editable";
-import PlusMinus from './maybe-delete/plus-minus'
+
 
 export default class SectionContentCompatible extends React.Component{
     constructor(){
@@ -24,8 +24,8 @@ export default class SectionContentCompatible extends React.Component{
             showChooseWhereToShow:true,
             code:'',
             codeStr:'',
-            plus:[],
-            minus:[],
+            // plus:[],
+            // minus:[],
             prevCodeArr:[]
         }
     }
@@ -74,17 +74,17 @@ export default class SectionContentCompatible extends React.Component{
         const {code}=nextProps
         if(code===prevState.code){return null}
         const codeObj=calcCodeStrArrPlusMinus(code,prevState.prevCodeArr),
-            codeStr=codeObj.str,
-            minus=codeObj.minus,
-            plus=codeObj.plus;
+            codeStr=codeObj.str;
+            // minus=codeObj.minus,
+            // plus=codeObj.plus;
         //console.log(code,prevState.prevCodeArr,codeObj)
-        
+
         return {
             prevCodeArr:codeObj.arr,
             code,
             codeStr,
-            minus,
-            plus
+            // minus,
+            // plus
         }
     }
 
@@ -101,7 +101,6 @@ export default class SectionContentCompatible extends React.Component{
                 </React.Fragment> :
                 <div ref={this.getSectionWidth}>
                     <SectionTitleCompatible title={title} caption={caption}/>
-                    <PlusMinus plus={plus} minus={minus}/>
                     <div>
                         {this.state.showChooseWhereToShow
                             ?
