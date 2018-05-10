@@ -232,36 +232,6 @@ export const sortMethod=(sort,navArr)=>{
        return sortArr
 }
 
-/*对code方法*/
-
-/**
- * 根据 ; 分割
- * ; 后面可以跟 至少一个换行|任意空位符+Rx起头的变量名|任意\w后面接着(符号
- */
-export function code2Obj(code){
-    //console.time(1)
-    var curFuncStr=code+'',
-        rawArr=curFuncStr.split(/\s+\/\/editArea\s+/),
-        rawCodeStr=rawArr[1] ?
-            rawArr[1].replace(/;(\n+|\s*Rx[^.;=(),+\s]+|\s*\w+\$?\s*=[^)]*\()/g,";;$1")
-                .replace(/\B\s\B/g,'')
-                .replace(/({.*);;(.*})/g,'$1;$2') :
-            null,
-        arr=rawCodeStr?rawCodeStr.split(/;;/g):rawArr[0]==='无数据'?[]:rawArr,
-        str=rawCodeStr?rawCodeStr.replace(/;;(\n?)/g,'$1'==='\n'?';':';\n'):rawArr[0]==='无数据'?'':rawArr[0];
-    //console.log(rawCodeStr)
-    //console.timeEnd(1)
-    return {str,arr}
-};
-// function unique(arr){
-//    var unqiue=[]
-//    for(var i=0,len=arr.length;i<len;i++){
-//        if(arr.indexOf(arr[i])===i){
-//            unqiue.push(arr[i])
-//        }
-//    }
-//    return unqiue
-//}
 
 
 function clearWhich(unSub){
@@ -366,7 +336,44 @@ function getArgument(v,curTimeGap,isSmallScreen){
     // console.timeEnd(1)
     return obj
 }
+/*对code方法*/
 
+/**
+ * 根据 ; 分割
+ * ; 后面可以跟 至少一个换行|任意空位符+Rx起头的变量名|任意\w后面接着(符号
+ */
+export function code2Obj(code){
+    //console.time(1)
+    var curFuncStr=code+'',
+        rawArr=curFuncStr.split(/\s+\/\/editArea\s+/),
+        rawCodeStr=rawArr[1] ?
+            rawArr[1].replace(/;(\n+|\s*Rx[^.;=(),+\s]+|\s*\w+\$?\s*=[^)]*\()/g,";;$1")
+                .replace(/\B\s\B/g,'')
+                .replace(/({.*);;(.*})/g,'$1;$2') :
+            null,
+        arr=rawCodeStr?rawCodeStr.split(/;;/g):rawArr[0]==='无数据'?[]:rawArr,
+        str=rawCodeStr?rawCodeStr.replace(/;;(\n?)/g,'$1'==='\n'?';':';\n'):rawArr[0]==='无数据'?'':rawArr[0];
+    //console.log(rawCodeStr)
+    //console.timeEnd(1)
+    return {str,arr}
+};
+// function unique(arr){
+//    var unqiue=[]
+//    for(var i=0,len=arr.length;i<len;i++){
+//        if(arr.indexOf(arr[i])===i){
+//            unqiue.push(arr[i])
+//        }
+//    }
+//    return unqiue
+//}
+
+export function calcCodeStr(){
+
+}
+
+export function calcCodeArrPlusMinus(){
+
+}
 
 //todo lodash 优化
 export function calcCodeStrArrPlusMinus(code,prevCodeArr){

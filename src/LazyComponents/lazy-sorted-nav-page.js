@@ -9,7 +9,7 @@ export default class LazySortedNavPage extends React.Component{
         const {match}=this.props,
             curUrl=match.url,
             sortType=getPath(curUrl,0)
-        const lazyImportFunc=()=>import(`../Components/sorted-nav-page`)
+        const lazyImportFunc=()=>import('../Components/sorted-nav-page')
         return(
             <Consumer>
                 {({sortDeepList})=>createSectionLazy(lazyImportFunc, sortType, {sortType,sortDeepList})}

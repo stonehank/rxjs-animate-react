@@ -7,13 +7,12 @@ import SectionTitleCompatible from './section-title-compatible'
 import {calcCodeStrArrPlusMinus,deepEqual} from '../tools'
 import CodeSmallScreen from "./code-small-screen";
 import LazyOperatorsCoreContainer from "../LazyComponents/lazy-code-editable";
-
+import PlusMinus from './maybe-delete/plus-minus'
 
 export default class SectionContentCompatible extends React.Component{
     constructor(){
         super()
         this.toggleCode=this.toggleCode.bind(this)
-        this.togglePlusMinus=this.togglePlusMinus.bind(this)
         this.toggleChooseWhereToShow=this.toggleChooseWhereToShow.bind(this)
         this.getSectionWidth=this.getSectionWidth.bind(this)
         this.getTableWidth=this.getTableWidth.bind(this)
@@ -22,7 +21,6 @@ export default class SectionContentCompatible extends React.Component{
         this.state={
             tableAdjToStacked:false,
             showCode:true,
-            showPlusMinus:false,
             showChooseWhereToShow:true,
             code:'',
             codeStr:'',
@@ -31,11 +29,7 @@ export default class SectionContentCompatible extends React.Component{
             prevCodeArr:[]
         }
     }
-    togglePlusMinus(){
-        this.setState(prevState=>({
-            showPlusMinus:!prevState.showPlusMinus
-        }))
-    }
+   
     toggleCode(e){
         this.setState(prevState=>({
             showCode:!prevState.showCode
@@ -84,6 +78,7 @@ export default class SectionContentCompatible extends React.Component{
             minus=codeObj.minus,
             plus=codeObj.plus;
         //console.log(code,prevState.prevCodeArr,codeObj)
+        
         return {
             prevCodeArr:codeObj.arr,
             code,
@@ -106,18 +101,7 @@ export default class SectionContentCompatible extends React.Component{
                 </React.Fragment> :
                 <div ref={this.getSectionWidth}>
                     <SectionTitleCompatible title={title} caption={caption}/>
-                    <div>
-                        {this.state.showPlusMinus
-                            ?
-                            <React.Fragment>
-                                <ReuseButton handleClick={this.togglePlusMinus} text={"隐藏增减行"} />
-                                <Plus plus={plus}/>
-                                <Minus minus={minus}/>
-                            </React.Fragment>
-                            :
-                            <ReuseButton handleClick={this.togglePlusMinus} text={"显示增减行"} />
-                        }
-                    </div>
+                    <PlusMinus plus={plus} minus={minus}/>
                     <div>
                         {this.state.showChooseWhereToShow
                             ?

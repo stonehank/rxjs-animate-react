@@ -97,6 +97,93 @@ export const Data = [
 
          `},
     {
+        name: 'bufferTime',
+        title: 'bufferTime(bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler: Scheduler): Observable<T[]>',
+        caption: '说明：' + '在特定时间周期内缓冲源 Observable 的值。<br>'+
+        '此处理解： bufferTimeSpan是每隔多久发出之前的所有缓冲值，这里是2200ms；bufferCreationInterval是隔多久开始新的缓冲区，'+
+        '这里是3300ms，即创建新缓冲区的间隔都是3300ms；因此第一个缓冲区创建在0的位置，第二个创建在3.3的位置，第三个创建在6.6的'+
+        '位置，但因为bufferTimeSpan是2200ms; <br>'+
+        '因此第一个缓冲区到了2.2的位置，就会发出之前的所有缓冲值，而2.2-3.3这一段内的值(即3)会被忽略，<br>'+
+        '第二个缓冲区从3.3开始，bufferTimeSpan是2200ms,因此第二个到5.5的位置，就会发出之前所有缓冲值，而5.5-6.6这一段值(即6)会被忽略，<br>'+
+        '第三个缓冲区从6.6开始，bufferTimeSpan是2200ms,因此第三个个到8.8的位置发射之前所有缓冲值，然后9的时候complete。 <br>'+
+        '特别注意：此处一定要弄清楚第二个参数是创建新缓冲区，而不是清空旧的缓冲区，因此缓冲区可以有很多个。',
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'bufferTime(2200,3300)',
+        code: `
+
+    //editArea
+  
+    let RxInterval,RxBufferTime;
+    RxInterval = Rx.Observable.timer(0,1000).take(10);
+    RxBufferTime = RxInterval.bufferTime(2200,3300);
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxBufferTime = RxBufferTime.subscribe(NEC(showInMar, 2));
+    resSub.RxBufferTime = RxBufferTime.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'bufferCount',
+        title: 'bufferCount(bufferSize: number, startBufferEvery: number): Observable<T[]>',
+        caption: '说明：' + '缓冲源 Observable 的值直到缓冲数量到达设定的 bufferSize<br>'+
+        '此处理解：bufferSize是每次发出缓冲值数量，这里是3；startBufferEvery是何时开始新的缓冲区，'+
+        '这里是4，即每个新缓冲区的间隔都是4，因此第一个缓冲区创建在0的位置，第二个创建在4的位置，第三个'+
+        '创建在8的位置，但因为bufferSize是3，因此只会发出新缓存区的前3个值（最后1个值不发），而当到了9，发生complete'+
+        '而从8开始创建的缓冲区（第三个缓冲区）到9只有2个值，因此最后一次发出2个值。<br>'+
+        '特别注意：此处一定要弄清楚第二个参数是创建新缓冲区，而不是清空旧的缓冲区，因此缓冲区可以有很多个。',
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'bufferCount(3,4)',
+        code: `
+
+    //editArea
+  
+    let RxInterval,RxBufferCount;
+    RxInterval = Rx.Observable.timer(0,1000).take(10);
+    RxBufferCount = RxInterval.bufferCount(3,4);
+    //editArea
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxBufferCount = RxBufferCount.subscribe(NEC(showInMar, 2));
+    resSub.RxBufferCount = RxBufferCount.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'buffer',
+        title: 'buffer(closingNotifier: Observable<any>): Observable<T[]>',
+        caption: '说明：' + '缓冲源 Observable 的值直到 closingNotifier 发出<br>'+
+        '此处理解：每当收到closingNotifier，这里是click事件，变会将之前缓冲的值一次性以数组形式发出。<br>'+
+        '特别注意：buffer的缓冲区只有1个，每次发出缓冲值后即清空缓冲区再等待接受新的缓冲值，与bufferCount和bufferTime不同。',
+        hits: 0,
+        useful: 0,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'buffer',
+        code: `
+
+    //editArea
+  
+    let RxClick,RxInterval,RxBuffer;
+    RxClick = Rx.Observable.fromEvent(document, 'click');
+    RxInterval = Rx.Observable.timer(0,1000).take(10);
+    RxBuffer = RxInterval.buffer(RxClick);
+    //editArea
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 2));
+    marSub.RxBuffer = RxBuffer.subscribe(NEC(showInMar, 3));
+    resSub.RxBuffer = RxBuffer.subscribe(NEC(showInRes));
+
+
+         `},
+    {
         name: 'publish-refCount',
         title: 'publish().refCount()，不需要connect，共享数据',
         caption: '说明：' + '此处前3行发射源是"publish$"，后2行发射源是"publish2$"；<br>' +
