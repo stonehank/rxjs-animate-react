@@ -46,7 +46,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
             resultValue:false,
             marbleArr:false,
             showStartButton:true,
-            curOperatorName:'',
+            // curOperatorName:'',
             fetchDataSetState:this.fetchDataSetState,
             smallScreen:props.smallScreen
         }
@@ -62,19 +62,12 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * 如果用redux可以用redux-immutable
      */
     shouldComponentUpdate(nextProps,nextState){
-        // console.log(nextProps,nextState)
-        // console.time(1)
-        // nextProps.smallScreen?
-        //     !shallowEqual(this.props,nextProps) || !shallowEqual(this.state,nextState):
-        //     !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
-        // console.timeEnd(1)
-        // console.log(nextProps.smallScreen)
 
         return nextProps.smallScreen ?
-         !shallowEqual(this.props,nextProps) || !shallowEqual(this.state,nextState) :
-         !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
-        //return !is(fromJS(this.props),fromJS(nextProps))
-        //     || !is(fromJS(this.state),fromJS(nextState))
+         // !shallowEqual(this.props,nextProps) ||
+          !shallowEqual(this.state,nextState) :
+         // !deepEqual(this.props,nextProps) || 
+         !deepEqual(this.state,nextState)
 
     }
 
@@ -84,29 +77,45 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * @param prevState
      * @returns {*}
      */
-    static getDerivedStateFromProps(nextProps,prevState){
-        const curOperatorName=prevState.curOperatorName,
-            nextOperatorName=nextProps.operatorName;
-            // nextOperatorName=nextProps.match.params.section;
-        if(curOperatorName!==nextOperatorName){
-            prevState.fetchDataSetState(nextOperatorName)
-            return {
-                isFetching:true,
-                showStartButton:true,
-                curOperatorName:nextOperatorName
-            }
-        }
-        if(nextProps.smallScreen!==prevState.smallScreen){
-            return {
-                showMarble:!nextProps.smallScreen,
-                smallScreen:nextProps.smallScreen
-            }
-        }
+    // static getDerivedStateFromProps(nextProps,prevState){
+        
+    //     const curOperatorName=prevState.curOperatorName,
+    //         nextOperatorName=nextProps.operatorName;
+    //         // nextOperatorName=nextProps.match.params.section;
+    //         console.log(curOperatorName,nextOperatorName)
+    //     if(curOperatorName!==nextOperatorName){
+    //         prevState.fetchDataSetState(nextOperatorName)
+    //         return {
+    //             isFetching:true,
+    //             showStartButton:true,
+    //             curOperatorName:nextOperatorName
+    //         }
+    //     }
+    //     if(nextProps.smallScreen!==prevState.smallScreen){
+    //         return {
+    //             showMarble:!nextProps.smallScreen,
+    //             smallScreen:nextProps.smallScreen
+    //         }
+    //     }
 
-        return null;
+    //     return null;
+    // }
+
+    componentDidMount(){
+       console.log(1)
+         if(this.props.smallScreen!==this.state.smallScreen){
+            this.setState({
+                showMarble:!this.props.smallScreen,
+                smallScreen:this.props.smallScreen
+            })
+        }
+         this.state.fetchDataSetState(this.props.operatorName)
+            // this.setState({
+            //     isFetching:true,
+            //     showStartButton:true,
+            //     // curOperatorName:this.props.operatorName
+            // })
     }
-
-
 
     /**
      * result checkbox事件
@@ -348,7 +357,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
         }))
     }
     render(){
-        // console.log('OperatorsCoreContainer')
+        console.log('OperatorsCoreContainer')
         const {smallScreen,isFetching,basicData,showMarble,showResult,showStartButton,showInWhereArr,code,
             marbleArr,line,marbleText,resultValue,codeRunError,codErrorInfo}=this.state
         return(

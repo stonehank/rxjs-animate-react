@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default class Plus extends React.PureComponent{
+ 
     render(){
         //console.log('Plus')
         const {plus}=this.props

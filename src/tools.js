@@ -367,13 +367,6 @@ export function code2Obj(code){
 //    return unqiue
 //}
 
-export function calcCodeStr(){
-
-}
-
-export function calcCodeArrPlusMinus(){
-
-}
 
 //todo lodash 优化
 export function calcCodeStrArrPlusMinus(code,prevCodeArr){
