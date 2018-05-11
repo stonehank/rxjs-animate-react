@@ -96,6 +96,78 @@ export const Data = [
     marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
 
          `},
+    {
+        name: 'combineLatest',
+        title: 'static combineLatest(observable1: ObservableInput, observable2: ObservableInput, project: function, scheduler: Scheduler): Observable',
+        caption: '说明：' + '组合多个 Observables 来创建一个 Observable ，该 Observable 的值根据每个输入 Observable 的最新值计算得出的。'+
+        '为了保证输出数组的长度相同，combineLatest 实际上会等待所有的输入 Observable 至少发出一次， 在返回 Observable 发出之前。'+
+        '这意味着如果某个输入 Observable 在其余的输入 Observable 之前发出，它所发出 的值只保留最新的。<br>'+
+        '操作说明：点击开始即可。<br>'+
+        '此处理解：第三个参数project：function可选，接受上一次的最新值作为参数，这里是(x,y)=>x+y；<br>'+
+        '1秒后interval1发出0，此时interval2还未发出值，因此等待；<br>'+
+        '1.5秒后，interval2发出0，此时interval1最新值为0，intervale2最新值为0，发出x+y即0；<br>'+
+        '2秒后，interval1发出1，最新值为1，interval2最新值还是0，发出x+y即1；<br>3秒后，interval2最新值为1，发出x+y即2。<br>'+
+        '特别注意：当任何一个发射源出现错误，combineLatest也发出错误。',
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'combineLatest()',
+        code: `
+
+    //editArea
+  
+    let RxInterval1,RxInterval2,RxCombineLatest;
+    RxInterval1 = Rx.Observable.interval(1000).take(2); 
+    RxInterval2 = Rx.Observable.interval(1500).take(2);
+    RxCombineLatest = Rx.Observable.combineLatest(RxInterval1,RxInterval2,(x,y)=>x+y);
+
+    //editArea
+
+    marSub.RxInterval1 = RxInterval1.subscribe(NEC(showInMar, 1));
+    marSub.RxInterval2 = RxInterval2.subscribe(NEC(showInMar, 2));
+    marSub.RxCombineLatest = RxCombineLatest.subscribe(NEC(showInMar, 'last'));
+    resSub.RxCombineLatest = RxCombineLatest.subscribe(NEC(showInRes));
+
+
+         `},
+      {
+        name: 'combineAll',
+        title: 'combineAll(project: function): Observable',
+        caption: '说明：' + '通过等待外部 Observable 完成然后应用 combineLatest ，将高阶 Observable 转化为一阶 Observable。<br>'+
+        '操作说明：点击2次后，触发combineAll。<br>'+
+        '此处理解：RxClick是外部源，点击2次即结束，RxClick.map(e=>interval$)是一个高阶Observable，如果没有combineAll，那么结果就是每次点击后，触发interval$，类似：<br>'+
+        'click1->interval1$(0,1,2)<br>'+
+        'click2->interval2$(0,1,2)<br>'+
+        '但现在用了combineAll，即将他们任何变更后最新的值组合一起<br>'+
+        '当click1触发的interval1$的最新值为0时，click2触发的interval2$最新值最多为0，因为interval1$比interval2$提前触发，因此第一个组合[0,0]；<br>'+
+        '当interval1$最新值变成1时，interval2$还是0，组合[1,0]；<br>'+
+        '然后interval2$再变成1，组合[1,1]；<br>'+
+        '当interval1$最新值变成2时，interval2$还是1，因此组合[2,1]；<br>'+
+        '然后interval2$再变成2，组合[2,2]。<br>'+
+        '特别注意：最好先要理解combineLatest（任何源任何变动都发出所有最新值）。',
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'combineAll()',
+        code: `
+
+    //editArea
+  
+    let interval$,RxClick,RxCombineAll;
+    RxClick = Rx.Observable.fromEvent(document,'click').take(2); 
+    interval$= Rx.Observable.interval(1000).take(3);
+    RxCombineAll = RxClick.map(e=>interval$).combineAll();
+
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxCombineAll = RxCombineAll.subscribe(NEC(showInMar, 'last'));
+    resSub.RxCombineAll = RxCombineAll.subscribe(NEC(showInRes));
+
+
+         `},
      {
         name: 'bufferWhen',
         title: 'bufferWhen(closingSelector: function(): Observable): Observable<T[]>',
