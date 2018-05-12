@@ -71,6 +71,8 @@ export const EDITRULES=`
  * */
 
 
+
+
 export const Data = [
     {
         name: '测试性能',
@@ -96,6 +98,201 @@ export const Data = [
     marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
 
          `},
+     {
+        name: 'groupBy',
+        title: 'groupBy(keySelector: function(value: T): K, elementSelector: function(value: T): R, durationSelector: function(grouped: GroupedObservable<K, R>): Observable<any>): Observable<GroupedObservable<K, R>>',
+        caption: `
+        官方说明：根据指定条件将源 Observable 发出的值进行分组，并将这些分组作为 GroupedObservables 发出，每一个分组都是一个 GroupedObservable 。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：此处第一个函数返id的值(以此分割group)，第二个函数返回name的值；在reduce函数内，group$.key则为id的值，cur为name的值；<br>
+        group1第一次reduce：acc为['1']，cur为'aze1'，返回['1','aze1']<br>
+        group2第一次reduce：acc为['2']，cur为'sf2'，返回['2','sf2']<br>
+        group2第二次reduce：acc为['2','sf2']，cur为'dg2'，返回['2','sf2','dg2']<br>
+        group1第二次reduce：acc为['1','aze1']，cur为'erg1'，返回['1','aze1','erg1']<br>
+        ...直到最后，此时<br>
+        group1为['1','aze1','erg1','df1']<br>
+        group2为['2','sf2','dg2','sfqfb2','qsgqsfg2']<br>
+        group3为['3','qfs3']<br>
+        再进行map，即可得出结果。<br>
+        特别注意：第一个函数返回的是分割group的依据，使用group.key调用；第二个函数返回是需要的返回值，如果不写则返回整个对象。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'groupBy()',
+        code: `
+
+    //editArea
+  
+    let RxOf,RxGroupBy;
+    RxOf = Rx.Observable.of({id: 1, name: 'aze1'},
+                   {id: 2, name: 'sf2'},
+                   {id: 2, name: 'dg2'},
+                   {id: 1, name: 'erg1'},
+                   {id: 1, name: 'df1'},
+                   {id: 2, name: 'sfqfb2'},
+                   {id: 3, name: 'qfs3'},
+                   {id: 2, name: 'qsgqsfg2'});
+    
+    RxGroupBy = RxOf.groupBy(p => p.id,p=>p.name)
+    .mergeMap((group$) => group$.reduce((acc, cur) => [...acc, cur], ["" + group$.key]))
+    .map(arr => ({'id': parseInt(arr[0]), 'values': arr.slice(1)}));
+
+    //editArea
+
+    marSub.RxOf = RxOf.subscribe(NEC(showInMar, 1));
+    marSub.RxGroupBy = RxGroupBy.subscribe(NEC(showInMar,2));
+    resSub.RxGroupBy = RxGroupBy.subscribe(NEC(showInRes));
+
+
+         `},
+     {
+        name: 'first',
+        title: 'first(predicate: function(value: T, index: number, source: Observable<T>): boolean, resultSelector: function(value: T, index: number): R, defaultValue: R): Observable<T | R>',
+        caption: `
+        官方说明：只发出由源 Observable 所发出的值中第一个(或第一个满足条件的值)。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：无参数则返回第一个发射的值，有参数则返回第一个符合条件的值(参考find)。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'first()',
+        code: `
+
+    //editArea
+  
+    let RxInterval,RxFirst;
+    RxInterval = Rx.Observable.interval(1000).take(3); 
+    RxFirst = RxInterval.first();
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxFirst = RxFirst.subscribe(NEC(showInMar, 'last'));
+    resSub.RxFirst = RxFirst.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'findIndex',
+        title: 'findIndex(predicate: function(value: T, index: number, source: Observable<T>): boolean, thisArg: any): Observable<T>',
+        caption: `
+        官方说明：只发出源 Observable 所发出的值中第一个满足条件的值的索引。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：过滤出predicate返回值为true的值，只发出符合条件的第一个值的索引。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'findIndex(n=>n%2===0)',
+        code: `
+
+    //editArea
+  
+    let RxInterval,RxFindIndex;
+    RxInterval = Rx.Observable.interval(1000).take(7); 
+    RxFindIndex = RxInterval.findIndex(n=>n%2===0);
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxFindIndex = RxFindIndex.subscribe(NEC(showInMar, 'last'));
+    resSub.RxFindIndex = RxFindIndex.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'find',
+        title: 'find(predicate: function(value: T, index: number, source: Observable<T>): boolean, thisArg: any): Observable<T>',
+        caption: `
+        官方说明：只发出源 Observable 所发出的值中第一个满足条件的值<br>
+        操作说明：点击开始即可。<br>
+        此处理解：过滤出predicate返回值为true的值，只发出符合条件的第一个值。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'find(n=>n%2===0)',
+        code: `
+
+    //editArea
+  
+    let RxInterval,RxFind;
+    RxInterval = Rx.Observable.interval(1000).take(7); 
+    RxFind = RxInterval.find(n=>n%2===0);
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxFind = RxFind.subscribe(NEC(showInMar, 'last'));
+    resSub.RxFind = RxFind.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'filter',
+        title: 'filter(predicate: function(value: T, index: number): boolean, thisArg: any): Observable',
+        caption: `
+        官方说明：通过只发送源 Observable 的中满足指定 predicate 函数的项来进行过滤。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：过滤出predicate返回值为true的值，组成新的发射源，此处过滤偶数。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'filter(n=>n%2===0)',
+        code: `
+
+    //editArea
+  
+    let RxInterval,RxFilter;
+    RxInterval = Rx.Observable.interval(1000).take(7); 
+    RxFilter = RxInterval.filter(n=>n%2===0);
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxFilter = RxFilter.subscribe(NEC(showInMar, 'last'));
+    resSub.RxFilter = RxFilter.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'expand',
+        title: 'expand(project: function(value: T, index: number), concurrent: number): Observable',
+        caption: `
+        官方说明：递归地将每个源值投射成 Observable，这个 Observable 会被合并到输出 Observable 中。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：mapTo将click转换成数字1，传给project，project返回值是2*1，再将返回值递归传递给project，一直如此下去，此处最多递归10次。<br>
+        特别注意：如果不设定次数限制，递归是无限的。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'expand()',
+        code: `
+
+    //editArea
+  
+    let of$,RxClick,RxExpand;
+    RxClick = Rx.Observable.fromEvent(document,'click').mapTo(1).take(1); 
+    of$= Rx.Observable.of(2).delay(1000);
+    RxExpand = RxClick.expand(n=>of$.map(x=>x*n)).take(10);
+
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxExpand = RxExpand.subscribe(NEC(showInMar, 'last'));
+    resSub.RxExpand = RxExpand.subscribe(NEC(showInRes));
+
+
+         `},
+    
     {
         name: 'pluck',
         title: 'pluck(properties: ...string): Observable',

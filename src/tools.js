@@ -1,4 +1,5 @@
 import {Data,notFoundData,deepList,shallowList,EACHLINEGAP,distanceEachSec} from './mock-data'
+import {CODE2KEY} from './key-code'
 // import {uniqWith,uniq} from 'lodash'
 const uniq=require('lodash/uniq')
 const uniqWith=require('lodash/uniqWith')
@@ -305,7 +306,7 @@ function getArgument(v,curTimeGap,isSmallScreen){
     } else if(typeof v==='object' && os.call(v).indexOf("Event")!==-1) {
         obj={
             data:v,
-            text:'ev',
+            text:CODE2KEY[v.keyCode||v.which] || "ev",
             background:'yellow',
             left:left,
             top:EACHLINEGAP,
@@ -369,11 +370,11 @@ export function code2Obj(code){
         rawCodeStr=rawArr[1] ?
             rawArr[1].replace(/;(\n+|\s*Rx[^.;=(),+\s]+|\s*\w+\$?\s*=[^)]*\()/g,";;$1")
                 .replace(/\B\s\B/g,'')
-                .replace(/({.*);;(.*})/g,'$1;$2') :
+                .replace(/({[^}]*);;([^{]*})/g,'$1;$2') :
             null,
         arr=rawCodeStr?rawCodeStr.split(/;;/g):rawArr[0]==='无数据'?[]:rawArr,
         str=rawCodeStr?rawCodeStr.replace(/;;(\n?)/g,'$1'==='\n'?';':';\n'):rawArr[0]==='无数据'?'':rawArr[0];
-    //console.log(rawCodeStr)
+    // console.log(rawCodeStr)
     //console.timeEnd(1)
     return {str,arr}
 };

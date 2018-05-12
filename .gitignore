@@ -24,3 +24,4 @@ yarn-error.log*
 
 .idea/
 maybe-delete/
+snake-data.js
