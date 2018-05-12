@@ -32,7 +32,9 @@ USE [Create React App](https://github.com/facebookincubator/create-react-app).
 5. Marble：每种数据类型都有对应颜色的小球。
 6. 当前状态：会精确显示当前订阅情况(包括complete,error,subscribe,unsubscribe)。
 7. 开启/关闭界面：开启/关闭Marble界面和Result界面(会保留当前数据)，但会自动`unsubscribe`。(如果不取消，多次开关会出现内存泄露)
+
 ~~8. 增减行：增行/减行是根据当前操作符源码和上一个操作符源码进行对比计算出的，可选择开启关闭。~~
+
 8. 源码edit差异：当使用EDIT功能时，保存修改后会自动显示增加（绿色）和减少（红色）的部分。
 9. 位置选择面板：可对当前操作符中`Observable`是否显示和显示位置进行调整，其中绿色checkBox是选择是否显示，select是对小球显示位置调整。
 9. 源码：只显示最核心的源码，关于`subscribe`部分的并未进行显示，但所有操作符都是订阅了`next,error,complete`。

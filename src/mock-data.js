@@ -96,9 +96,124 @@ export const Data = [
     marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
 
          `},
+     {
+        name: 'mergeScan',
+        title: 'mergeScan(accumulator: function(acc: R, value: T): Observable<R>, seed: *, concurrent: number): Observable<R>',
+        caption: `在源 Observable 上应用 accumulator 函数，其中 accumulator 函数本身返回 Observable ，然后每个返回的中间 Observable 会被合并到输出 Observable 中。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：累计click的次数。与scan类似，每次计算都有返回值，返回值是内部源(of$)的最新值。<br>
+        特别注意：每当外部源触发时，内部源(of$)的最新值是会返回给外部源，作为新的acc参与到新的内部源；因此如果内部源使用interval等长时间源值不断变化的操作符，结果就会根据点击位置而改变。因为内部源的最新值一直在变。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'mergeScan()',
+        code: `
+
+    //editArea
+  
+    let RxClick, RxMergeScan;
+    RxClick = Rx.Observable.fromEvent(document,'click').take(5); 
+    RxMergeScan = RxClick.mergeScan((acc, v) => Rx.Observable.of(acc + 1), 0);
+
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxMergeScan = RxMergeScan.subscribe(NEC(showInMar, 'last'));
+    resSub.RxMergeScan = RxMergeScan.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'mergeMapTo',
+        title: 'mergeMapTo(innerObservable: ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any, concurrent: number): Observable',
+        caption: `将每个源值投射成同一个 Observable ，该 Observable 会多次合并到输出 Observable 中。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：这里的内部源(interval$)是定值(不是function)，每次click时，都触发相同的内部发射源。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'mergeMapTo()',
+        code: `
+
+    //editArea
+  
+    let interval$,RxClick,RxMergeMapTo;
+    RxClick = Rx.Observable.fromEvent(document,'click').take(3); 
+    interval$= Rx.Observable.interval(1000).take(3);
+    RxMergeMapTo = RxClick.mergeMapTo(interval$.map(x=>x*2));
+
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxMergeMapTo = RxMergeMapTo.subscribe(NEC(showInMar, 'last'));
+    resSub.RxMergeMapTo = RxMergeMapTo.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'mergeMap',
+        title: 'mergeMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any, concurrent: number): Observable',
+        caption: `说明：将每个源值投射成 Observable ，该 Observable 会合并到输出 Observable 中。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：先理解mergeAll，这里就是先map，再mergeAll，将高阶Observable打平合并。<br>
+        这里每次click后，内部源从加上click次数开始递增。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'mergeMap()',
+        code: `
+
+    //editArea
+  
+    let interval$,RxClick,RxMergeMap;
+    RxClick = Rx.Observable.fromEvent(document,'click').take(3); 
+    interval$= Rx.Observable.interval(1000).take(3);
+    RxMergeMap = RxClick.mergeMap((e,i)=>interval$.map(x=>x+i));
+
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxMergeMap = RxMergeMap.subscribe(NEC(showInMar, 'last'));
+    resSub.RxMergeMap = RxMergeMap.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'mergeAll',
+        title: 'mergeAll(concurrent: number): Observable',
+        caption: `说明：将高阶 Observable 转换成一阶 Observable ，一阶 Observable 会同时发出在内部 Observables 上发出的所有值。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：将高阶Observable打平，再合并，合并规则与merge一样，参数为最多同时订阅的数量，此处最多同时订阅2个输入源。<br>
+        这里每次click后，内部源从加上click次数开始递增。<br>
+        特别注意：任何由内部 Observable 发出的错误都会立即在输出 Observalbe 上发出。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'mergeAll()',
+        code: `
+
+    //editArea
+  
+    let interval$,RxClick,RxMergeAll;
+    RxClick = Rx.Observable.fromEvent(document,'click').take(5); 
+    interval$= Rx.Observable.interval(1000).take(3);
+    RxMergeAll = RxClick.map((e,i)=>interval$.map(x=>x+i)).mergeAll(2);
+
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxMergeAll = RxMergeAll.subscribe(NEC(showInMar, 'last'));
+    resSub.RxMergeAll = RxMergeAll.subscribe(NEC(showInRes));
+
+
+         `},
     {
         name: 'combineLatest',
-        title: 'static combineLatest(observable1: ObservableInput, observable2: ObservableInput, project: function, scheduler: Scheduler): Observable',
+        title: 'combineLatest(observable1: ObservableInput, observable2: ObservableInput, project: function, scheduler: Scheduler): Observable',
         caption: '说明：' + '组合多个 Observables 来创建一个 Observable ，该 Observable 的值根据每个输入 Observable 的最新值计算得出的。'+
         '为了保证输出数组的长度相同，combineLatest 实际上会等待所有的输入 Observable 至少发出一次， 在返回 Observable 发出之前。'+
         '这意味着如果某个输入 Observable 在其余的输入 Observable 之前发出，它所发出 的值只保留最新的。<br>'+
@@ -566,8 +681,10 @@ export const Data = [
      `,},
     {
         name: 'merge',
-        title: 'merge:将发射源合并，同时执行',
-        caption: '说明：' + ' merge合并不管发射源顺序，直接合并',
+        title: ' merge(other: ObservableInput, concurrent: number, scheduler: Scheduler): Observable',
+        caption: '说明：' + '创建一个输出 Observable ，它可以同时发出每个给定的输入 Observable 中的所有值。<br>'+
+        '操作说明：点击开始即可。<br>'+
+        '此处理解：不管发射源顺序，直接合并。',
         hits: 985,
         useful: 612,
         //line: 3,
@@ -576,16 +693,16 @@ export const Data = [
 
     //editArea
 
-    let RxClick, RxTimer0_1000, RxMerge;
-    RxClick = Rx.Observable.fromEvent(document, 'click');
-    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
-    RxMerge = Rx.Observable.merge(RxClick, RxTimer0_1000);
+    let RxInterval, RxTimer500_2000, RxMerge;
+    RxInterval = Rx.Observable.interval(1500).take(3);
+    RxTimer500_2000 = Rx.Observable.timer(500, 2000).take(2);
+    RxMerge = Rx.Observable.merge(RxInterval, RxTimer500_2000);
 
     //editArea
 
 
-    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer500_2000 = RxTimer500_2000.subscribe(NEC(showInMar, 2));
     marSub.RxMerge = RxMerge.subscribe(NEC(showInMar, 'last'));
      resSub.RxMerge = RxMerge.subscribe(NEC(showInRes));
      `,},
