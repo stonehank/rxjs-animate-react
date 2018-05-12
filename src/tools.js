@@ -299,7 +299,7 @@ function getArgument(v,curTimeGap,isSmallScreen){
             background:'green',
             left:left,
             top:EACHLINEGAP*2,
-            color:'#000'
+            color:'#fff'
         }
         // obj.data=v;obj.text=v;obj.background='green';obj.left=left;obj.top=EACHLINEGAP*2;obj.color='#000';
     } else if(typeof v==='object' && os.call(v).indexOf("Event")!==-1) {
@@ -327,6 +327,26 @@ function getArgument(v,curTimeGap,isSmallScreen){
             data:v,
             text:'arr',
             background:'orange',
+            left:left,
+            top:EACHLINEGAP,
+            color:'#fff'
+        }
+        // obj.data=v;obj.text='arr';obj.background='orange';obj.left=left;obj.top=EACHLINEGAP;obj.color='#fff';
+    } else if(typeof v==='object' && os.call(v)==='[object Null]') {
+        obj={
+            data:v,
+            text:'nul',
+            background:'darkslategray',
+            left:left,
+            top:EACHLINEGAP,
+            color:'#fff'
+        }
+        // obj.data=v;obj.text='arr';obj.background='orange';obj.left=left;obj.top=EACHLINEGAP;obj.color='#fff';
+    } else if(typeof v==='undefined') {
+        obj={
+            data:v,
+            text:'und',
+            background:'gray',
             left:left,
             top:EACHLINEGAP,
             color:'#fff'
@@ -464,7 +484,7 @@ export function getSubPositionFromCode(code,allShow){
         reCalc=false;
         variables.forEach((e,i)=>{
             let obj={};
-            const subArr=finalCode.match(new RegExp('(mar|res)Sub.'+e+'[^.]+'+'.subscribe.*','g')) ||[];
+            const subArr=finalCode.match(new RegExp('(mar|res)Sub.'+e+'\\b\\s*=.+?'+'.subscribe.*','g')) ||[];
             const subStr=subArr.join('');
             const matchArr=subStr.match(/^(?:mar|res)Sub.(Rx[^.;=(),+\s]+\b)\s*=.*?showInMar\s*,?\s*'?(\d|last)?'?/) || [];
             obj.name=matchArr[1] || e;

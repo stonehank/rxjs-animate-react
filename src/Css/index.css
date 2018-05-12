@@ -230,7 +230,7 @@ button:focus {
 
 .greenMarbleBall {
     background-color: green;
-    color: #000
+    color: #fff
 }
 
 .yellowMarbleBall {
@@ -245,6 +245,16 @@ button:focus {
 
 .orangeMarbleBall {
     background-color: orange;
+    color: #fff;
+}
+
+.grayMarbleBall{
+    background-color: gray;
+    color: #fff;
+}
+
+.darkslategrayMarbleBall{
+    background-color: darkslategray;
     color: #fff;
 }
 /*-----/Components/operators-core-container-----*/

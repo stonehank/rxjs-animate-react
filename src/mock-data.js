@@ -96,10 +96,169 @@ export const Data = [
     marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
 
          `},
+    {
+        name: 'pluck',
+        title: 'pluck(properties: ...string): Observable',
+        caption: `
+        官方说明：将每个源值(对象)映射成它指定的嵌套属性。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：每次click将会获取目标('event.target.tagName')，返回新的Observable然后显示。<br>
+        特别注意：如果嵌套属性无法找到，返回undefined。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'pluck()',
+        code: `
+
+    //editArea
+  
+    let RxClick, RxPluck;
+    RxClick = Rx.Observable.fromEvent(document,'click').take(5);
+    RxPluck = RxClick.pluck('target','tagName');
+
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxPluck = RxPluck.subscribe(NEC(showInMar, 'last'));
+    resSub.RxPluck = RxPluck.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'partition',
+        title: 'partition(predicate: function(value: T, index: number): boolean, thisArg: any): [Observable<T>, Observable<T>]',
+        caption: `
+        官方说明：将源 Observable 一分为二，一个是所有满足 predicate 函数的值，另一个是所有 不满足 predicate 的值。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：这里partition$将发射源分为偶数和奇数，返回值是数组，数组内分别为偶数Observable和奇数Observable。<br>
+        特别注意：返回值是一个数组[]，不是Observable。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'partition()',
+        code: `
+
+    //editArea
+  
+    let RxInterval, partition$,RxEven,RxOdd;
+    RxInterval = Rx.Observable.interval(1000).take(6);
+    partition$ = RxInterval.partition(n=>n % 2===0);
+    RxEven = partition$[0];
+    RxOdd = partition$[1];
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxEven = RxEven.subscribe(NEC(showInMar, 2));
+    marSub.RxOdd = RxOdd.subscribe(NEC(showInMar, 'last'));
+    resSub.RxEven = RxEven.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'pairwise',
+        title: 'pairwise(): Observable<Array<T>>',
+        caption: `
+        官方说明：将一系列连续的发送成对的组合在一起，并将这些分组作为两个值的数组发出。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：当发射源发射值到达2个时，每次发射值，都将最新值和前一次的值作为数组传递，然后将两个值相加。<br>
+        特别注意：只有在有2个值时，才会开始出发pairwise。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'pairwise()',
+        code: `
+
+    //editArea
+  
+    let RxInterval, RxPairwise;
+    RxInterval = Rx.Observable.interval(1000).take(5);
+    RxPairwise = RxInterval.pairwise().map(arr=>arr[0]+arr[1]);
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxPairwise = RxPairwise.subscribe(NEC(showInMar, 'last'));
+    resSub.RxPairwise = RxPairwise.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'onErrorResumeNext',
+        title: 'onErrorResumeNext(observables: ...ObservableInput): Observable',
+        caption: `
+        官方说明：当任何提供的 Observable 发出完成或错误通知时，它会立即地订阅已传入下一个 Observable 。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：第一行是会发出错误的Observable，当第一行发出错误被onErrorResumeNext接收到，onErrorResumeNext不会发出错误，而是继续执行它内部的Observable。<br>
+        特别注意：类似concat，但即便发生错误也继续进行，使用onErrorResumeNext后，无法获得错误通知。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'onErrorResumeNext()',
+        code: `
+
+    //editArea
+  
+    let RxIntervalError, RxInterval, RxOnErrorResumeNext;
+    RxIntervalError = Rx.Observable.interval(1000).map(n=>{if(n===3){throw new Error()};return n}); 
+    RxInterval = Rx.Observable.interval(1000).take(3);
+    RxOnErrorResumeNext = RxIntervalError.onErrorResumeNext(RxInterval);
+
+    //editArea
+
+    marSub.RxIntervalError = RxIntervalError.subscribe(NEC(showInMar, 1));
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 2));
+    marSub.RxOnErrorResumeNext = RxOnErrorResumeNext.subscribe(NEC(showInMar, 'last'));
+    resSub.RxOnErrorResumeNext = RxOnErrorResumeNext.subscribe(NEC(showInRes));
+
+
+         `},
+     {
+        name: 'multicast',
+        title: 'multicast(subjectOrSubjectFactory: Function | Subject, selector: Function): Observable',
+        caption: `
+        官方说明：返回的 Observable 发出对 ConnectableObservable 发出的项调用一个指定的 selector 函数的结果， ConnectableObservable 可以在潜在的多个流之间共享单个 subscription 。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：第1行为立即订阅；<br>
+        第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>
+        第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>
+        第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
+        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>共享数据</strong>；<br>
+        <strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error</strong>`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'multicast()',
+        code: `
+
+     //editArea
+
+    let RxMulticast1,RxMulticast2,RxMulticast3,RxMulticast4,RxMulticast5,multicast$,multicast2$;
+    multicast$ = Rx.Observable.timer(0,1000).take(4).multicast(new Rx.Subject());
+    multicast2$ = Rx.Observable.timer(0,1000).take(4).multicast(new Rx.Subject());
+    
+    //editArea
+    
+    multicast$.connect();
+    marSub.RxMulticast1 = multicast$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout1 = setTimeout(()=>{marSub.RxMulticast2 = multicast$.subscribe(NEC(showInMar, 2))},2000);
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxMulticast3 = multicast$.subscribe(NEC(showInMar, 3))},4000);
+    marSub.RxTimeout3 = setTimeout(()=>{multicast2$.connect();marSub.RxMulticast4 = multicast2$.subscribe(NEC(showInMar, 4))},6000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxMulticast4.unsubscribe()},7000);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxMulticast5 = multicast2$.subscribe(NEC(showInMar, 5))},8000);
+
+
+         `},
      {
         name: 'mergeScan',
         title: 'mergeScan(accumulator: function(acc: R, value: T): Observable<R>, seed: *, concurrent: number): Observable<R>',
-        caption: `在源 Observable 上应用 accumulator 函数，其中 accumulator 函数本身返回 Observable ，然后每个返回的中间 Observable 会被合并到输出 Observable 中。<br>
+        caption: `
+        官方说明：在源 Observable 上应用 accumulator 函数，其中 accumulator 函数本身返回 Observable ，然后每个返回的中间 Observable 会被合并到输出 Observable 中。<br>
         操作说明：点击开始后，使用click触发。<br>
         此处理解：累计click的次数。与scan类似，每次计算都有返回值，返回值是内部源(of$)的最新值。<br>
         特别注意：每当外部源触发时，内部源(of$)的最新值是会返回给外部源，作为新的acc参与到新的内部源；因此如果内部源使用interval等长时间源值不断变化的操作符，结果就会根据点击位置而改变。因为内部源的最新值一直在变。`,
@@ -127,7 +286,8 @@ export const Data = [
     {
         name: 'mergeMapTo',
         title: 'mergeMapTo(innerObservable: ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any, concurrent: number): Observable',
-        caption: `将每个源值投射成同一个 Observable ，该 Observable 会多次合并到输出 Observable 中。<br>
+        caption: `
+        官方说明：将每个源值投射成同一个 Observable ，该 Observable 会多次合并到输出 Observable 中。<br>
         操作说明：点击开始后，使用click触发。<br>
         此处理解：这里的内部源(interval$)是定值(不是function)，每次click时，都触发相同的内部发射源。`,
         hits: 152,
@@ -155,7 +315,8 @@ export const Data = [
     {
         name: 'mergeMap',
         title: 'mergeMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any, concurrent: number): Observable',
-        caption: `说明：将每个源值投射成 Observable ，该 Observable 会合并到输出 Observable 中。<br>
+        caption: `
+        官方说明：将每个源值投射成 Observable ，该 Observable 会合并到输出 Observable 中。<br>
         操作说明：点击开始后，使用click触发。<br>
         此处理解：先理解mergeAll，这里就是先map，再mergeAll，将高阶Observable打平合并。<br>
         这里每次click后，内部源从加上click次数开始递增。`,
@@ -184,7 +345,8 @@ export const Data = [
     {
         name: 'mergeAll',
         title: 'mergeAll(concurrent: number): Observable',
-        caption: `说明：将高阶 Observable 转换成一阶 Observable ，一阶 Observable 会同时发出在内部 Observables 上发出的所有值。<br>
+        caption: `
+        官方说明：将高阶 Observable 转换成一阶 Observable ，一阶 Observable 会同时发出在内部 Observables 上发出的所有值。<br>
         操作说明：点击开始后，使用click触发。<br>
         此处理解：将高阶Observable打平，再合并，合并规则与merge一样，参数为最多同时订阅的数量，此处最多同时订阅2个输入源。<br>
         这里每次click后，内部源从加上click次数开始递增。<br>
