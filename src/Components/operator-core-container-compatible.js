@@ -349,6 +349,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * subscribe in result方法
      * @param v
      */
+     //todo JSON.stringify高阶会报错
     showRxjsInResult(v){
         const {smallScreen}=this.state
         if(smallScreen){return}

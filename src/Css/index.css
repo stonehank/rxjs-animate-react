@@ -232,6 +232,10 @@ button:focus {
     background-color: green;
     color: #fff
 }
+.skyblueMarbleBall{
+    background-color: skyblue;
+    color: #000;
+}
 
 .yellowMarbleBall {
     background-color: yellow;

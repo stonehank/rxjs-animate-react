@@ -98,6 +98,329 @@ export const Data = [
     marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
 
          `},
+    
+    {
+        name: 'min',
+        title: 'min(comparer: Function): Observable<R>',
+        caption: `
+        官方说明：min 操作符操作的 Observable 发出数字(或可以使用提供函数进行比较的项)并且当源 Observable 完成时它发出单一项：最小值的项<br>
+        操作说明：点击开始即可。<br>
+        此处理解：无比较函数则返回最小值，有比较函数则根据比较函数来返回(大于返回1，小于返回-1)。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'min()',
+        code: `
+
+    //editArea
+
+    let RxOf, RxMin;
+    RxOf=Rx.Observable.of({age: 7, name: 'Foo'},
+                        {age: 5, name: 'Bar'},
+                        {age: 9, name: 'Beer'});
+    RxMin=RxOf.min((a,b)=>a.age>b.age ? 1 : -1);
+
+    //editArea
+    marSub.RxOf = RxOf.subscribe(NEC(showInMar, 1));
+    marSub.RxMin = RxMin.subscribe(NEC(showInMar, 'last'));
+    resSub.RxMin = RxMin.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'max',
+        title: 'max(comparer: Function): Observable',
+        caption: `
+        官方说明：max 操作符操作的 Observable 发出数字(或可以与提供的函数进行比较的项)并且当源 Observable 完成时它发出单一项：最大值的项。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：无比较函数则返回最大值，有比较函数则根据比较函数来返回(大于返回1，小于返回-1)。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'max()',
+        code: `
+
+    //editArea
+
+    let RxOf, RxMax;
+    RxOf=Rx.Observable.of({age: 7, name: 'Foo'},
+                        {age: 5, name: 'Bar'},
+                        {age: 9, name: 'Beer'});
+    RxMax=RxOf.max((a,b)=>a.age>b.age ? 1 : -1);
+
+    //editArea
+    marSub.RxOf = RxOf.subscribe(NEC(showInMar, 1));
+    marSub.RxMax = RxMax.subscribe(NEC(showInMar, 'last'));
+    resSub.RxMax = RxMax.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'materialize',
+        title: 'materialize(): Observable<Notification<T>>',
+        caption: `
+        官方说明：表示源 Observable 中的所有通知，每个通知都会在 Notification 对象中标记为 它们原始的通知类型，并会作为输出 Observable 的 next 通知。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：返回 Notification对象：{kind: "N", value: "0", error: undefined, hasValue: true}<br>
+                  kind：'N'代表next，'C'代表complete，'E'代表error。
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'materialize()',
+        code: `
+
+    //editArea
+
+    let RxInterval, RxMapTo;
+    RxInterval=Rx.Observable.interval(1000).take(3);
+    RxMapTo=RxInterval.materialize();
+
+    //editArea
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxMapTo = RxMapTo.subscribe(NEC(showInMar, 'last'));
+    resSub.RxMapTo = RxMapTo.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'mapTo',
+        title: 'mapTo(value: any): Observable',
+        caption: `
+        官方说明：每次源 Observble 发出值时，都在输出 Observable 上发出给定的常量值。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：收到任何发射源值，都转换成'a'。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'mapTo()',
+        code: `
+
+    //editArea
+
+    let RxInterval, RxMapTo;
+    RxInterval=Rx.Observable.interval(1000).take(5);
+    RxMapTo=RxInterval.mapTo('a');
+
+    //editArea
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxMapTo = RxMapTo.subscribe(NEC(showInMar, 'last'));
+    resSub.RxMapTo = RxMapTo.subscribe(NEC(showInRes));
+
+
+         `},
+     {
+        name: 'map',
+        title: 'map(project: function(value: T, index: number): R, thisArg: any): Observable<R>',
+        caption: `
+        官方说明：将给定的 project 函数应用于源 Observable 发出的每个值，并将结果值作为 Observable 发出。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：将发射源每个值乘以2，再返回。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'map()',
+        code: `
+
+    //editArea
+
+    let RxInterval, RxMap;
+    RxInterval=Rx.Observable.interval(1000).take(5);
+    RxMap=RxInterval.map(x=>x*2);
+
+    //editArea
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxMap = RxMap.subscribe(NEC(showInMar, 'last'));
+    resSub.RxMap = RxMap.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'last',
+        title: 'last(predicate: function): Observable',
+        caption: `
+        官方说明：返回的 Observable 只发出由源 Observable 发出的最后一个值。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：满足参数predicate的最后一个发射值,发射最后一个奇数。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'last()',
+        code: `
+
+    //editArea
+
+    let RxInterval, RxLast;
+    RxInterval=Rx.Observable.interval(1000).take(5);
+    RxLast=RxInterval.last(x=>x % 2===1);
+
+    //editArea
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxLast = RxLast.subscribe(NEC(showInMar, 'last'));
+    resSub.RxLast = RxLast.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'ignoreElements',
+        title: 'ignoreElements(): Observable',
+        caption: `
+        官方说明：忽略源 Observable 所发送的所有项，只传递 complete 或 error 的调用。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：无。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'ignoreElements()',
+        code: `
+
+    //editArea
+
+
+    let RxInterval, RxIgnoreElements;
+    RxInterval=Rx.Observable.interval(1000).take(4);
+    RxIgnoreElements=RxInterval.ignoreElements();
+
+    //editArea
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxIgnoreElements = RxIgnoreElements.subscribe(NEC(showInMar, 'last'));
+    resSub.RxIgnoreElements = RxIgnoreElements.subscribe(NEC(showInRes));
+
+
+         `},
+     {
+        name: 'isEmpty',
+        title: 'isEmpty(): Observable',
+        caption: `
+        官方说明：如果源 Observable 是空的话，它返回一个发出 true 的 Observable，否则发出 false 。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：of$返回false，empty$返回true。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'isEmpty()',
+        code: `
+
+    //editArea
+
+
+    let of$, empty$, RxOfIsEmpty, RxEmptyIsEmpty;
+    of$ = Rx.Observable.of(1); 
+    empty$=Rx.Observable.empty();
+    RxOfIsEmpty=of$.isEmpty();
+    RxEmptyIsEmpty=empty$.isEmpty();
+
+    //editArea
+    marSub.RxOfIsEmpty = RxOfIsEmpty.subscribe(NEC(showInMar, 1));
+    marSub.RxEmptyIsEmpty = RxEmptyIsEmpty.subscribe(NEC(showInMar, 'last'));
+    resSub.RxOfIsEmpty = RxOfIsEmpty.subscribe(NEC(showInRes));
+    resSub.RxEmptyIsEmpty = RxEmptyIsEmpty.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'interval',
+        title: 'interval(period: number, scheduler: Scheduler): Observable',
+        caption: `
+        官方说明：创建一个 Observable ，该 Observable 使用指定的 IScheduler ，并以指定时间间隔发出连续的数字。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：每秒发出一个递增数字，最多5次。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'interval()',
+        code: `
+
+    //editArea
+
+
+    let RxInterval;
+    RxInterval = Rx.Observable.interval(1000).take(5); 
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    resSub.RxInterval = RxInterval.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'empty',
+        title: 'empty(scheduler: Scheduler): Observable',
+        caption: `
+        官方说明：创建一个什么数据都不发出并且立马完成的 Observable。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：仅仅发出 complete 通知，其他什么也不做。当遇到奇数是发射'奇'。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'empty()',
+        code: `
+
+    //editArea
+
+
+    let RxInterval,empty$,RxOdd;
+    RxInterval = Rx.Observable.interval(1000).take(5); 
+    empty$=Rx.Observable.empty();
+    RxOdd=RxInterval.mergeMap(x=>x%2===1?Rx.Observable.of('奇'):empty$);
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxOdd = RxOdd.subscribe(NEC(showInMar, 'last'));
+    resSub.RxOdd = RxOdd.subscribe(NEC(showInRes));
+
+
+         `},
+     {
+        name: 'defer',
+        title: 'defer(observableFactory: function(): SubscribableOrPromise): Observable',
+        caption: `
+        官方说明：创建一个 Observable，当被订阅的时候，调用 Observable 工厂为每个观察者创建新的 Observable。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：点击开始后计算随机数，随机数>0.5则订阅click事件，否则订阅interval。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'defer()',
+        code: `
+
+    //editArea
+
+    let fromEvent$,interval$,RxDefer;
+    interval$ = Rx.Observable.interval(1000).take(5); 
+    fromEvent$ = Rx.Observable.fromEvent(document, 'click').take(3);
+    RxDefer=Rx.Observable.defer(()=>Math.random()>0.5?fromEvent$:interval$);
+
+    //editArea
+
+    marSub.RxDefer = RxDefer.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDefer = RxDefer.subscribe(NEC(showInRes));
+
+
+         `},
      {
         name: 'groupBy',
         title: 'groupBy(keySelector: function(value: T): K, elementSelector: function(value: T): R, durationSelector: function(grouped: GroupedObservable<K, R>): Observable<any>): Observable<GroupedObservable<K, R>>',
@@ -1420,8 +1743,8 @@ export const Data = [
     {
         name: 'concat',
         title: 'concat(other: ObservableInput, scheduler: Scheduler): Observable',
-        caption: '说明：创建一个输出 Observable，它在当前 Observable 之后顺序地发出每个给定的输入 Observable 中的所有值。<br>' +
-        '此处理解：将2个源按顺序合并，点击3次鼠标后开始interval，这两个发射源结果是合并的',
+        caption: `官方说明：创建一个输出 Observable，它在当前 Observable 之后顺序地发出每个给定的输入 Observable 中的所有值。<br>
+        此处理解：将2个源按顺序合并，点击3次鼠标后开始interval，这两个发射源结果是合并的`,
         hits: 1235,
         useful: 451,
         //line: 2,

@@ -303,6 +303,15 @@ function getArgument(v,curTimeGap,isSmallScreen){
             color:'#fff'
         }
         // obj.data=v;obj.text=v;obj.background='green';obj.left=left;obj.top=EACHLINEGAP*2;obj.color='#000';
+    } else if(typeof v==='boolean') {
+        obj={
+            data:v,
+            text:v?'T':'F',
+            background:'skyblue',
+            left:left,
+            top:EACHLINEGAP*2,
+            color:'#000'
+        }
     } else if(typeof v==='object' && os.call(v).indexOf("Event")!==-1) {
         obj={
             data:v,
@@ -477,7 +486,7 @@ export function getSubPositionFromCode(code,allShow){
         let resultArr=[];
         const codeArea=finalCode.split(/\s+\/\/editArea\s+/);
         const editArea=codeArea[1]||'';
-        const variables=uniq(editArea.match(/Rx[^.;=(),+\s]+\b/g)) || [];
+        const variables=uniq(editArea.match(/Rx[^.;:=(),+\s]+\b/g)) || [];
         if(allShow && !reCalc){
             const subscribeArea=codeArea[2]||'';
             finalCode=finalCode.replace(subscribeArea,'');
