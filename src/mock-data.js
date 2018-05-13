@@ -98,12 +98,257 @@ export const Data = [
     marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
 
          `},
+     {
+        name: 'sample',
+        title: 'sample(notifier: Observable<any>): Observable<T>',
+        caption: `
+        官方说明：发出源 Observable 最新发出的值当另一个 notifier Observable发送时。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：每次click，获取RxInterval的最新值。<br>
+        特别注意：必须要在另一个源正在发送时，才能获取到最新值，未开始发送或者complete后都无法获取。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'sample()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxClick,RxSample;
+    RxInterval=Rx.Observable.interval(1000).take(6);
+    RxClick=Rx.Observable.fromEvent(document, 'click').take(5);
+    RxSample=RxInterval.sample(RxClick);
+
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 2));
+    marSub.RxSample = RxSample.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSample = RxSample.subscribe(NEC(showInRes));
+
+         `},
+     {
+        name: 'retry',
+        title: 'retry(count: number): Observable',
+        caption: `
+        官方说明：返回一个 Observable， 该 Observable 是源 Observable 不包含错误异常的镜像。 如果源 Observable 发生错误, 这个方法不会传播错误而是会不 断的重新订阅源 Observable 直到达到最大重试次数 (由数字参数指定)。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：发出0的概率为100%，发出1的概率为80%，发出2的概率为40%，总共可以重试3次，完成则complete，失败则error。<br>
+        特别注意：因为是Math.random，Marble和Result里的数据不一致。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'retry()',
+        code: `
+
+    //editArea
+
+    let interval$,RxThrowORCom,RxRetry;
+    interval$=Rx.Observable.interval(1000).take(3);
+    RxThrowORCom=interval$.mergeMap(n=>(n*Math.random())>0.8?Rx.Observable.throw():Rx.Observable.of(n));
+    RxRetry=RxThrowORCom.retry(3);
+
+    //editArea
+    marSub.RxRetry = RxRetry.subscribe(NEC(showInMar, 'last'));
+    resSub.RxRetry = RxRetry.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'repeat',
+        title: 'repeat(count: number): Observable',
+        caption: `
+        官方说明：返回的 Observable 重复由源 Observable 所发出的项的流，最多可以重复 count 次。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：重复3（参数）次。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'repeat()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxRepeat;
+    RxInterval=Rx.Observable.interval(500).take(3);
+    RxRepeat=RxInterval.repeat(3);
+
+    //editArea
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxRepeat = RxRepeat.subscribe(NEC(showInMar, 'last'));
+    resSub.RxRepeat = RxRepeat.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'race',
+        title: 'race(): Observable',
+        caption: `
+        官方说明：返回 Observable，该 Observable 是源 Observable 和提供的 Observables 的组合中 第一个发出项的 Observable 的镜像。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：第三行为race返回值，返回发出最快的发射源。<br>
+        特别注意：无。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'race()',
+        code: `
+
+    //editArea
+
+    let RxOfQ,RxOfS,RxRace;
+    RxOfQ=Rx.Observable.of('快').delay(500);
+    RxOfS=Rx.Observable.of('慢').delay(1000);
+    RxRace=Rx.Observable.race(RxOfQ,RxOfS);
+
+    //editArea
+    marSub.RxOfQ = RxOfQ.subscribe(NEC(showInMar, 1));
+    marSub.RxOfS = RxOfS.subscribe(NEC(showInMar, 2));
+    marSub.RxRace = RxRace.subscribe(NEC(showInMar, 'last'));
+    resSub.RxRace = RxRace.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'publishLast',
+        title: 'publishLast(): ConnectableObservable<T>',
+        caption: `
+        官方说明：无。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：共享数据，只返回最后的值和complete，此处用的是connect()。<br>
+        此处前2行发射源是"pubLast$"，后2行发射源是"pubLast2$"。<br>
+        第1行为立即订阅,3秒后返回最后值和complete；<br>
+        第2行隔4秒订阅，此时之前发射源状态是complete，返回最后值和complete；<br>
+        第3行隔5秒重新订阅（新的发射源），并且在第6.5秒的时候unsubscribe，让它状态进入unsubscribe，没有返回值；<br>
+        第4行隔7.5秒订阅，此时之前发射源状态是unsubscribe，返回最后值和complete。<br>
+        connect():<br>
+        前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
+        refCount():<br>
+        前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。<br>
+        特别注意：不管上一个源是complete还是unsubscribe，直接返回最后值和complete。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'publishLast()',
+        code: `
+
+    //editArea
+
+    let RxPubBehav1, RxPubBehav2, RxPubBehav3, RxPubBehav4, interval$, pubLast$, pubLast2$;
+    interval$ = Rx.Observable.interval(1000).take(3);
+    pubLast$=interval$.publishLast();
+    pubLast2$=interval$.publishLast();
     
+    //editArea
+
+    pubLast$.connect();
+    marSub.RxPubBehav1 = pubLast$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxPubBehav2 = pubLast$.subscribe(NEC(showInMar, 2))},4000);
+    marSub.RxTimeout3 = setTimeout(()=>{pubLast2$.connect();marSub.RxPubBehav3 = pubLast2$.subscribe(NEC(showInMar, 3))},5000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxPubBehav3.unsubscribe()},6500);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxPubBehav4 = pubLast2$.subscribe(NEC(showInMar, 'last'))},7500);
+
+         `},
+      {
+        name: 'publishReplay',
+        title: 'publishReplay(bufferSize: *, windowTime: *, scheduler: *): ConnectableObservable<T>',
+        caption: `
+        官方说明：无。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：共享数据，不过会先返回上一个发射源的前N(参数1，此处是2)个值，此处用的是connect()。<br>
+        此处前3行发射源是"pubReplay$"，后2行发射源是"pubReplay2$"。<br>
+        第1行为立即订阅；<br>
+        第2行隔2.5秒后订阅，订阅时第1行还在继续订阅，返回前2个数据(0,1)，数据共享；<br>
+        第3行隔5秒订阅，此时之前发射源状态是complete，返回前2个数据(2,3)(并不受complete影响)，<strong>complete</strong>；<br>
+        第4行隔6秒重新订阅（新的发射源），并且在第7.5秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
+        第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回前2个数据(0,1)(并不受unsubscribe影响)，<strong>共享数据</strong>；<br>
+        connect():<br>
+        前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
+        refCount():<br>
+        前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。<br>
+        特别注意：需要拖拽查看，不管上一个源是complete还是unsubscribe，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'publishReplay()',
+        code: `
+
+    //editArea
+
+    let RxPubBehav1, RxPubBehav2, RxPubBehav3, RxPubBehav4, RxPubBehav5, interval$, pubReplay$, pubReplay2$;
+    interval$ = Rx.Observable.interval(1000).take(4);
+    pubReplay$=interval$.publishReplay(2);
+    pubReplay2$=interval$.publishReplay(2);
+    
+    //editArea
+
+    pubReplay$.connect();
+    marSub.RxPubBehav1 = pubReplay$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout1 = setTimeout(()=>{marSub.RxPubBehav2 = pubReplay$.subscribe(NEC(showInMar, 2))},2500);
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxPubBehav3 = pubReplay$.subscribe(NEC(showInMar, 3))},5000);
+    marSub.RxTimeout3 = setTimeout(()=>{pubReplay2$.connect();marSub.RxPubBehav4 = pubReplay2$.subscribe(NEC(showInMar, 4))},6000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxPubBehav4.unsubscribe()},7500);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxPubBehav5 = pubReplay2$.subscribe(NEC(showInMar, 5))},8500);
+
+         `},
+    {
+        name: 'publishBehavior',
+        title: 'publishBehavior(value: *): ConnectableObservable<T>',
+        caption: `
+        官方说明：无。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：共享数据，不过会先返回上一个发射源的最新值，此处用的是connect()。<br>
+        此处前3行发射源是"pubBehavior$"，后2行发射源是"pubBehavior2$"。<br>
+        第1行为立即订阅；<br>
+        第2行隔2.5秒后订阅，订阅时第1行还在继续订阅，返回上一个最新值1，数据共享；<br>
+        第3行隔5秒订阅，此时之前发射源状态是complete，不返回上一个最新值，<strong>直接进入complete</strong>；<br>
+        第4行隔6秒重新订阅（新的发射源），并且在第7.5秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
+        第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回上一个最新值1(并不受unsubscribe影响)，<strong>共享数据</strong>；<br>
+        connect():<br>
+        前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
+        refCount():<br>
+        前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。<br>
+        特别注意：上一个源是complete，直接进入complete；上一个源是unsubscribe，也会先发出上一个源的最新值（如果数据共享，则发出共享的最新值）。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'publishBehavior()',
+        code: `
+
+    //editArea
+
+    let RxPubBehav1, RxPubBehav2, RxPubBehav3, RxPubBehav4, RxPubBehav5, interval$, pubBehavior$, pubBehavior2$;
+    interval$ = Rx.Observable.interval(1000).take(4);
+    pubBehavior$=interval$.publishBehavior('一');
+    pubBehavior2$=interval$.publishBehavior('二');
+    
+    //editArea
+
+    pubBehavior$.connect();
+    marSub.RxPubBehav1 = pubBehavior$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout1 = setTimeout(()=>{marSub.RxPubBehav2 = pubBehavior$.subscribe(NEC(showInMar, 2))},2500);
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxPubBehav3 = pubBehavior$.subscribe(NEC(showInMar, 3))},5000);
+    marSub.RxTimeout3 = setTimeout(()=>{pubBehavior2$.connect();marSub.RxPubBehav4 = pubBehavior2$.subscribe(NEC(showInMar, 4))},6000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxPubBehav4.unsubscribe()},7500);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxPubBehav5 = pubBehavior2$.subscribe(NEC(showInMar, 5))},8500);
+
+         `},
+
     {
         name: 'min',
         title: 'min(comparer: Function): Observable<R>',
         caption: `
-        官方说明：min 操作符操作的 Observable 发出数字(或可以使用提供函数进行比较的项)并且当源 Observable 完成时它发出单一项：最小值的项<br>
+        官方说明：min 操作符操作的 Observable 发出数字(或可以使用提供函数进行比较的项)并且当源 Observable 完成时它发出单一项：最小值的项。<br>
         操作说明：点击开始即可。<br>
         此处理解：无比较函数则返回最小值，有比较函数则根据比较函数来返回(大于返回1，小于返回-1)。<br>
         特别注意：无。`,
@@ -1688,8 +1933,12 @@ export const Data = [
     {
         name: 'concatMap',
         title: ' concatMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any): Observable',
-        caption: '说明：将源值投射为一个合并到输出 Observable 的 Observable,以串行的方式等待前一个完成再合并下一个 Observable。<br>' +
-        '此处理解：先转换成高阶observable（map），再转换成一阶observable，此处累计click的次数，然后按顺序依次执行',
+        caption: `
+        官方说明：将源值投射为一个合并到输出 Observable 的 Observable,以串行的方式等待前一个完成再合并下一个 Observable。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：先转换成高阶observable（map），再转换成一阶observable，此处累计click的次数，然后按顺序依次执行。<br>
+        特别注意：其实内部就是先map，再concatAll。
+        `,
         hits: 762,
         useful: 875,
         //line: 2,
@@ -1715,8 +1964,12 @@ export const Data = [
     {
         name: 'concatAll',
         title: 'concatAll(): Observable',
-        caption: '说明：通过顺序地连接内部 Observable，将高阶 Observable 转化为一阶 Observable 。<br>' +
-        '此处理解：将高阶observable(类似obs1$.map(obs2$))转换成一阶observable，此处所展示效果相当于使用了concatMap，此处用的是先map 后concatAll',
+        caption: `
+        官方说明：通过顺序地连接内部 Observable，将高阶 Observable 转化为一阶 Observable 。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：将高阶observable(类似obs1$.map(obs2$))转换成一阶observable，此处所展示效果相当于使用了concatMap，此处用的是先map，后concatAll。<br>
+        特别注意：无。
+        `,
         hits: 762,
         useful: 875,
         //line: 2,
@@ -1743,8 +1996,12 @@ export const Data = [
     {
         name: 'concat',
         title: 'concat(other: ObservableInput, scheduler: Scheduler): Observable',
-        caption: `官方说明：创建一个输出 Observable，它在当前 Observable 之后顺序地发出每个给定的输入 Observable 中的所有值。<br>
-        此处理解：将2个源按顺序合并，点击3次鼠标后开始interval，这两个发射源结果是合并的`,
+        caption: `
+        官方说明：创建一个输出 Observable，它在当前 Observable 之后顺序地发出每个给定的输入 Observable 中的所有值。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：将2个源按顺序合并，点击3次鼠标后开始interval，这两个发射源结果是合并的。<br>
+        特别注意：会等第一个源结束后才开始第二个源值合并。
+        `,
         hits: 1235,
         useful: 451,
         //line: 2,
