@@ -496,30 +496,20 @@ button:focus {
     background-color: #f0918b;
 }
 
-/*-----/Widget/section-title-----*/
+/*-----/Widget/section-description-title-----*/
 
-.section-title{
+.section-title p{
     font-weight: bold;
     margin-top: 0.5rem;
     position:relative;
+    text-indent:1.5rem;
     display:flex;
     flex-flow:row;
     justify-content: space-between;
 }
-
-.section-caption{
-    margin:0.5rem 0;
-    font-style:italic;
-    color:#367f8d;
-    line-height:1.8rem;
-    letter-spacing: 1px;
+.section-title span{
+    background: #111;
 }
-
-.section-caption strong{
-    color:#ccc;
-    font-style:normal;
-}
-
 .toggle-title-button{
     display: inline-block;
     width: 3rem;
@@ -531,6 +521,21 @@ button:focus {
     /* padding: 0; */
 }
 
+/*-----/Widget/section-description-body-----*/
+.section-description span{
+    background: #111;
+}
+.section-description p{
+    text-indent:1.5rem;
+    margin:0.5rem 0;
+    color: #cccccc;
+    line-height:1.8rem;
+    letter-spacing: 1px;
+}
+.section-description strong{
+    color:#ccc;
+    font-style:normal;
+}
 /*-----/Widget/choose-show-position-example-----*/
 .choose-show-position-example{
     margin:0.2rem 0.5rem;

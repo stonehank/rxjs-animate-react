@@ -1,8 +1,9 @@
 import React from 'react';
 import ReuseButton from "../Widget/reuse-button";
+import SectionDescriptionTitle from './section-description-title'
+import SectionDescriptionBody from './section-description-body'
 
-
-export default class SectionTitleCompatible extends React.PureComponent{
+export default class SectionDescriptionCompatible extends React.PureComponent{
     constructor(){
         super()
         this.handleClick=this.handleClick.bind(this)
@@ -17,24 +18,23 @@ export default class SectionTitleCompatible extends React.PureComponent{
         }))
     }
     render(){
-        const {title,caption,smallScreen}=this.props;
+        const {title,gfsm,czsm,cclj,tbzy,smallScreen}=this.props;
         const {showCaption} = this.state;
         return(
             smallScreen ?
                 <React.Fragment>
-                    <p className="section-title">{title}</p>
-                    <p dangerouslySetInnerHTML={{__html: caption}}
-                       className="section-caption"/>
-                </React.Fragment> :
+                   <SectionDescriptionTitle title={title}/>
+                    <SectionDescriptionBody  gfsm={gfsm} czsm={czsm} cclj={cclj} tbzy={tbzy} />
+                </React.Fragment>
+                        :
                 <React.Fragment>
-                    <p className="section-title">
-                        {title}
+                    <SectionDescriptionTitle title={title}>
                         <ReuseButton text={showCaption ? "less" : "more"} className={"toggle-title-button"} handleClick={this.handleClick}/>
-                    </p>
+                    </SectionDescriptionTitle>
                     {
                         showCaption ?
-                            <p dangerouslySetInnerHTML={{__html: caption}}
-                               className="section-caption"/> :
+                            <SectionDescriptionBody  gfsm={gfsm} czsm={czsm} cclj={cclj} tbzy={tbzy} />
+                             :
                             null
                     }
                 </React.Fragment>

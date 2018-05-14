@@ -3,7 +3,7 @@ import {Plus,Minus,ReuseButton} from '../Widget'
 // import CodeEditable from './code-editable'
 import ChooseShowPosition from './choose-show-position'
 import ChooseShowPositionExample from './choose-show-position-example'
-import SectionTitleCompatible from './section-title-compatible'
+import SectionDescriptionCompatible from './section-description-compatible'
 import {calcCodeStrArrPlusMinus,deepEqual} from '../tools'
 import CodeSmallScreen from "./code-small-screen";
 import {LazyCodeEditable} from "../LazyComponents";
@@ -100,17 +100,19 @@ export default class SectionContentCompatible extends React.Component{
 
     render(){
         // console.log('SectionContentCompatible')
-        const {title,caption}=this.props.basicData
+        const {title,gfsm,czsm,cclj,tbzy}=this.props.basicData
         const {showInWhereArr,setShowInWhereArr,setMarbleLine,operatorDoNotNeedAuto,smallScreen}=this.props
         const {plus,minus,codeStr,code,tableAdjToStacked} =this.state
         return (
             smallScreen ?
                 <React.Fragment>
-                    <SectionTitleCompatible title={title} caption={caption} smallScreen={smallScreen}/>
+                    <SectionDescriptionCompatible title={title}
+                                                  gfsm={gfsm} czsm={czsm} cclj={cclj} tbzy={tbzy}
+                                                  smallScreen={smallScreen}/>
                     <CodeSmallScreen codeStr={codeStr}/>
                 </React.Fragment> :
                 <div ref={this.getSectionWidth}>
-                    <SectionTitleCompatible title={title} caption={caption}/>
+                    <SectionDescriptionCompatible title={title} gfsm={gfsm} czsm={czsm} cclj={cclj} tbzy={tbzy}/>
                     <div>
                         {this.state.showChooseWhereToShow
                             ?

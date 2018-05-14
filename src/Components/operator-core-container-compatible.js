@@ -152,7 +152,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
                 line
             })
         }else{
-            const {title,name,caption,marbleText,doNotNeedAuto}=data;
+            const {title,name,gfsm,czsm,cclj,tbzy,marbleText,doNotNeedAuto}=data;
             this.clearStart()
             this.unSubMarble={}
             this.unSubResult={}
@@ -161,7 +161,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
                 showInWhereArr,
                 code:newCode,
                 isFetching:false,
-                basicData:{ title, name, caption},
+                basicData:{ title, name,gfsm,czsm,cclj,tbzy},
                 line, marbleText
             })
         }
