@@ -98,6 +98,216 @@ export const Data = [
     marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
 
          `},
+    {
+        name: 'skipUntil',
+        title: 'skipUntil(notifier: Observable): Observable<T>',
+        caption: `
+        官方说明：返回一个 Observable，该 Observable 会跳过源 Observable 发出的值直到第二个 Observable 开始发送。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：忽略初始发射源，知道内部发射源发出值。<br>
+        特别注意：无`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'skipUntil()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxOf,RxSkipUntil;
+    RxInterval=Rx.Observable.interval(1000).take(5);
+    RxOf=Rx.Observable.of('跳').delay(3500);
+    RxSkipUntil=RxInterval.skipUntil(RxOf);
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxOf = RxOf.subscribe(NEC(showInMar, 2));
+    marSub.RxSkipUntil = RxSkipUntil.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSkipUntil = RxSkipUntil.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'skipLast',
+        title: 'skipLast(count: number): Observable<T>',
+        caption: `
+        官方说明：跳过源 Observable 最后发出的的N个值 (N = count)。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：跳过最后2个值。<br>
+        特别注意：会延迟最后N个值的时间，才(从头)开始发出。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'skipLast()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxSkipLast;
+    RxInterval=Rx.Observable.interval(500).take(5);
+    RxSkipLast=RxInterval.skipLast(2);
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxSkipLast = RxSkipLast.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSkipLast = RxSkipLast.subscribe(NEC(showInRes));
+
+         `},
+      {
+        name: 'skip',
+        title: 'skip(count: Number): Observable',
+        caption: `
+        官方说明：返回一个 Observable， 该 Observable 跳过源 Observable 发出的前N个值(N = count)。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：跳过前2个值。<br>
+        特别注意：无`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'skip()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxSkip;
+    RxInterval=Rx.Observable.interval(500).take(5);
+    RxSkip=RxInterval.skip(2);
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxSkip = RxSkip.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSkip = RxSkip.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'single',
+        title: 'single(predicate: Function): Observable<T>',
+        caption: `
+        官方说明：该 Observable 发出源 Observable 所发出的值中匹配指定 predicate 函数的单个项。 如果源 Observable 发出多于1个数据项或者没有发出数据项, 分别以 IllegalArgumentException 和 NoSuchElementException 进行通知。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：如果无参数predicate，则如果发射源发出多于1项或者少于1项，会发出错误。如果有参数predicate，则会发出匹配的单项。<br>
+        特别注意：无`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'single()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxSingle;
+    RxInterval=Rx.Observable.interval(500).take(3);
+    RxSingle=RxInterval.single(n=>n===1);
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxSingle = RxSingle.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSingle = RxSingle.subscribe(NEC(showInRes));
+
+         `},
+         {
+        name: 'shareReplay',
+        title: 'shareReplay(bufferSize: *, windowTime: *, scheduler: *): *',
+        caption: `
+        官方说明：无。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：共享数据，不过会先返回上一个发射源的前N(参数1，此处是2)个值。<br>
+        此处前3行发射源是"shaReplay$"，后2行发射源是"shaReplay2$"。<br>
+        第1行为立即订阅；<br>
+        第2行隔2.5秒后订阅，订阅时第1行还在继续订阅，返回前2个数据(0,1)，数据共享；<br>
+        第3行隔5秒订阅，此时之前发射源状态是complete，返回前2个数据(2,3)(并不受complete影响)，<strong>complete</strong>；<br>
+        第4行隔6秒重新订阅（新的发射源），并且在第7.5秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
+        第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回前2个数据(0,1)(并不受unsubscribe影响)，<strong>共享数据</strong>；<br>
+        结论:(和publishReplay.connect一致)<br>
+        前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
+        特别注意：需要拖拽查看，不管上一个源是什么状态(包括error)，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:true,
+        //line: 3,
+        marbleText: 'shareReplay()',
+        code: `
+
+    //editArea
+
+    let RxShaRep1, RxShaRep2, RxShaRep3, RxShaRep4, RxShaRep5, interval$, shaReplay$, shaReplay2$;
+    interval$ = Rx.Observable.interval(1000).take(4);
+    shaReplay$=interval$.shareReplay(2);
+    shaReplay2$=interval$.shareReplay(2);
+    
+    //editArea
+
+    marSub.RxShaRep1 = shaReplay$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout1 = setTimeout(()=>{marSub.RxShaRep2 = shaReplay$.subscribe(NEC(showInMar, 2))},2500);
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxShaRep3 = shaReplay$.subscribe(NEC(showInMar, 3))},5000);
+    marSub.RxTimeout3 = setTimeout(()=>{marSub.RxShaRep4 = shaReplay2$.subscribe(NEC(showInMar, 4))},6000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxShaRep4.unsubscribe()},7500);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxShaRep5 = shaReplay2$.subscribe(NEC(showInMar, 5))},8500);
+
+         `},
+    {
+        name: 'sequenceEqual',
+        title: 'sequenceEqual(compareTo: Observable, comparor: function): Observable',
+        caption: `
+        官方说明：使用可选的比较函数，按顺序比较两个 Observables 的所有值，然后返回单个布尔值的 Observable， 以表示两个序列是否相等。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：此处比较用的是'==='，因此'{}'跟'{}'是不等的，第二个参数可以自己配置比较函数，这里先对比，不符合再对x项对比。<br>
+        特别注意：如果其中一个 observable 永远不会完成或者在另一个完成后还发出数据， 返回的 observable 永远不会结束。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'sequenceEqual()',
+        code: `
+
+    //editArea
+
+    let RxFrom,RxOf,RxSeqEqual;
+    RxFrom=Rx.Observable.from([1,2,3,{x:1}]);
+    RxOf=Rx.Observable.of(1,2,3,{x:1});
+    RxSeqEqual=RxFrom.sequenceEqual(RxOf,(a,b)=>a===b||a.x===b.x);
+    //editArea
+
+    marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
+    marSub.RxOf = RxOf.subscribe(NEC(showInMar, 2));
+    marSub.RxSeqEqual = RxSeqEqual.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSeqEqual = RxSeqEqual.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'sampleTime',
+        title: 'sampleTime(period: number, scheduler: Scheduler): Observable<T>',
+        caption: `
+        官方说明：在周期时间间隔内发出源 Observable 发出的最新值。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：每隔N秒，发出发射源的最新值，只取一次数据<br>
+        这里第1行是发射源，第2行间隔为1000ms，第3行间隔为30ms(实际就是发射源间隔600ms)。<br>
+        特别注意：最小间隔就是发射源的发射间隔，必须要在另一个源正在发送时，才能获取到最新值，未开始发送或者complete后都无法获取。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'sampleTime()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxSampleTime1,RxSampleTime2;
+    RxInterval=Rx.Observable.interval(600).take(7);
+    RxSampleTime1=RxInterval.sampleTime(1000);
+    RxSampleTime2=RxInterval.sampleTime(30);
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxSampleTime1 = RxSampleTime1.subscribe(NEC(showInMar, 2));
+    marSub.RxSampleTime2 = RxSampleTime2.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSampleTime1 = RxSampleTime1.subscribe(NEC(showInRes));
+
+         `},
      {
         name: 'sample',
         title: 'sample(notifier: Observable<any>): Observable<T>',
@@ -229,7 +439,7 @@ export const Data = [
         前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
         refCount():<br>
         前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。<br>
-        特别注意：不管上一个源是complete还是unsubscribe，直接返回最后值和complete。
+        特别注意：不管上一个源是complete还是unsubscribe，直接返回最后值和complete，如果error则只返回error。
         `,
         hits: 152,
         useful: 562,
@@ -240,7 +450,7 @@ export const Data = [
 
     //editArea
 
-    let RxPubBehav1, RxPubBehav2, RxPubBehav3, RxPubBehav4, interval$, pubLast$, pubLast2$;
+    let RxPubLast1, RxPubLast2, RxPubLast3, RxPubLast4, interval$, pubLast$, pubLast2$;
     interval$ = Rx.Observable.interval(1000).take(3);
     pubLast$=interval$.publishLast();
     pubLast2$=interval$.publishLast();
@@ -248,11 +458,11 @@ export const Data = [
     //editArea
 
     pubLast$.connect();
-    marSub.RxPubBehav1 = pubLast$.subscribe(NEC(showInMar, 1));
-    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxPubBehav2 = pubLast$.subscribe(NEC(showInMar, 2))},4000);
-    marSub.RxTimeout3 = setTimeout(()=>{pubLast2$.connect();marSub.RxPubBehav3 = pubLast2$.subscribe(NEC(showInMar, 3))},5000);
-    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxPubBehav3.unsubscribe()},6500);
-    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxPubBehav4 = pubLast2$.subscribe(NEC(showInMar, 'last'))},7500);
+    marSub.RxPubLast1 = pubLast$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxPubLast2 = pubLast$.subscribe(NEC(showInMar, 2))},4000);
+    marSub.RxTimeout3 = setTimeout(()=>{pubLast2$.connect();marSub.RxPubLast3 = pubLast2$.subscribe(NEC(showInMar, 3))},5000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxPubLast3.unsubscribe()},6500);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxPubLast4 = pubLast2$.subscribe(NEC(showInMar, 'last'))},7500);
 
          `},
       {
@@ -272,7 +482,7 @@ export const Data = [
         前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
         refCount():<br>
         前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。<br>
-        特别注意：需要拖拽查看，不管上一个源是complete还是unsubscribe，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
+        特别注意：需要拖拽查看，不管上一个源是什么状态(包括error)，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
         `,
         hits: 152,
         useful: 562,
@@ -283,7 +493,7 @@ export const Data = [
 
     //editArea
 
-    let RxPubBehav1, RxPubBehav2, RxPubBehav3, RxPubBehav4, RxPubBehav5, interval$, pubReplay$, pubReplay2$;
+    let RxPubRep1, RxPubRep2, RxPubRep3, RxPubRep4, RxPubRep5, interval$, pubReplay$, pubReplay2$;
     interval$ = Rx.Observable.interval(1000).take(4);
     pubReplay$=interval$.publishReplay(2);
     pubReplay2$=interval$.publishReplay(2);
@@ -291,12 +501,12 @@ export const Data = [
     //editArea
 
     pubReplay$.connect();
-    marSub.RxPubBehav1 = pubReplay$.subscribe(NEC(showInMar, 1));
-    marSub.RxTimeout1 = setTimeout(()=>{marSub.RxPubBehav2 = pubReplay$.subscribe(NEC(showInMar, 2))},2500);
-    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxPubBehav3 = pubReplay$.subscribe(NEC(showInMar, 3))},5000);
-    marSub.RxTimeout3 = setTimeout(()=>{pubReplay2$.connect();marSub.RxPubBehav4 = pubReplay2$.subscribe(NEC(showInMar, 4))},6000);
-    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxPubBehav4.unsubscribe()},7500);
-    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxPubBehav5 = pubReplay2$.subscribe(NEC(showInMar, 5))},8500);
+    marSub.RxPubRep1 = pubReplay$.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeout1 = setTimeout(()=>{marSub.RxPubRep2 = pubReplay$.subscribe(NEC(showInMar, 2))},2500);
+    marSub.RxTimeout2 = setTimeout(()=>{marSub.RxPubRep3 = pubReplay$.subscribe(NEC(showInMar, 3))},5000);
+    marSub.RxTimeout3 = setTimeout(()=>{pubReplay2$.connect();marSub.RxPubRep4 = pubReplay2$.subscribe(NEC(showInMar, 4))},6000);
+    marSub.RxTimeout4 = setTimeout(()=>{marSub.RxPubRep4.unsubscribe()},7500);
+    marSub.RxTimeout5 = setTimeout(()=>{marSub.RxPubRep5 = pubReplay2$.subscribe(NEC(showInMar, 5))},8500);
 
          `},
     {
@@ -316,7 +526,7 @@ export const Data = [
         前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
         refCount():<br>
         前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。<br>
-        特别注意：上一个源是complete，直接进入complete；上一个源是unsubscribe，也会先发出上一个源的最新值（如果数据共享，则发出共享的最新值）。
+        特别注意：上一个源是complete，直接进入complete；上一个源是unsubscribe，也会先发出上一个源的最新值(如果数据共享，则发出共享的最新值)，上一个源是error，返回error(不返回最新值)。
         `,
         hits: 152,
         useful: 562,

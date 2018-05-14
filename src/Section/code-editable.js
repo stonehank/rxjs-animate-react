@@ -9,6 +9,7 @@ import '../Css/codemirrorCus.css'
 export default class CodeEditable extends React.PureComponent{
     constructor(props){
         super(props)
+
         this.toEditing=this.toEditing.bind(this)
         this.toSaved=this.toSaved.bind(this)
         this.toCancel=this.toCancel.bind(this)
@@ -21,6 +22,10 @@ export default class CodeEditable extends React.PureComponent{
         }
     }
 
+    // shouldComponentUpdate(nextProps){
+    //     console.log(this.props,nextProps)
+    //     return true
+    // }
     toEditing(){
         this.setState({
             code:this.props.code,

@@ -237,6 +237,10 @@ button:focus {
     color: #000;
 }
 
+.deeppinkMarbleBall{
+    background-color: deeppink;
+    color: #fff;
+}
 .yellowMarbleBall {
     background-color: yellow;
     color: #000;

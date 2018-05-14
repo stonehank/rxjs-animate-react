@@ -22,6 +22,7 @@ export default class Bundle extends React.Component{
 
         if(prevState.name!==nextProps.name){
             prevState.loadMod(nextProps.component)
+            return {name:nextProps.name}
         }
         return null
     }

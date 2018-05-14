@@ -2,8 +2,9 @@ import React from 'react'
 import Bundle from "./bundle";
 
 export default function createSectionLazy(lazyImportFunc,name,props){
+    // console.log('createSectionLazy');
     return (
-        <Bundle component={lazyImportFunc} name={name}>
+        <Bundle component={lazyImportFunc} name={name} otherProps={props}>
             {(Mod)=>{
                 if(typeof Mod==='function'){
                     return <Mod {...props}/>

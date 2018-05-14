@@ -312,6 +312,15 @@ function getArgument(v,curTimeGap,isSmallScreen){
             top:EACHLINEGAP*2,
             color:'#000'
         }
+    } else if(typeof v==='function') {
+        obj={
+            data:v,
+            text:"fun",
+            background:'deeppink',
+            left:left,
+            top:EACHLINEGAP*2,
+            color:'#fff'
+        }
     } else if(typeof v==='object' && os.call(v).indexOf("Event")!==-1) {
         obj={
             data:v,

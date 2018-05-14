@@ -10,6 +10,7 @@ window.Rx=Rx;
 export default class OperatorsCoreContainerCompatible extends React.Component{
     constructor(props){
         super(props)
+        // console.log('constructor')
         this.setOrUpdateData=this.setOrUpdateData.bind(this)
         this.fetchDataSetState=this.fetchDataSetState.bind(this)
         this.testStart=this.testStart.bind(this)
@@ -109,6 +110,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
                 smallScreen:this.props.smallScreen
             })
         }
+        // console.log('didMount')
          this.state.fetchDataSetState(this.props.operatorName)
             // this.setState({
             //     isFetching:true,
