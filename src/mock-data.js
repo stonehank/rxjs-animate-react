@@ -99,6 +99,273 @@ export const Data = [
 
          `},
     {
+        name: 'withLatestFrom',
+        title: 'withLatestFrom(other: ObservableInput, project: Function): Observable',
+        caption: `
+        官方说明：结合源 Observable 和另外的 Observables 以创建新的 Observable， 该 Observable 的值由每 个 Observable 最新的值计算得出，当且仅当源发出的时候。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：外发射源 每1秒发射值，内发射源1 每1.5秒发射值，内发射源2 每3秒发射值，结合所有发射源最新值，并且将发射的值传递给project(最后的参数)，进行计算。<br>
+        特别注意：首先会等所有源都已经发射值，再开始结合。如果不传参数，结果以数组合并每个发射源的值。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'withLatestFrom()',
+        code: `
+
+
+    //editArea
+
+    let RxInterval1,RxInterval2, RxInterval3,RxWithLatestF;
+    RxInterval1 = Rx.Observable.interval(1000).take(7);
+    RxInterval2 = Rx.Observable.interval(1500).take(5);
+    RxInterval3 = Rx.Observable.interval(3000).take(2);
+    RxWithLatestF= RxInterval1.withLatestFrom(RxInterval2,RxInterval3,(x,y,z)=>x+y+z);
+   
+    //editArea
+
+    marSub.RxInterval1=RxInterval1.subscribe(NEC(showInMar,1));
+    marSub.RxInterval2=RxInterval2.subscribe(NEC(showInMar,2));
+    marSub.RxInterval3=RxInterval3.subscribe(NEC(showInMar,3));
+    marSub.RxWithLatestF=RxWithLatestF.subscribe(NEC(showInMar,'last'));
+    resSub.RxWithLatestF=RxWithLatestF.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'windowWhen',
+        title: 'windowWhen(closingSelector: function(): Observable): Observable<Observable<T>>',
+        caption: `
+        官方说明：将将源 Observable 的值分支成嵌套的 Observable ，通过使用关闭 Observable 的工厂函数来决定何时开启新的窗口。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：
+        closingSelector(参数1)是一个通知关闭嵌套窗口的function，返回一个Observable。<br>
+        这里每次click就会关闭之前的嵌套窗口并且立刻开启新窗口，每隔新窗口最多接受2个值(take(2))。<br>
+        第1行是RxInterval发射源。<br>   
+        第2行是click事件发射源。<br>
+        第3行是每次click关闭之前的窗口，并且开启新窗口。<br>
+        第4行是mergeAll打平，每个新窗口最多发射2个值。<br>
+        特别注意：第3行是直接通过window输出的是高阶Observable。可以对比bufferWhen查看。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'windowWhen()',
+        code: `
+
+
+    //editArea
+
+    let RxInterval,RxClick,RxWindowWhen,RxMergeAll;
+    RxInterval = Rx.Observable.interval(1000).take(10);
+    RxClick = Rx.Observable.fromEvent(document,'click').take(12);
+    RxWindowWhen= RxInterval.windowWhen(()=>RxClick);
+    RxMergeAll=RxWindowWhen.mergeMap(obs=>obs.take(2));
+    
+    //editArea
+
+    marSub.RxInterval=RxInterval.subscribe(NEC(showInMar,1));
+    marSub.RxClick=RxClick.subscribe(NEC(showInMar,2));
+    marSub.RxWindowWhen=RxWindowWhen.subscribe(NEC(showInMar,3));
+    marSub.RxMergeAll=RxMergeAll.subscribe(NEC(showInMar,'last'));
+    resSub.RxWindowWhen=RxWindowWhen.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'windowToggle',
+        title: 'windowToggle(openings: Observable<O>, closingSelector: function(value: O): Observable): Observable<Observable<T>>',
+        caption: `
+        官方说明：将源 Observable 的值分支成嵌套的 Observable，分支策略是以 openings 发出项为起始，以 closingSelector 发出为结束。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：openings(参数1)是通知打开新嵌套窗口的Observable，这里每隔2秒打开一个新嵌套窗口<br>
+        closingSelector(参数2)接受openings的返回值，是一个通知关闭嵌套窗口的Observable。<br>
+        这里如果RxInterval得值是奇数，1秒后关闭新窗口；如果RxInterval的值是偶数，发出empty(立刻关闭新窗口)。<br>
+        第1行是click事件发射源。<br>
+        第2行是RxInterval发射源。<br>
+        第3行是每隔2秒开启一个新的嵌套窗口，并且奇数时隔1秒关闭窗口。<br>
+        第4行是mergeAll打平，当显示奇数时，下一秒的click事件会被发射。<br>
+        特别注意：第3行是直接通过window输出的是高阶Observable。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'windowToggle()',
+        code: `
+
+
+    //editArea
+
+    let RxClick,RxInterval,RxWindowCount,RxMergeAll,interval$,empty$;
+    interval$=Rx.Observable.interval(1000);
+    empty$= Rx.Observable.empty();
+    RxClick=Rx.Observable.fromEvent(document, 'click').take(12);
+    RxInterval=Rx.Observable.interval(2000).take(4);
+    RxWindowCount=RxClick.windowToggle(RxInterval,i=>i % 2 ? interval$ : empty$);
+    RxMergeAll=RxWindowCount.mergeAll();
+    
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));  
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 2));  
+    marSub.RxWindowCount = RxWindowCount.subscribe(NEC(showInMar, 3));
+    marSub.RxMergeAll = RxMergeAll.subscribe(NEC(showInMar, 'last'));
+    resSub.RxWindowCount = RxWindowCount.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'windowCount',
+        title: 'windowCount(windowSize: number, startWindowEvery: number): Observable<Observable<T>>',
+        caption: `
+        官方说明：将源 Observable 的值分支成多个嵌套的 Observable ，每个嵌套的 Observable 最多发出 windowSize 个值。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：第2行是在起始处立即开启新窗口，并且外部发射源每输出5个值，开启新窗口，这个窗口能嵌套最多2个值。<br>
+        第3行是mergeAll打平，每点击5次，只显示最早的2次。<br>
+        特别注意：第2行是直接通过window输出的是高阶Observable。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'windowCount()',
+        code: `
+
+    //editArea
+
+    let RxClick,RxWindowCount,RxMergeAll;
+    RxClick=Rx.Observable.fromEvent(document, 'click');
+    RxWindowCount=RxClick.windowCount(2, 5);
+    RxMergeAll=RxWindowCount.mergeAll();
+    
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));  
+    marSub.RxWindowCount = RxWindowCount.subscribe(NEC(showInMar, 2));
+    marSub.RxMergeAll = RxMergeAll.subscribe(NEC(showInMar, 'last'));
+    resSub.RxWindowCount = RxWindowCount.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'window',
+        title: 'window(windowBoundaries: Observable<any>): Observable<Observable<T>>',
+        caption: `
+        官方说明：每当 windowBoundaries 发出项时，将源 Observable 的值分支成嵌套的 Observable 。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：每当内部源发射值时，将RxClick变成高阶Observable(第2行)，然后这里通过mergeMap打平(第3行)，并且每2秒最多发射2次click事件。<br>
+        特别注意：第2行是直接通过window输出的是高阶Observable。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'window()',
+        code: `
+
+    //editArea
+
+    let interval$,RxClick,RxWindow,RxMergeMap;
+    interval$=Rx.Observable.interval(2000);
+    RxClick=Rx.Observable.fromEvent(document, 'click');
+    RxWindow=RxClick.window(interval$);
+    RxMergeMap=RxWindow.mergeMap(obs=>obs.take(2));
+    
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));  
+    marSub.RxWindow = RxWindow.subscribe(NEC(showInMar, 2));
+    marSub.RxMergeMap = RxMergeMap.subscribe(NEC(showInMar, 'last'));
+    resSub.RxWindow = RxWindow.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'timeInterval',
+        title: 'timeInterval(scheduler: *): Observable<TimeInterval<any>> | WebSocketSubject<T> | Observable<T>',
+        caption: `
+        官方说明：无。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：计时操作符，每次返回发射的值和时间间隔。<br>
+        特别注意：无。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'timeInterval()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxTimeInterval;
+    RxInterval=Rx.Observable.interval(500).take(4);
+    RxTimeInterval=RxInterval.timeInterval();
+    
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxTimeInterval = RxTimeInterval.subscribe(NEC(showInMar, 'last'));
+    resSub.RxTimeInterval = RxTimeInterval.subscribe(NEC(showInRes));
+
+         `},
+     {
+        name: 'takeLast',
+        title: 'takeLast(count: number): Observable<T>',
+        caption: `
+        官方说明：只发出源 Observable 最后发出的的N个值 (N = count)<br>
+        操作说明：点击开始即可。<br>
+        此处理解：发射源完成时，一次性发出最后2个值(2,3)。<br>
+        特别注意：必须等待发射源完成的时候一次性同步发出，如果参数count大于发射源值的数量，则全部发出。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'takeLast()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxTake;
+    RxInterval=Rx.Observable.interval(1000).take(4);
+    RxTake=RxInterval.takeLast(2);
+    
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxTake = RxTake.subscribe(NEC(showInMar, 'last'));
+    resSub.RxTake = RxTake.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'take',
+        title: 'take(count: number): Observable<T>',
+        caption: `
+        官方说明：只发出源 Observable 最初发出的的N个值 (N = count)。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：只发出前2个发射值。<br>
+        特别注意：如果参数count大于发射源值的数量，则全部发出。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'take()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxTake;
+    RxInterval=Rx.Observable.interval(1000).take(4);
+    RxTake=RxInterval.take(2);
+    
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxTake = RxTake.subscribe(NEC(showInMar, 'last'));
+    resSub.RxTake = RxTake.subscribe(NEC(showInRes));
+
+         `},
+    {
         name: 'switchMapTo',
         title: 'switchMapTo(innerObservable: ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any): Observable',
         caption: `

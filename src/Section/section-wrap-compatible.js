@@ -13,7 +13,7 @@ export default class SectionWrapCompatible extends React.Component{
             !deepEqual(this.props,nextProps)
     }
     render(){
-        //console.log('SectionWrap')
+        // console.log('SectionWrap')
         const {smallScreen,isFetching,basicData,code,showStartButton,testStop,showInWhereArr,setShowInWhereArr,setMarbleLine,editingCodeToSave,
             operatorDoNotNeedAuto,showResult,showMarble,testStart,clearStart,marbleCheckChange,resultCheckChange}=this.props
         return(

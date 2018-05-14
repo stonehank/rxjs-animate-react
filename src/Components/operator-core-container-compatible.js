@@ -64,11 +64,13 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      */
      //只检查state来更新，因为lazyload，props有变化则会重新加载
     shouldComponentUpdate(nextProps,nextState){
-
+        // console.log(this.props,nextProps)
         return nextProps.smallScreen ?
          // !shallowEqual(this.props,nextProps) ||
+         // this.props.smallScreen!==nextProps.smallScreen ||
           !shallowEqual(this.state,nextState) :
-         // !deepEqual(this.props,nextProps) || 
+         // !deepEqual(this.props,nextProps) ||
+        // this.props.smallScreen!==nextProps.smallScreen || 
          !deepEqual(this.state,nextState)
 
     }
@@ -79,29 +81,29 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
      * @param prevState
      * @returns {*}
      */
-    // static getDerivedStateFromProps(nextProps,prevState){
+    static getDerivedStateFromProps(nextProps,prevState){
         
-    //     const curOperatorName=prevState.curOperatorName,
-    //         nextOperatorName=nextProps.operatorName;
-    //         // nextOperatorName=nextProps.match.params.section;
-    //         console.log(curOperatorName,nextOperatorName)
-    //     if(curOperatorName!==nextOperatorName){
-    //         prevState.fetchDataSetState(nextOperatorName)
-    //         return {
-    //             isFetching:true,
-    //             showStartButton:true,
-    //             curOperatorName:nextOperatorName
-    //         }
-    //     }
-    //     if(nextProps.smallScreen!==prevState.smallScreen){
-    //         return {
-    //             showMarble:!nextProps.smallScreen,
-    //             smallScreen:nextProps.smallScreen
-    //         }
-    //     }
+        // const curOperatorName=prevState.curOperatorName,
+        //     nextOperatorName=nextProps.operatorName;
+            // nextOperatorName=nextProps.match.params.section;
+            // console.log(curOperatorName,nextOperatorName)
+        // if(curOperatorName!==nextOperatorName){
+        //     prevState.fetchDataSetState(nextOperatorName)
+        //     return {
+        //         isFetching:true,
+        //         showStartButton:true,
+        //         curOperatorName:nextOperatorName
+        //     }
+        // }
+        if(nextProps.smallScreen!==prevState.smallScreen){
+            return {
+                showMarble:!nextProps.smallScreen,
+                smallScreen:nextProps.smallScreen
+            }
+        }
 
-    //     return null;
-    // }
+        return null;
+    }
 
     componentDidMount(){
          if(this.props.smallScreen!==this.state.smallScreen){
