@@ -74,38 +74,19 @@ export const EDITRULES=`
 
 
 export const Data = [
-    {
-        name: '测试性能',
-        title: '测试性能',
-        caption: '说明：' + '三行同时刷出小球 timer(0,30)',
-        hits: 0,
-        useful: 0,
-        doNotNeedAuto:true,
-        //line: 3,
-        marbleText: '测试性能',
-        code: `
-
-    //editArea
-
-    let RxTimer1,RxTimer2,RxTimer3;
-    RxTimer1 = Rx.Observable.timer(0,30).take(100);
-    RxTimer2 = Rx.Observable.timer(0,30).take(100);
-    RxTimer3 = Rx.Observable.timer(0,30).take(100);
-    //editArea
-    let initTime=new Date().getTime();
-    marSub.RxTimer1 = RxTimer1.subscribe(NEC(showInMar, 1));
-    marSub.RxTimer2 = RxTimer2.subscribe(NEC(showInMar, 2));
-    marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
-
-         `},
+   
     {
         name: 'withLatestFrom',
         title: 'withLatestFrom(other: ObservableInput, project: Function): Observable',
         caption: `
-        官方说明：结合源 Observable 和另外的 Observables 以创建新的 Observable， 该 Observable 的值由每 个 Observable 最新的值计算得出，当且仅当源发出的时候。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：外发射源 每1秒发射值，内发射源1 每1.5秒发射值，内发射源2 每3秒发射值，结合所有发射源最新值，并且将发射的值传递给project(最后的参数)，进行计算。<br>
-        特别注意：首先会等所有源都已经发射值，再开始结合。如果不传参数，结果以数组合并每个发射源的值。
+        官方说明：
+        结合源 Observable 和另外的 Observables 以创建新的 Observable， 该 Observable 的值由每 个 Observable 最新的值计算得出，当且仅当源发出的时候。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        外发射源 每1秒发射值，内发射源1 每1.5秒发射值，内发射源2 每3秒发射值，结合所有发射源最新值，并且将发射的值传递给project(最后的参数)，进行计算。<br>
+        特别注意：
+        首先会等所有源都已经发射值，再开始结合。如果不传参数，结果以数组合并每个发射源的值。
         `,
         hits: 152,
         useful: 562,
@@ -136,16 +117,20 @@ export const Data = [
         name: 'windowWhen',
         title: 'windowWhen(closingSelector: function(): Observable): Observable<Observable<T>>',
         caption: `
-        官方说明：将将源 Observable 的值分支成嵌套的 Observable ，通过使用关闭 Observable 的工厂函数来决定何时开启新的窗口。<br>
-        操作说明：点击开始后，使用click触发。<br>
+        官方说明：
+        将将源 Observable 的值分支成嵌套的 Observable ，通过使用关闭 Observable 的工厂函数来决定何时开启新的窗口。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
         此处理解：
+        
         closingSelector(参数1)是一个通知关闭嵌套窗口的function，返回一个Observable。<br>
         这里每次click就会关闭之前的嵌套窗口并且立刻开启新窗口，每隔新窗口最多接受2个值(take(2))。<br>
         第1行是RxInterval发射源。<br>   
         第2行是click事件发射源。<br>
         第3行是每次click关闭之前的窗口，并且开启新窗口。<br>
         第4行是mergeAll打平，每个新窗口最多发射2个值。<br>
-        特别注意：第3行是直接通过window输出的是高阶Observable。可以对比bufferWhen查看。
+        特别注意：
+        第3行是直接通过window输出的是高阶Observable。可以对比bufferWhen查看。
         `,
         hits: 152,
         useful: 562,
@@ -176,16 +161,20 @@ export const Data = [
         name: 'windowToggle',
         title: 'windowToggle(openings: Observable<O>, closingSelector: function(value: O): Observable): Observable<Observable<T>>',
         caption: `
-        官方说明：将源 Observable 的值分支成嵌套的 Observable，分支策略是以 openings 发出项为起始，以 closingSelector 发出为结束。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：openings(参数1)是通知打开新嵌套窗口的Observable，这里每隔2秒打开一个新嵌套窗口<br>
+        官方说明：
+        将源 Observable 的值分支成嵌套的 Observable，分支策略是以 openings 发出项为起始，以 closingSelector 发出为结束。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        openings(参数1)是通知打开新嵌套窗口的Observable，这里每隔2秒打开一个新嵌套窗口<br>
         closingSelector(参数2)接受openings的返回值，是一个通知关闭嵌套窗口的Observable。<br>
         这里如果RxInterval得值是奇数，1秒后关闭新窗口；如果RxInterval的值是偶数，发出empty(立刻关闭新窗口)。<br>
         第1行是click事件发射源。<br>
         第2行是RxInterval发射源。<br>
         第3行是每隔2秒开启一个新的嵌套窗口，并且奇数时隔1秒关闭窗口。<br>
         第4行是mergeAll打平，当显示奇数时，下一秒的click事件会被发射。<br>
-        特别注意：第3行是直接通过window输出的是高阶Observable。
+        特别注意：
+        第3行是直接通过window输出的是高阶Observable。
         `,
         hits: 152,
         useful: 562,
@@ -218,11 +207,15 @@ export const Data = [
         name: 'windowCount',
         title: 'windowCount(windowSize: number, startWindowEvery: number): Observable<Observable<T>>',
         caption: `
-        官方说明：将源 Observable 的值分支成多个嵌套的 Observable ，每个嵌套的 Observable 最多发出 windowSize 个值。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：第2行是在起始处立即开启新窗口，并且外部发射源每输出5个值，开启新窗口，这个窗口能嵌套最多2个值。<br>
+        官方说明：
+        将源 Observable 的值分支成多个嵌套的 Observable ，每个嵌套的 Observable 最多发出 windowSize 个值。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        第2行是在起始处立即开启新窗口，并且外部发射源每输出5个值，开启新窗口，这个窗口能嵌套最多2个值。<br>
         第3行是mergeAll打平，每点击5次，只显示最早的2次。<br>
-        特别注意：第2行是直接通过window输出的是高阶Observable。
+        特别注意：
+        第2行是直接通过window输出的是高阶Observable。
         `,
         hits: 152,
         useful: 562,
@@ -250,10 +243,14 @@ export const Data = [
         name: 'window',
         title: 'window(windowBoundaries: Observable<any>): Observable<Observable<T>>',
         caption: `
-        官方说明：每当 windowBoundaries 发出项时，将源 Observable 的值分支成嵌套的 Observable 。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：每当内部源发射值时，将RxClick变成高阶Observable(第2行)，然后这里通过mergeMap打平(第3行)，并且每2秒最多发射2次click事件。<br>
-        特别注意：第2行是直接通过window输出的是高阶Observable。
+        官方说明：
+        每当 windowBoundaries 发出项时，将源 Observable 的值分支成嵌套的 Observable 。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        每当内部源发射值时，将RxClick变成高阶Observable(第2行)，然后这里通过mergeMap打平(第3行)，并且每2秒最多发射2次click事件。<br>
+        特别注意：
+        第2行是直接通过window输出的是高阶Observable。
         `,
         hits: 152,
         useful: 562,
@@ -282,10 +279,14 @@ export const Data = [
         name: 'timeInterval',
         title: 'timeInterval(scheduler: *): Observable<TimeInterval<any>> | WebSocketSubject<T> | Observable<T>',
         caption: `
-        官方说明：无。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：计时操作符，每次返回发射的值和时间间隔。<br>
-        特别注意：无。
+        官方说明：
+        无。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        计时操作符，每次返回发射的值和时间间隔。<br>
+        特别注意：
+        无。
         `,
         hits: 152,
         useful: 562,
@@ -311,10 +312,14 @@ export const Data = [
         name: 'takeLast',
         title: 'takeLast(count: number): Observable<T>',
         caption: `
-        官方说明：只发出源 Observable 最后发出的的N个值 (N = count)<br>
-        操作说明：点击开始即可。<br>
-        此处理解：发射源完成时，一次性发出最后2个值(2,3)。<br>
-        特别注意：必须等待发射源完成的时候一次性同步发出，如果参数count大于发射源值的数量，则全部发出。
+        官方说明：
+        只发出源 Observable 最后发出的的N个值 (N = count)<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        发射源完成时，一次性发出最后2个值(2,3)。<br>
+        特别注意：
+        必须等待发射源完成的时候一次性同步发出，如果参数count大于发射源值的数量，则全部发出。
         `,
         hits: 152,
         useful: 562,
@@ -340,10 +345,14 @@ export const Data = [
         name: 'take',
         title: 'take(count: number): Observable<T>',
         caption: `
-        官方说明：只发出源 Observable 最初发出的的N个值 (N = count)。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：只发出前2个发射值。<br>
-        特别注意：如果参数count大于发射源值的数量，则全部发出。
+        官方说明：
+        只发出源 Observable 最初发出的的N个值 (N = count)。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        只发出前2个发射值。<br>
+        特别注意：
+        如果参数count大于发射源值的数量，则全部发出。
         `,
         hits: 152,
         useful: 562,
@@ -369,10 +378,14 @@ export const Data = [
         name: 'switchMapTo',
         title: 'switchMapTo(innerObservable: ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any): Observable',
         caption: `
-        官方说明：将每个源值投射成同一个 Observable ，该 Observable 会使用 switch 多次被打平 到输出 Observable 中。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：每次click，会触发一个新的interval$，如果触发之前已经存在interval$，则会先取消订阅原来的interval$，再订阅新的interval$。<br>
-        特别注意：与switchMap相比，内部源是同一个，不会因外部源数值变化而变化(不是function)。
+        官方说明：
+        将每个源值投射成同一个 Observable ，该 Observable 会使用 switch 多次被打平 到输出 Observable 中。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        每次click，会触发一个新的interval$，如果触发之前已经存在interval$，则会先取消订阅原来的interval$，再订阅新的interval$。<br>
+        特别注意：
+        与switchMap相比，内部源是同一个，不会因外部源数值变化而变化(不是function)。
         `,
         hits: 152,
         useful: 562,
@@ -399,10 +412,14 @@ export const Data = [
         name: 'switchMap',
         title: 'switchMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any): Observable',
         caption: `
-        官方说明：将每个源值投射成 Observable，该 Observable 会合并到输出 Observable 中， 并且只发出最新投射的 Observable 中的值。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：每次click，会触发一个新的interval$，如果触发之前已经存在interval$，则会先取消订阅原来的interval$，再订阅新的interval$。<br>
-        特别注意：其实就是先map，再switch（和switch查看比较）。
+        官方说明：
+        将每个源值投射成 Observable，该 Observable 会合并到输出 Observable 中， 并且只发出最新投射的 Observable 中的值。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        每次click，会触发一个新的interval$，如果触发之前已经存在interval$，则会先取消订阅原来的interval$，再订阅新的interval$。<br>
+        特别注意：
+        其实就是先map，再switch（和switch查看比较）。
         `,
         hits: 152,
         useful: 562,
@@ -429,10 +446,14 @@ export const Data = [
         name: 'switch',
         title: 'switch(): Observable<T>',
         caption: `
-        官方说明：通过只订阅最新发出的内部 Observable ，将高阶 Observable 转换成一阶 Observable 。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：每次click，会触发一个新的interval$，如果触发之前已经存在interval$，则会先取消订阅原来的interval$，再订阅新的interval$。<br>
-        特别注意：switch会将高阶发射源打平。
+        官方说明：
+        通过只订阅最新发出的内部 Observable ，将高阶 Observable 转换成一阶 Observable 。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        每次click，会触发一个新的interval$，如果触发之前已经存在interval$，则会先取消订阅原来的interval$，再订阅新的interval$。<br>
+        特别注意：
+        switch会将高阶发射源打平。
         `,
         hits: 152,
         useful: 562,
@@ -459,11 +480,15 @@ export const Data = [
         name: 'subscribeOn',
         title: 'subscribeOn(scheduler: Scheduler): Observable<T>',
         caption: `
-        官方说明：使用指定的 IScheduler 异步地订阅此 Observable 的观察者。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：第一行的from$未使用scheduler，同步执行，结果是13。<br>
+        官方说明：
+        使用指定的 IScheduler 异步地订阅此 Observable 的观察者。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        第一行的from$未使用scheduler，同步执行，结果是13。<br>
         第二行的fromSubOn$使用了asap的scheduler，异步执行，结果是12和13。<br>
-        特别注意：更多scheduler属性看这里。("https://cn.rx.js.org/typedef/index.html#static-typedef-Rx.Scheduler")。
+        特别注意：
+        更多scheduler属性看这里。("https://cn.rx.js.org/typedef/index.html#static-typedef-Rx.Scheduler")。
         `,
         hits: 152,
         useful: 562,
@@ -493,10 +518,15 @@ export const Data = [
         name: 'startWith',
         title: 'startWith(values: ...T, scheduler: Scheduler): Observable',
         caption: `
-        官方说明：返回的 Observable 会先发出作为参数指定的项，然后再发出由源 Observable 所发出的项。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：先发出指定项，此处先发出'a'。<br>
-        特别注意：predicate必须写，否则会发出error。`,
+        官方说明：
+        返回的 Observable 会先发出作为参数指定的项，然后再发出由源 Observable 所发出的项。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        先发出指定项，此处先发出'a'。<br>
+        特别注意：
+        predicate必须写，否则会发出error。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -519,10 +549,15 @@ export const Data = [
         name: 'skipWhile',
         title: 'skipWhile(predicate: Function): Observable<T>',
         caption: `
-        官方说明：返回一个 Observable， 该 Observable 会跳过由源 Observable 发出的所有满足指定条件的数据项， 但是一旦出现了不满足条件的项，则发出在此之后的所有项。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：忽略符合predicate条件的所有发射值，此处忽略小于3的发射值。<br>
-        特别注意：predicate必须写，否则会发出error。`,
+        官方说明：
+        返回一个 Observable， 该 Observable 会跳过由源 Observable 发出的所有满足指定条件的数据项， 但是一旦出现了不满足条件的项，则发出在此之后的所有项。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        忽略符合predicate条件的所有发射值，此处忽略小于3的发射值。<br>
+        特别注意：
+        predicate必须写，否则会发出error。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -546,10 +581,14 @@ export const Data = [
         name: 'skipUntil',
         title: 'skipUntil(notifier: Observable): Observable<T>',
         caption: `
-        官方说明：返回一个 Observable，该 Observable 会跳过源 Observable 发出的值直到第二个 Observable 开始发送。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：忽略初始发射源，直到内部发射源发出值。<br>
-        特别注意：无`,
+        官方说明：
+        返回一个 Observable，该 Observable 会跳过源 Observable 发出的值直到第二个 Observable 开始发送。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        忽略初始发射源，直到内部发射源发出值。<br>
+        特别注意：
+        无`,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -575,10 +614,15 @@ export const Data = [
         name: 'skipLast',
         title: 'skipLast(count: number): Observable<T>',
         caption: `
-        官方说明：跳过源 Observable 最后发出的的N个值 (N = count)。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：跳过最后2个值。<br>
-        特别注意：会延迟最后N个值的时间，才(从头)开始发出。`,
+        官方说明：
+        跳过源 Observable 最后发出的的N个值 (N = count)。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        跳过最后2个值。<br>
+        特别注意：
+        会延迟最后N个值的时间，才(从头)开始发出。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -602,10 +646,14 @@ export const Data = [
         name: 'skip',
         title: 'skip(count: Number): Observable',
         caption: `
-        官方说明：返回一个 Observable， 该 Observable 跳过源 Observable 发出的前N个值(N = count)。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：跳过前2个值。<br>
-        特别注意：无`,
+        官方说明：
+        返回一个 Observable， 该 Observable 跳过源 Observable 发出的前N个值(N = count)。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        跳过前2个值。<br>
+        特别注意：
+        无`,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -629,10 +677,14 @@ export const Data = [
         name: 'single',
         title: 'single(predicate: Function): Observable<T>',
         caption: `
-        官方说明：该 Observable 发出源 Observable 所发出的值中匹配指定 predicate 函数的单个项。 如果源 Observable 发出多于1个数据项或者没有发出数据项, 分别以 IllegalArgumentException 和 NoSuchElementException 进行通知。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：如果无参数predicate，则如果发射源发出多于1项或者少于1项，会发出错误。如果有参数predicate，则会发出匹配的单项。<br>
-        特别注意：无`,
+        官方说明：
+        该 Observable 发出源 Observable 所发出的值中匹配指定 predicate 函数的单个项。 如果源 Observable 发出多于1个数据项或者没有发出数据项, 分别以 IllegalArgumentException 和 NoSuchElementException 进行通知。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        如果无参数predicate，则如果发射源发出多于1项或者少于1项，会发出错误。如果有参数predicate，则会发出匹配的单项。<br>
+        特别注意：
+        无`,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -656,9 +708,12 @@ export const Data = [
         name: 'shareReplay',
         title: 'shareReplay(bufferSize: *, windowTime: *, scheduler: *): *',
         caption: `
-        官方说明：无。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：共享数据，不过会先返回上一个发射源的前N(参数1，此处是2)个值。<br>
+        官方说明：
+        无。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        共享数据，不过会先返回上一个发射源的前N(参数1，此处是2)个值。<br>
         此处前3行发射源是"shaReplay$"，后2行发射源是"shaReplay2$"。<br>
         第1行为立即订阅；<br>
         第2行隔2.5秒后订阅，订阅时第1行还在继续订阅，返回前2个数据(0,1)，数据共享；<br>
@@ -667,7 +722,8 @@ export const Data = [
         第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回前2个数据(0,1)(并不受unsubscribe影响)，<strong>共享数据</strong>；<br>
         结论:(和publishReplay.connect一致)<br>
         前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
-        特别注意：需要拖拽查看，不管上一个源是什么状态(包括error)，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
+        特别注意：
+        需要拖拽查看，不管上一个源是什么状态(包括error)，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
         `,
         hits: 152,
         useful: 562,
@@ -697,10 +753,15 @@ export const Data = [
         name: 'sequenceEqual',
         title: 'sequenceEqual(compareTo: Observable, comparor: function): Observable',
         caption: `
-        官方说明：使用可选的比较函数，按顺序比较两个 Observables 的所有值，然后返回单个布尔值的 Observable， 以表示两个序列是否相等。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：此处比较用的是'==='，因此'{}'跟'{}'是不等的，第二个参数可以自己配置比较函数，这里先对比，不符合再对x项对比。<br>
-        特别注意：如果其中一个 observable 永远不会完成或者在另一个完成后还发出数据， 返回的 observable 永远不会结束。`,
+        官方说明：
+        使用可选的比较函数，按顺序比较两个 Observables 的所有值，然后返回单个布尔值的 Observable， 以表示两个序列是否相等。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        此处比较用的是'==='，因此'{}'跟'{}'是不等的，第二个参数可以自己配置比较函数，这里先对比，不符合再对x项对比。<br>
+        特别注意：
+        如果其中一个 observable 永远不会完成或者在另一个完成后还发出数据， 返回的 observable 永远不会结束。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -726,11 +787,16 @@ export const Data = [
         name: 'sampleTime',
         title: 'sampleTime(period: number, scheduler: Scheduler): Observable<T>',
         caption: `
-        官方说明：在周期时间间隔内发出源 Observable 发出的最新值。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：每隔N秒，发出发射源的最新值，只取一次数据<br>
+        官方说明：
+        在周期时间间隔内发出源 Observable 发出的最新值。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        每隔N秒，发出发射源的最新值，只取一次数据<br>
         这里第1行是发射源，第2行间隔为1000ms，第3行间隔为30ms(实际就是发射源间隔600ms)。<br>
-        特别注意：最小间隔就是发射源的发射间隔，必须要在另一个源正在发送时，才能获取到最新值，未开始发送或者complete后都无法获取。`,
+        特别注意：
+        最小间隔就是发射源的发射间隔，必须要在另一个源正在发送时，才能获取到最新值，未开始发送或者complete后都无法获取。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -756,10 +822,15 @@ export const Data = [
         name: 'sample',
         title: 'sample(notifier: Observable<any>): Observable<T>',
         caption: `
-        官方说明：发出源 Observable 最新发出的值当另一个 notifier Observable发送时。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：每次click，获取RxInterval的最新值。<br>
-        特别注意：必须要在另一个源正在发送时，才能获取到最新值，未开始发送或者complete后都无法获取。`,
+        官方说明：
+        发出源 Observable 最新发出的值当另一个 notifier Observable发送时。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        每次click，获取RxInterval的最新值。<br>
+        特别注意：
+        必须要在另一个源正在发送时，才能获取到最新值，未开始发送或者complete后都无法获取。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -786,10 +857,15 @@ export const Data = [
         name: 'retry',
         title: 'retry(count: number): Observable',
         caption: `
-        官方说明：返回一个 Observable， 该 Observable 是源 Observable 不包含错误异常的镜像。 如果源 Observable 发生错误, 这个方法不会传播错误而是会不 断的重新订阅源 Observable 直到达到最大重试次数 (由数字参数指定)。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：发出0的概率为100%，发出1的概率为80%，发出2的概率为40%，总共可以重试3次，完成则complete，失败则error。<br>
-        特别注意：因为是Math.random，Marble和Result里的数据不一致。`,
+        官方说明：
+        返回一个 Observable， 该 Observable 是源 Observable 不包含错误异常的镜像。 如果源 Observable 发生错误, 这个方法不会传播错误而是会不 断的重新订阅源 Observable 直到达到最大重试次数 (由数字参数指定)。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        发出0的概率为100%，发出1的概率为80%，发出2的概率为40%，总共可以重试3次，完成则complete，失败则error。<br>
+        特别注意：
+        因为是Math.random，Marble和Result里的数据不一致。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -813,10 +889,15 @@ export const Data = [
         name: 'repeat',
         title: 'repeat(count: number): Observable',
         caption: `
-        官方说明：返回的 Observable 重复由源 Observable 所发出的项的流，最多可以重复 count 次。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：重复3（参数）次。<br>
-        特别注意：无。`,
+        官方说明：
+        返回的 Observable 重复由源 Observable 所发出的项的流，最多可以重复 count 次。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        重复3（参数）次。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -841,10 +922,15 @@ export const Data = [
         name: 'race',
         title: 'race(): Observable',
         caption: `
-        官方说明：返回 Observable，该 Observable 是源 Observable 和提供的 Observables 的组合中 第一个发出项的 Observable 的镜像。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：第三行为race返回值，返回发出最快的发射源。<br>
-        特别注意：无。`,
+        官方说明：
+        返回 Observable，该 Observable 是源 Observable 和提供的 Observables 的组合中 第一个发出项的 Observable 的镜像。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        第三行为race返回值，返回发出最快的发射源。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -871,9 +957,12 @@ export const Data = [
         name: 'publishLast',
         title: 'publishLast(): ConnectableObservable<T>',
         caption: `
-        官方说明：无。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：共享数据，只返回最后的值和complete，此处用的是connect()。<br>
+        官方说明：
+        无。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        共享数据，只返回最后的值和complete，此处用的是connect()。<br>
         此处前2行发射源是"pubLast$"，后2行发射源是"pubLast2$"。<br>
         第1行为立即订阅,3秒后返回最后值和complete；<br>
         第2行隔4秒订阅，此时之前发射源状态是complete，返回最后值和complete；<br>
@@ -883,7 +972,8 @@ export const Data = [
         前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
         refCount():<br>
         前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。<br>
-        特别注意：不管上一个源是complete还是unsubscribe，直接返回最后值和complete，如果error则只返回error。
+        特别注意：
+        不管上一个源是complete还是unsubscribe，直接返回最后值和complete，如果error则只返回error。
         `,
         hits: 152,
         useful: 562,
@@ -913,9 +1003,12 @@ export const Data = [
         name: 'publishReplay',
         title: 'publishReplay(bufferSize: *, windowTime: *, scheduler: *): ConnectableObservable<T>',
         caption: `
-        官方说明：无。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：共享数据，不过会先返回上一个发射源的前N(参数1，此处是2)个值，此处用的是connect()。<br>
+        官方说明：
+        无。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        共享数据，不过会先返回上一个发射源的前N(参数1，此处是2)个值，此处用的是connect()。<br>
         此处前3行发射源是"pubReplay$"，后2行发射源是"pubReplay2$"。<br>
         第1行为立即订阅；<br>
         第2行隔2.5秒后订阅，订阅时第1行还在继续订阅，返回前2个数据(0,1)，数据共享；<br>
@@ -926,7 +1019,8 @@ export const Data = [
         前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
         refCount():<br>
         前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。<br>
-        特别注意：需要拖拽查看，不管上一个源是什么状态(包括error)，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
+        特别注意：
+        需要拖拽查看，不管上一个源是什么状态(包括error)，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
         `,
         hits: 152,
         useful: 562,
@@ -957,9 +1051,12 @@ export const Data = [
         name: 'publishBehavior',
         title: 'publishBehavior(value: *): ConnectableObservable<T>',
         caption: `
-        官方说明：无。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：共享数据，不过会先返回上一个发射源的最新值，此处用的是connect()。<br>
+        官方说明：
+        无。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        共享数据，不过会先返回上一个发射源的最新值，此处用的是connect()。<br>
         此处前3行发射源是"pubBehavior$"，后2行发射源是"pubBehavior2$"。<br>
         第1行为立即订阅；<br>
         第2行隔2.5秒后订阅，订阅时第1行还在继续订阅，返回上一个最新值1，数据共享；<br>
@@ -970,7 +1067,8 @@ export const Data = [
         前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
         refCount():<br>
         前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。<br>
-        特别注意：上一个源是complete，直接进入complete；上一个源是unsubscribe，也会先发出上一个源的最新值(如果数据共享，则发出共享的最新值)，上一个源是error，返回error(不返回最新值)。
+        特别注意：
+        上一个源是complete，直接进入complete；上一个源是unsubscribe，也会先发出上一个源的最新值(如果数据共享，则发出共享的最新值)，上一个源是error，返回error(不返回最新值)。
         `,
         hits: 152,
         useful: 562,
@@ -1002,10 +1100,16 @@ export const Data = [
         name: 'min',
         title: 'min(comparer: Function): Observable<R>',
         caption: `
-        官方说明：min 操作符操作的 Observable 发出数字(或可以使用提供函数进行比较的项)并且当源 Observable 完成时它发出单一项：最小值的项。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：无比较函数则返回最小值，有比较函数则根据比较函数来返回(大于返回1，小于返回-1)。<br>
-        特别注意：无。`,
+        官方说明：
+        min 操作符操作的 Observable 发出数字(或可以使用提供函数进行比较的项)并且当源 Observable 完成时它发出单一项：
+        最小值的项。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        无比较函数则返回最小值，有比较函数则根据比较函数来返回(大于返回1，小于返回-1)。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1032,10 +1136,16 @@ export const Data = [
         name: 'max',
         title: 'max(comparer: Function): Observable',
         caption: `
-        官方说明：max 操作符操作的 Observable 发出数字(或可以与提供的函数进行比较的项)并且当源 Observable 完成时它发出单一项：最大值的项。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：无比较函数则返回最大值，有比较函数则根据比较函数来返回(大于返回1，小于返回-1)。<br>
-        特别注意：无。`,
+        官方说明：
+        max 操作符操作的 Observable 发出数字(或可以与提供的函数进行比较的项)并且当源 Observable 完成时它发出单一项：
+        最大值的项。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        无比较函数则返回最大值，有比较函数则根据比较函数来返回(大于返回1，小于返回-1)。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1062,11 +1172,16 @@ export const Data = [
         name: 'materialize',
         title: 'materialize(): Observable<Notification<T>>',
         caption: `
-        官方说明：表示源 Observable 中的所有通知，每个通知都会在 Notification 对象中标记为 它们原始的通知类型，并会作为输出 Observable 的 next 通知。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：返回 Notification对象：{kind: "N", value: "0", error: undefined, hasValue: true}<br>
+        官方说明：
+        表示源 Observable 中的所有通知，每个通知都会在 Notification 对象中标记为 它们原始的通知类型，并会作为输出 Observable 的 next 通知。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        返回 Notification对象：{kind: "N", value: "0", error: undefined, hasValue: true}<br>
                   kind：'N'代表next，'C'代表complete，'E'代表error。
-        特别注意：无。`,
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1091,10 +1206,15 @@ export const Data = [
         name: 'mapTo',
         title: 'mapTo(value: any): Observable',
         caption: `
-        官方说明：每次源 Observble 发出值时，都在输出 Observable 上发出给定的常量值。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：收到任何发射源值，都转换成'a'。<br>
-        特别注意：无。`,
+        官方说明：
+        每次源 Observble 发出值时，都在输出 Observable 上发出给定的常量值。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        收到任何发射源值，都转换成'a'。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1119,10 +1239,15 @@ export const Data = [
         name: 'map',
         title: 'map(project: function(value: T, index: number): R, thisArg: any): Observable<R>',
         caption: `
-        官方说明：将给定的 project 函数应用于源 Observable 发出的每个值，并将结果值作为 Observable 发出。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：将发射源每个值乘以2，再返回。<br>
-        特别注意：无。`,
+        官方说明：
+        将给定的 project 函数应用于源 Observable 发出的每个值，并将结果值作为 Observable 发出。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        将发射源每个值乘以2，再返回。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1147,10 +1272,15 @@ export const Data = [
         name: 'last',
         title: 'last(predicate: function): Observable',
         caption: `
-        官方说明：返回的 Observable 只发出由源 Observable 发出的最后一个值。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：满足参数predicate的最后一个发射值,发射最后一个奇数。<br>
-        特别注意：无。`,
+        官方说明：
+        返回的 Observable 只发出由源 Observable 发出的最后一个值。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        满足参数predicate的最后一个发射值,发射最后一个奇数。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1175,10 +1305,15 @@ export const Data = [
         name: 'ignoreElements',
         title: 'ignoreElements(): Observable',
         caption: `
-        官方说明：忽略源 Observable 所发送的所有项，只传递 complete 或 error 的调用。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：无。<br>
-        特别注意：无。`,
+        官方说明：
+        忽略源 Observable 所发送的所有项，只传递 complete 或 error 的调用。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        无。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1204,10 +1339,15 @@ export const Data = [
         name: 'isEmpty',
         title: 'isEmpty(): Observable',
         caption: `
-        官方说明：如果源 Observable 是空的话，它返回一个发出 true 的 Observable，否则发出 false 。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：of$返回false，empty$返回true。<br>
-        特别注意：无。`,
+        官方说明：
+        如果源 Observable 是空的话，它返回一个发出 true 的 Observable，否则发出 false 。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        of$返回false，empty$返回true。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1236,10 +1376,15 @@ export const Data = [
         name: 'interval',
         title: 'interval(period: number, scheduler: Scheduler): Observable',
         caption: `
-        官方说明：创建一个 Observable ，该 Observable 使用指定的 IScheduler ，并以指定时间间隔发出连续的数字。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：每秒发出一个递增数字，最多5次。<br>
-        特别注意：无。`,
+        官方说明：
+        创建一个 Observable ，该 Observable 使用指定的 IScheduler ，并以指定时间间隔发出连续的数字。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        每秒发出一个递增数字，最多5次。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1264,10 +1409,15 @@ export const Data = [
         name: 'empty',
         title: 'empty(scheduler: Scheduler): Observable',
         caption: `
-        官方说明：创建一个什么数据都不发出并且立马完成的 Observable。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：仅仅发出 complete 通知，其他什么也不做。当遇到奇数是发射'奇'。<br>
-        特别注意：无。`,
+        官方说明：
+        创建一个什么数据都不发出并且立马完成的 Observable。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        仅仅发出 complete 通知，其他什么也不做。当遇到奇数是发射'奇'。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1295,10 +1445,15 @@ export const Data = [
         name: 'defer',
         title: 'defer(observableFactory: function(): SubscribableOrPromise): Observable',
         caption: `
-        官方说明：创建一个 Observable，当被订阅的时候，调用 Observable 工厂为每个观察者创建新的 Observable。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：点击开始后计算随机数，随机数>0.5则订阅click事件，否则订阅interval。<br>
-        特别注意：无。`,
+        官方说明：
+        创建一个 Observable，当被订阅的时候，调用 Observable 工厂为每个观察者创建新的 Observable。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        点击开始后计算随机数，随机数>0.5则订阅click事件，否则订阅interval。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1324,9 +1479,12 @@ export const Data = [
         name: 'groupBy',
         title: 'groupBy(keySelector: function(value: T): K, elementSelector: function(value: T): R, durationSelector: function(grouped: GroupedObservable<K, R>): Observable<any>): Observable<GroupedObservable<K, R>>',
         caption: `
-        官方说明：根据指定条件将源 Observable 发出的值进行分组，并将这些分组作为 GroupedObservables 发出，每一个分组都是一个 GroupedObservable 。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：此处第一个函数返id的值(以此分割group)，第二个函数返回name的值；在reduce函数内，group$.key则为id的值，cur为name的值；<br>
+        官方说明：
+        根据指定条件将源 Observable 发出的值进行分组，并将这些分组作为 GroupedObservables 发出，每一个分组都是一个 GroupedObservable 。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        此处第一个函数返id的值(以此分割group)，第二个函数返回name的值；在reduce函数内，group$.key则为id的值，cur为name的值；<br>
         group1第一次reduce：acc为['1']，cur为'aze1'，返回['1','aze1']<br>
         group2第一次reduce：acc为['2']，cur为'sf2'，返回['2','sf2']<br>
         group2第二次reduce：acc为['2','sf2']，cur为'dg2'，返回['2','sf2','dg2']<br>
@@ -1336,7 +1494,9 @@ export const Data = [
         group2为['2','sf2','dg2','sfqfb2','qsgqsfg2']<br>
         group3为['3','qfs3']<br>
         再进行map，即可得出结果。<br>
-        特别注意：第一个函数返回的是分割group的依据，使用group.key调用；第二个函数返回是需要的返回值，如果不写则返回整个对象。`,
+        特别注意：
+        第一个函数返回的是分割group的依据，使用group.key调用；第二个函数返回是需要的返回值，如果不写则返回整个对象。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1372,10 +1532,15 @@ export const Data = [
         name: 'first',
         title: 'first(predicate: function(value: T, index: number, source: Observable<T>): boolean, resultSelector: function(value: T, index: number): R, defaultValue: R): Observable<T | R>',
         caption: `
-        官方说明：只发出由源 Observable 所发出的值中第一个(或第一个满足条件的值)。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：无参数则返回第一个发射的值，有参数则返回第一个符合条件的值(参考find)。<br>
-        特别注意：无。`,
+        官方说明：
+        只发出由源 Observable 所发出的值中第一个(或第一个满足条件的值)。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        无参数则返回第一个发射的值，有参数则返回第一个符合条件的值(参考find)。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1401,10 +1566,15 @@ export const Data = [
         name: 'findIndex',
         title: 'findIndex(predicate: function(value: T, index: number, source: Observable<T>): boolean, thisArg: any): Observable<T>',
         caption: `
-        官方说明：只发出源 Observable 所发出的值中第一个满足条件的值的索引。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：过滤出predicate返回值为true的值，只发出符合条件的第一个值的索引。<br>
-        特别注意：无。`,
+        官方说明：
+        只发出源 Observable 所发出的值中第一个满足条件的值的索引。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        过滤出predicate返回值为true的值，只发出符合条件的第一个值的索引。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1430,10 +1600,15 @@ export const Data = [
         name: 'find',
         title: 'find(predicate: function(value: T, index: number, source: Observable<T>): boolean, thisArg: any): Observable<T>',
         caption: `
-        官方说明：只发出源 Observable 所发出的值中第一个满足条件的值<br>
-        操作说明：点击开始即可。<br>
-        此处理解：过滤出predicate返回值为true的值，只发出符合条件的第一个值。<br>
-        特别注意：无。`,
+        官方说明：
+        只发出源 Observable 所发出的值中第一个满足条件的值<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        过滤出predicate返回值为true的值，只发出符合条件的第一个值。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1459,10 +1634,15 @@ export const Data = [
         name: 'filter',
         title: 'filter(predicate: function(value: T, index: number): boolean, thisArg: any): Observable',
         caption: `
-        官方说明：通过只发送源 Observable 的中满足指定 predicate 函数的项来进行过滤。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：过滤出predicate返回值为true的值，组成新的发射源，此处过滤偶数。<br>
-        特别注意：无。`,
+        官方说明：
+        通过只发送源 Observable 的中满足指定 predicate 函数的项来进行过滤。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        过滤出predicate返回值为true的值，组成新的发射源，此处过滤偶数。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1488,10 +1668,15 @@ export const Data = [
         name: 'expand',
         title: 'expand(project: function(value: T, index: number), concurrent: number): Observable',
         caption: `
-        官方说明：递归地将每个源值投射成 Observable，这个 Observable 会被合并到输出 Observable 中。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：mapTo将click转换成数字1，传给project，project返回值是2*1，再将返回值递归传递给project，一直如此下去，此处最多递归10次。<br>
-        特别注意：如果不设定次数限制，递归是无限的。`,
+        官方说明：
+        递归地将每个源值投射成 Observable，这个 Observable 会被合并到输出 Observable 中。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        mapTo将click转换成数字1，传给project，project返回值是2*1，再将返回值递归传递给project，一直如此下去，此处最多递归10次。<br>
+        特别注意：
+        如果不设定次数限制，递归是无限的。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1519,10 +1704,15 @@ export const Data = [
         name: 'pluck',
         title: 'pluck(properties: ...string): Observable',
         caption: `
-        官方说明：将每个源值(对象)映射成它指定的嵌套属性。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：每次click将会获取目标('event.target.tagName')，返回新的Observable然后显示。<br>
-        特别注意：如果嵌套属性无法找到，返回undefined。`,
+        官方说明：
+        将每个源值(对象)映射成它指定的嵌套属性。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        每次click将会获取目标('event.target.tagName')，返回新的Observable然后显示。<br>
+        特别注意：
+        如果嵌套属性无法找到，返回undefined。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1548,10 +1738,15 @@ export const Data = [
         name: 'partition',
         title: 'partition(predicate: function(value: T, index: number): boolean, thisArg: any): [Observable<T>, Observable<T>]',
         caption: `
-        官方说明：将源 Observable 一分为二，一个是所有满足 predicate 函数的值，另一个是所有 不满足 predicate 的值。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：这里partition$将发射源分为偶数和奇数，返回值是数组，数组内分别为偶数Observable和奇数Observable。<br>
-        特别注意：返回值是一个数组[]，不是Observable。`,
+        官方说明：
+        将源 Observable 一分为二，一个是所有满足 predicate 函数的值，另一个是所有 不满足 predicate 的值。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        这里partition$将发射源分为偶数和奇数，返回值是数组，数组内分别为偶数Observable和奇数Observable。<br>
+        特别注意：
+        返回值是一个数组[]，不是Observable。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1580,10 +1775,15 @@ export const Data = [
         name: 'pairwise',
         title: 'pairwise(): Observable<Array<T>>',
         caption: `
-        官方说明：将一系列连续的发送成对的组合在一起，并将这些分组作为两个值的数组发出。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：当发射源发射值到达2个时，每次发射值，都将最新值和前一次的值作为数组传递，然后将两个值相加。<br>
-        特别注意：只有在有2个值时，才会开始出发pairwise。`,
+        官方说明：
+        将一系列连续的发送成对的组合在一起，并将这些分组作为两个值的数组发出。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        当发射源发射值到达2个时，每次发射值，都将最新值和前一次的值作为数组传递，然后将两个值相加。<br>
+        特别注意：
+        只有在有2个值时，才会开始出发pairwise。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1609,10 +1809,15 @@ export const Data = [
         name: 'onErrorResumeNext',
         title: 'onErrorResumeNext(observables: ...ObservableInput): Observable',
         caption: `
-        官方说明：当任何提供的 Observable 发出完成或错误通知时，它会立即地订阅已传入下一个 Observable 。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：第一行是会发出错误的Observable，当第一行发出错误被onErrorResumeNext接收到，onErrorResumeNext不会发出错误，而是继续执行它内部的Observable。<br>
-        特别注意：类似concat，但即便发生错误也继续进行，使用onErrorResumeNext后，无法获得错误通知。`,
+        官方说明：
+        当任何提供的 Observable 发出完成或错误通知时，它会立即地订阅已传入下一个 Observable 。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        第一行是会发出错误的Observable，当第一行发出错误被onErrorResumeNext接收到，onErrorResumeNext不会发出错误，而是继续执行它内部的Observable。<br>
+        特别注意：
+        类似concat，但即便发生错误也继续进行，使用onErrorResumeNext后，无法获得错误通知。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1640,14 +1845,19 @@ export const Data = [
         name: 'multicast',
         title: 'multicast(subjectOrSubjectFactory: Function | Subject, selector: Function): Observable',
         caption: `
-        官方说明：返回的 Observable 发出对 ConnectableObservable 发出的项调用一个指定的 selector 函数的结果， ConnectableObservable 可以在潜在的多个流之间共享单个 subscription 。<br>
-        操作说明：点击开始即可。<br>
-        此处理解：第1行为立即订阅；<br>
+        官方说明：
+        返回的 Observable 发出对 ConnectableObservable 发出的项调用一个指定的 selector 函数的结果， ConnectableObservable 可以在潜在的多个流之间共享单个 subscription 。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        第1行为立即订阅；<br>
         第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>
         第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>
         第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
         第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>共享数据</strong>；<br>
-        <strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error</strong>`,
+        <strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error</strong>
+        特别注意：无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:true,
@@ -1677,10 +1887,15 @@ export const Data = [
         name: 'mergeScan',
         title: 'mergeScan(accumulator: function(acc: R, value: T): Observable<R>, seed: *, concurrent: number): Observable<R>',
         caption: `
-        官方说明：在源 Observable 上应用 accumulator 函数，其中 accumulator 函数本身返回 Observable ，然后每个返回的中间 Observable 会被合并到输出 Observable 中。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：累计click的次数。与scan类似，每次计算都有返回值，返回值是内部源(of$)的最新值。<br>
-        特别注意：每当外部源触发时，内部源(of$)的最新值是会返回给外部源，作为新的acc参与到新的内部源；因此如果内部源使用interval等长时间源值不断变化的操作符，结果就会根据点击位置而改变。因为内部源的最新值一直在变。`,
+        官方说明：
+        在源 Observable 上应用 accumulator 函数，其中 accumulator 函数本身返回 Observable ，然后每个返回的中间 Observable 会被合并到输出 Observable 中。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        累计click的次数。与scan类似，每次计算都有返回值，返回值是内部源(of$)的最新值。<br>
+        特别注意：
+        每当外部源触发时，内部源(of$)的最新值是会返回给外部源，作为新的acc参与到新的内部源；因此如果内部源使用interval等长时间源值不断变化的操作符，结果就会根据点击位置而改变。因为内部源的最新值一直在变。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1706,9 +1921,14 @@ export const Data = [
         name: 'mergeMapTo',
         title: 'mergeMapTo(innerObservable: ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any, concurrent: number): Observable',
         caption: `
-        官方说明：将每个源值投射成同一个 Observable ，该 Observable 会多次合并到输出 Observable 中。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：这里的内部源(interval$)是定值(不是function)，每次click时，都触发相同的内部发射源。`,
+        官方说明：
+        将每个源值投射成同一个 Observable ，该 Observable 会多次合并到输出 Observable 中。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        这里的内部源(interval$)是定值(不是function)，每次click时，都触发相同的内部发射源。
+        特别注意：跟mergeMap很像，但永远将每个值映射到同一个内部 Observable 。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1735,10 +1955,15 @@ export const Data = [
         name: 'mergeMap',
         title: 'mergeMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any, concurrent: number): Observable',
         caption: `
-        官方说明：将每个源值投射成 Observable ，该 Observable 会合并到输出 Observable 中。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：先理解mergeAll，这里就是先map，再mergeAll，将高阶Observable打平合并。<br>
-        这里每次click后，内部源从加上click次数开始递增。`,
+        官方说明：
+        将每个源值投射成 Observable ，该 Observable 会合并到输出 Observable 中。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        先理解mergeAll，这里就是先map，再mergeAll，将高阶Observable打平合并。<br>
+        这里每次click后，内部源从加上click次数开始递增。
+        特别注意：无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1765,11 +1990,16 @@ export const Data = [
         name: 'mergeAll',
         title: 'mergeAll(concurrent: number): Observable',
         caption: `
-        官方说明：将高阶 Observable 转换成一阶 Observable ，一阶 Observable 会同时发出在内部 Observables 上发出的所有值。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：将高阶Observable打平，再合并，合并规则与merge一样，参数为最多同时订阅的数量，此处最多同时订阅2个输入源。<br>
+        官方说明：
+        将高阶 Observable 转换成一阶 Observable ，一阶 Observable 会同时发出在内部 Observables 上发出的所有值。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        将高阶Observable打平，再合并，合并规则与merge一样，参数为最多同时订阅的数量，此处最多同时订阅2个输入源。<br>
         这里每次click后，内部源从加上click次数开始递增。<br>
-        特别注意：任何由内部 Observable 发出的错误都会立即在输出 Observalbe 上发出。`,
+        特别注意：
+        任何由内部 Observable 发出的错误都会立即在输出 Observalbe 上发出。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1795,15 +2025,19 @@ export const Data = [
     {
         name: 'combineLatest',
         title: 'combineLatest(observable1: ObservableInput, observable2: ObservableInput, project: function, scheduler: Scheduler): Observable',
-        caption: '说明：' + '组合多个 Observables 来创建一个 Observable ，该 Observable 的值根据每个输入 Observable 的最新值计算得出的。'+
-        '为了保证输出数组的长度相同，combineLatest 实际上会等待所有的输入 Observable 至少发出一次， 在返回 Observable 发出之前。'+
-        '这意味着如果某个输入 Observable 在其余的输入 Observable 之前发出，它所发出 的值只保留最新的。<br>'+
-        '操作说明：点击开始即可。<br>'+
-        '此处理解：第三个参数project：function可选，接受上一次的最新值作为参数，这里是(x,y)=>x+y；<br>'+
-        '1秒后interval1发出0，此时interval2还未发出值，因此等待；<br>'+
-        '1.5秒后，interval2发出0，此时interval1最新值为0，intervale2最新值为0，发出x+y即0；<br>'+
-        '2秒后，interval1发出1，最新值为1，interval2最新值还是0，发出x+y即1；<br>3秒后，interval2最新值为1，发出x+y即2。<br>'+
-        '特别注意：当任何一个发射源出现错误，combineLatest也发出错误。',
+        caption: `
+        官方说明：
+        组合多个 Observables 来创建一个 Observable ，该 Observable 的值根据每个输入 Observable 的最新值计算得出的。为了保证输出数组的长度相同，combineLatest 实际上会等待所有的输入 Observable 至少发出一次， 在返回 Observable 发出之前。这意味着如果某个输入 Observable 在其余的输入 Observable 之前发出，它所发出 的值只保留最新的。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        第三个参数project：function可选，接受上一次的最新值作为参数，这里是(x,y)=>x+y；<br>
+        1秒后interval1发出0，此时interval2还未发出值，因此等待；<br>
+        1.5秒后，interval2发出0，此时interval1最新值为0，intervale2最新值为0，发出x+y即0；<br>
+        2秒后，interval1发出1，最新值为1，interval2最新值还是0，发出x+y即1；<br>3秒后，interval2最新值为1，发出x+y即2。<br>
+        特别注意：
+        当任何一个发射源出现错误，combineLatest也发出错误。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1830,18 +2064,24 @@ export const Data = [
       {
         name: 'combineAll',
         title: 'combineAll(project: function): Observable',
-        caption: '说明：' + '通过等待外部 Observable 完成然后应用 combineLatest ，将高阶 Observable 转化为一阶 Observable。<br>'+
-        '操作说明：点击2次后，触发combineAll。<br>'+
-        '此处理解：RxClick是外部源，点击2次即结束，RxClick.map(e=>interval$)是一个高阶Observable，如果没有combineAll，那么结果就是每次点击后，触发interval$，类似：<br>'+
-        'click1->interval1$(0,1,2)<br>'+
-        'click2->interval2$(0,1,2)<br>'+
-        '但现在用了combineAll，即将他们任何变更后最新的值组合一起<br>'+
-        '当click1触发的interval1$的最新值为0时，click2触发的interval2$最新值最多为0，因为interval1$比interval2$提前触发，因此第一个组合[0,0]；<br>'+
-        '当interval1$最新值变成1时，interval2$还是0，组合[1,0]；<br>'+
-        '然后interval2$再变成1，组合[1,1]；<br>'+
-        '当interval1$最新值变成2时，interval2$还是1，因此组合[2,1]；<br>'+
-        '然后interval2$再变成2，组合[2,2]。<br>'+
-        '特别注意：最好先要理解combineLatest（任何源任何变动都发出所有最新值）。',
+        caption: `
+        官方说明：
+        通过等待外部 Observable 完成然后应用 combineLatest ，将高阶 Observable 转化为一阶 Observable。<br>
+        操作说明：
+        点击2次后，触发combineAll。<br>
+        此处理解：
+        RxClick是外部源，点击2次即结束，RxClick.map(e=>interval$)是一个高阶Observable，如果没有combineAll，那么结果就是每次点击后，触发interval$，类似：<br>
+        click1->interval1$(0,1,2)<br>
+        click2->interval2$(0,1,2)<br>
+        但现在用了combineAll，即将他们任何变更后最新的值组合一起<br>
+        当click1触发的interval1$的最新值为0时，click2触发的interval2$最新值最多为0，因为interval1$比interval2$提前触发，因此第一个组合[0,0]；<br>
+        当interval1$最新值变成1时，interval2$还是0，组合[1,0]；<br>
+        然后interval2$再变成1，组合[1,1]；<br>
+        当interval1$最新值变成2时，interval2$还是1，因此组合[2,1]；<br>
+        然后interval2$再变成2，组合[2,2]。<br>
+        特别注意：
+        最好先要理解combineLatest（任何源任何变动都发出所有最新值）。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1867,8 +2107,16 @@ export const Data = [
      {
         name: 'bufferWhen',
         title: 'bufferWhen(closingSelector: function(): Observable): Observable<T[]>',
-        caption: '说明：' + '缓冲源 Observable 的值, 使用关闭 Observable 的工厂函数来决定何时关闭、发出和重置缓冲区。<br>'+
-        '此处理解：第一行为发射源的值，每秒递增1，源值一发射立刻开启缓冲区，当鼠标click，结束当前缓冲区，发出缓冲值，然后立刻开启新的缓冲区，一直重复。',
+        caption: `
+        官方说明：
+        缓冲源 Observable 的值, 使用关闭 Observable 的工厂函数来决定何时关闭、发出和重置缓冲区。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        第一行为发射源的值，每秒递增1，源值一发射立刻开启缓冲区，当鼠标click，结束当前缓冲区，发出缓冲值，然后立刻开启新的缓冲区，一直重复。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1895,8 +2143,16 @@ export const Data = [
     {
         name: 'bufferToggle',
         title: 'bufferToggle(openings: SubscribableOrPromise<O>, closingSelector: function(value: O): SubscribableOrPromise): Observable<T[]>',
-        caption: '说明：' + '缓冲源 Observable 的值，openings 发送的时候开始缓冲，closingSelector 发送的时候结束缓冲。<br>'+
-        '此处理解：第一行为发射源的值，每秒递增1，这里opening是第一次click，closingSelector是click之后3秒，结果为之间的值(Array)。',
+        caption: `
+        官方说明：
+        缓冲源 Observable 的值，openings 发送的时候开始缓冲，closingSelector 发送的时候结束缓冲。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        第1行是发射源的值，每秒递增1，这里opening是第一次click，closingSelector是click之后3秒，结果为之间的值(Array)。<br>
+        特别注意：
+        无。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1924,14 +2180,21 @@ export const Data = [
     {
         name: 'bufferTime',
         title: 'bufferTime(bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler: Scheduler): Observable<T[]>',
-        caption: '说明：' + '在特定时间周期内缓冲源 Observable 的值。<br>'+
-        '此处理解： bufferTimeSpan是每隔多久发出之前的所有缓冲值，这里是2200ms；bufferCreationInterval是隔多久开始新的缓冲区，'+
-        '这里是3300ms，即创建新缓冲区的间隔都是3300ms；因此第一个缓冲区创建在0的位置，第二个创建在3.3的位置，第三个创建在6.6的'+
-        '位置，但因为bufferTimeSpan是2200ms; <br>'+
-        '因此第一个缓冲区到了2.2的位置，就会发出之前的所有缓冲值，而2.2-3.3这一段内的值(即3)会被忽略，<br>'+
-        '第二个缓冲区从3.3开始，bufferTimeSpan是2200ms,因此第二个到5.5的位置，就会发出之前所有缓冲值，而5.5-6.6这一段值(即6)会被忽略，<br>'+
-        '第三个缓冲区从6.6开始，bufferTimeSpan是2200ms,因此第三个个到8.8的位置发射之前所有缓冲值，然后9的时候complete。 <br>'+
-        '特别注意：此处一定要弄清楚第二个参数是创建新缓冲区，而不是清空旧的缓冲区，因此缓冲区可以有很多个。',
+        caption: `
+        官方说明：
+        在特定时间周期内缓冲源 Observable 的值。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解： 
+        bufferTimeSpan是每隔多久发出之前的所有缓冲值，这里是2200ms；<br>
+        bufferCreationInterval是隔多久开始新的缓冲区，这里是3300ms，即创建新缓冲区的间隔都是3300ms；<br>
+        因此第一个缓冲区创建在0的位置，第二个创建在3.3的位置，第三个创建在6.6的位置，但因为bufferTimeSpan是2200ms; <br>
+        因此第一个缓冲区到了2.2的位置，就会发出之前的所有缓冲值，而2.2-3.3这一段内的值(即3)会被忽略，<br>
+        第二个缓冲区从3.3开始，bufferTimeSpan是2200ms,因此第二个到5.5的位置，就会发出之前所有缓冲值，而5.5-6.6这一段值(即6)会被忽略，<br>
+        第三个缓冲区从6.6开始，bufferTimeSpan是2200ms,因此第三个个到8.8的位置发射之前所有缓冲值，然后9的时候complete。 <br>
+        特别注意：
+        此处一定要弄清楚第二个参数是创建新缓冲区，而不是清空旧的缓冲区，因此缓冲区可以有很多个。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1956,12 +2219,20 @@ export const Data = [
     {
         name: 'bufferCount',
         title: 'bufferCount(bufferSize: number, startBufferEvery: number): Observable<T[]>',
-        caption: '说明：' + '缓冲源 Observable 的值直到缓冲数量到达设定的 bufferSize<br>'+
-        '此处理解：bufferSize是每次发出缓冲值数量，这里是3；startBufferEvery是何时开始新的缓冲区，'+
-        '这里是4，即每个新缓冲区的间隔都是4，因此第一个缓冲区创建在0的位置，第二个创建在4的位置，第三个'+
-        '创建在8的位置，但因为bufferSize是3，因此只会发出新缓存区的前3个值（最后1个值不发），而当到了9，发生complete'+
-        '而从8开始创建的缓冲区（第三个缓冲区）到9只有2个值，因此最后一次发出2个值。<br>'+
-        '特别注意：此处一定要弄清楚第二个参数是创建新缓冲区，而不是清空旧的缓冲区，因此缓冲区可以有很多个。',
+        caption: `
+        官方说明：
+        缓冲源 Observable 的值直到缓冲数量到达设定的 bufferSize。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        bufferSize是每次发出缓冲值数量，这里是3；<br>
+        startBufferEvery是何时开始新的缓冲区，这里是4，即每个新缓冲区的间隔都是4；<br>
+        因此第一个缓冲区创建在0的位置，第二个创建在4的位置，第三个创建在8的位置；<br>
+        但因为bufferSize是3，因此只会发出新缓存区的前3个值（最后1个值不发），而当到了9，发生complete，<br>
+        而从8开始创建的缓冲区（第三个缓冲区）到9只有2个值，因此最后一次发出2个值。<br>
+        特别注意：
+        此处一定要弄清楚第二个参数是创建新缓冲区，而不是清空旧的缓冲区，因此缓冲区可以有很多个。
+        `,
         hits: 152,
         useful: 562,
         doNotNeedAuto:false,
@@ -1984,9 +2255,16 @@ export const Data = [
     {
         name: 'buffer',
         title: 'buffer(closingNotifier: Observable<any>): Observable<T[]>',
-        caption: '说明：' + '缓冲源 Observable 的值直到 closingNotifier 发出<br>'+
-        '此处理解：每当收到closingNotifier，这里是click事件，变会将之前缓冲的值一次性以数组形式发出。<br>'+
-        '特别注意：buffer的缓冲区只有1个，每次发出缓冲值后即清空缓冲区再等待接受新的缓冲值，与bufferCount和bufferTime不同。',
+        caption: `
+        官方说明：
+        缓冲源 Observable 的值直到 closingNotifier 发出。<br>
+        操作说明：
+        点击开始后，使用click触发。
+        此处理解：
+        每当收到closingNotifier，这里是click事件，变会将之前缓冲的值一次性以数组形式发出。<br>
+        特别注意：
+        buffer的缓冲区只有1个，每次发出缓冲值后即清空缓冲区再等待接受新的缓冲值，与bufferCount和bufferTime不同。
+        `,
         hits: 0,
         useful: 0,
         doNotNeedAuto:false,
@@ -2010,14 +2288,22 @@ export const Data = [
          `},
     {
         name: 'publish-refCount',
-        title: 'publish().refCount()，不需要connect，共享数据',
-        caption: '说明：' + '此处前3行发射源是"publish$"，后2行发射源是"publish2$"；<br>' +
-        '第1行为立即订阅；<br>' +
-        '第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>' +
-        '第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>' +
-        '第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>' +
-        '第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>直接进入complete</strong>；<br>' +
-        '<strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，complete；前面数据error，error</strong>',
+        title: 'publish(selector: Function): *',
+        caption: `
+        官方说明：
+        返回 ConnectableObservable，它是 Observable 的变种，它会一直等待，直到 connnect 方法被调用才会开始把值发送给那些订阅它的观察者。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        不需要connect，共享数据，此处前3行发射源是"publish$"，后2行发射源是"publish2$"；<br>
+        第1行为立即订阅；<br>
+        第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>
+        第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>
+        第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
+        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>直接进入complete</strong>；<br>
+        <strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，complete；前面数据error，error</strong>
+        特别注意：无。
+        `,
         hits: 452,
         useful: 842,
         doNotNeedAuto:true,
@@ -2043,14 +2329,23 @@ export const Data = [
          `},
     {
         name: 'publish-connect',
-        title: 'publish 共享数据，直到connect方法被调用才会开始把值发送给那些订阅它的观察者',
-        caption: '说明：' + '此处前3行发射源是"publish$"，后2行发射源是"publish2$"；<br>' +
-        '第1行为立即订阅；<br>' +
-        '第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>' +
-        '第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>' +
-        '第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>' +
-        '第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>共享数据</strong>；<br>' +
-        '<strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error</strong>',
+        title: 'publish(selector: Function): *',
+        caption: `
+        官方说明：
+        返回 ConnectableObservable，它是 Observable 的变种，它会一直等待，直到 connnect 方法被调用才会开始把值发送给那些订阅它的观察者。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        共享数据，直到connect方法被调用才会开始把值发送给那些订阅它的观察者<br>
+        此处前3行发射源是"publish$"，后2行发射源是"publish2$"；<br>
+        第1行为立即订阅；<br>
+        第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>
+        第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>
+        第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
+        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>共享数据</strong>；<br>
+        <strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error</strong>
+        特别注意：无。
+        `,
 
         hits: 452,
         useful: 842,
@@ -2078,14 +2373,22 @@ export const Data = [
          `},
     {
         name: 'share',
-        title: 'share 返回一个新的 Observable，该 Observable 多播(共享)源 Observable',
-        caption: '说明：' + '此处前3行发射源是"share$"，后2行发射源是"share2$"；<br>' +
-        '第1行为立即订阅；<br>' +
-        '第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>' +
-        '第3行隔4秒订阅，此时之前发射源状态是complete，<strong>从头开始</strong>；<br>' +
-        '第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>' +
-        '第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>从头开始</strong>；<br>' +
-        '<strong>结论：共享数据；前面数据complete，从头开始；前面数据unsubscribe，从头开始；前面数据error，error</strong>',
+        title: 'share(): Observable<T>',
+        caption: `
+        官方说明：
+        返回一个新的 Observable，该 Observable 多播(共享)源 Observable。 至少要有一个订阅者，该 Observable 才会被订阅并发出数据。 当所有的订阅者都取消订阅了，它会取消对源 Observable 的订阅。 因为 Observable 是多路传播的它使得流是 hot。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        共享数据，此处前3行发射源是"share$"，后2行发射源是"share2$"；<br>
+        第1行为立即订阅；<br>
+        第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>
+        第3行隔4秒订阅，此时之前发射源状态是complete，<strong>从头开始</strong>；<br>
+        第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
+        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>从头开始</strong>；<br>
+        <strong>结论：共享数据；前面数据complete，从头开始；前面数据unsubscribe，从头开始；前面数据error，error</strong>
+        特别注意：无。
+        `,
         hits: 452,
         useful: 842,
         doNotNeedAuto:true,
@@ -2111,10 +2414,19 @@ export const Data = [
          `},
     {
         name: 'scan',
-        title: 'scan 每次计算返回结果',
-        caption: '说明：' + '与reduce不同处在于返回结果的次数；参数1是一个function(累积器)，参数2是初始值；' +
-        '其中参数1function有2个参数，function(acc,cur)，其中acc第一次为初始值 || 当前值，后续则为 上一次计算得出的值，' +
-        'cur则是 当前值，函数内容为自定义计算方式；直到complete，每次计算都会结果',
+        title: 'scan(accumulator: function(acc: R, value: T, index: number): R, seed: T | R): Observable<R>',
+        caption: `
+        官方说明：
+        对源 Observable 使用累加器函数， 返回生成的中间值， 可选的初始值。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        与reduce不同处在于返回结果的次数；accumulator(参数1)是一个function(累积器)，seed(参数2)是初始值；<br>
+        参数1function有3个参数，(acc,value,index)，其中acc第一次为初始值(seed)，后续则为上一次计算得出的值，value则一直是当前值，index为索引值，函数内容为自定义计算方式；<br>
+        直到外部发射源complete，每次计算都会返回结果。
+        特别注意：
+        返回多次结果，如果没有指定 seed 值，那么源中的第一项会作为 seed 来使用。
+        `,
         hits: 715,
         useful: 412,
         //line: 3,
@@ -2135,10 +2447,19 @@ export const Data = [
          `},
     {
         name: 'reduce',
-        title: 'reduce 最终返回一次结果',
-        caption: '说明：' + '与scan不同处在于返回结果的次数；参数1是一个function(累积器)，参数2是初始值；' +
-        '其中参数1function有2个参数，function(acc,cur)，其中acc第一次为初始值 || 当前值，后续则为 上一次计算得出的值，' +
-        'cur则是 当前值，函数内容为自定义计算方式；直到complete，返回 1 次结果',
+        title: 'reduce(accumulator: function(acc: R, value: T, index: number): R, seed: R): Observable<R>',
+        caption: `
+        官方说明：
+        在源 Observalbe 上应用 accumulator (累加器) 函数，然后当源 Observable 完成时，返回 累加的结果，可以提供一个可选的 seed 值。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        与scan不同处在于返回结果的次数；accumulator(参数1)是一个function(累积器)，seed(参数2)是初始值；<br>
+        参数1function有3个参数，(acc,value,index)，其中acc第一次为初始值(seed)，后续则为上一次计算得出的值，value则一直是当前值，index为索引值，函数内容为自定义计算方式；<br>
+        直到外部发射源complete，只返回 1 次结果。
+        特别注意：
+        返回一次结果，如果没有指定 seed 值，那么源中的第一项会作为 seed 来使用。
+        `,
         hits: 715,
         useful: 412,
         //line: 3,
@@ -2159,8 +2480,16 @@ export const Data = [
          `},
     {
         name: 'takeUntil',
-        title: 'takeUntil:参数为另一个发射源，当发射值时，发出complete',
-        caption: '说明：' + '参数隔3秒发出1，当1发出，立刻complete',
+        title: 'takeUntil(notifier: Observable): Observable<T>',
+        caption: `
+        官方说明：
+        发出源 Observable 发出的值，直到 notifier Observable 发出值。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        notifier(参数)为内部发射源，当发射值时，发出complete通知。此处参数延迟3.5秒发出1，然后立刻complete。
+        特别注意：无。
+        `,
         hits: 715,
         useful: 412,
         //line: 3,
@@ -2169,23 +2498,32 @@ export const Data = [
 
     //editArea
 
-    let RxIntervalTake5,RxOfDelay, RxTakeUntil;
-    RxIntervalTake5 = Rx.Observable.interval(1000).take(5);
+    let RxInterval,RxOfDelay, RxTakeUntil;
+    RxInterval = Rx.Observable.interval(1000).take(5);
     RxOfDelay = Rx.Observable.of(1).delay(3500);
-    RxTakeUntil = RxIntervalTake5.takeUntil(RxOfDelay);
+    RxTakeUntil = RxInterval.takeUntil(RxOfDelay);
 
     //editArea
 
 
-    marSub.RxIntervalTake5 = RxIntervalTake5.subscribe(NEC(showInMar, 1));
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
     marSub.RxOfDelay = RxOfDelay.subscribe(NEC(showInMar, 2));
     marSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInMar, 'last'));
     resSub.RxTakeUntil = RxTakeUntil.subscribe(NEC(showInRes));
          `},
     {
         name: 'takeWhile',
-        title: 'takeWhile:参数返回false时，发出complete',
-        caption: '说明：' + '参数的条件是n<4，因此n为4时，发出complete',
+        title: 'takeWhile(predicate: function(value: T, index: number): boolean): Observable<T>',
+        caption: `
+        官方说明：
+        发出在源 Observable 中满足 predicate 函数的每个值，并且一旦出现不满足 predicate 的值就立即完成。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        predicate(参数)接收源发射值，返回false时，发出complete通知。此处predicate条件是n<4，因此n为4时，发出complete。
+        特别注意：
+        predicate第二个参数为index。
+        `,
         hits: 715,
         useful: 412,
         //line: 2,
@@ -2194,23 +2532,32 @@ export const Data = [
 
     //editArea
 
-    let RxIntervalTake7, RxTakeWhile;
-    RxIntervalTake7 = Rx.Observable.interval(1000).take(7);
-    RxTakeWhile = RxIntervalTake7.takeWhile(n=>n<4);
+    let RxInterval, RxTakeWhile;
+    RxInterval = Rx.Observable.interval(1000).take(7);
+    RxTakeWhile = RxInterval.takeWhile(n=>n<4);
 
     //editArea
 
-    marSub.RxIntervalTake7 = RxIntervalTake7.subscribe(NEC(showInMar, 1));
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
     marSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInMar, 'last'));
     resSub.RxTakeWhile = RxTakeWhile.subscribe(NEC(showInRes));
 
      `,},
     {
         name: 'retryWhen',
-        title: 'retryWhen:重复发射源，直到内部源(条件源)发出complete或者error',
-        caption: '说明：' + '在重复条件下，retryWhen总是能重复发射源的镜像，但不包括error；此处条件为interval值>=3时发出error，此处第一行为发射源' +
-        '虽然很快error，但是error并不影响retryWhen，第二行为重复的条件，即条件发射源一旦触发并且符合重复的条件（未complete，未error），' +
-        '立刻开始重复一次发射源的镜像  ',
+        title: 'retryWhen(notifier: function(errors: Observable): Observable): Observable',
+        caption: `
+        官方说明：
+        返回一个 Observable， 该 Observable 是源 Observable 不包含错误异常的镜像。 如果源头 Observable 触发 error， 这个方法会发出引起错误的 Throwable 给 notifier 返回的 Observable。 如果该 Observable 触发 complete 或者 error 则该方法会使子订阅触发 complete 和 error。 否则该方法会重新订阅源 Observable。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        重复外部发射源(外部发射源的error不会被重复)，直到内部发射源(参数1)发出complete或者error；<br>
+        此处第一行为外部发射源(每100ms发射一个小球)，发射3个值就error，error并不影响retryWhen；<br>
+        第二行为内部发射源，发出5个值后complete，每次内部源发射值都会触发retry，重复一次外部发射源的镜像。
+        特别注意：
+        如果外部发射源出现complete，重复停止，如果内部发射源出现error或者complete，重复停止。
+         `,
         hits: 715,
         useful: 412,
         //line: 3,
@@ -2220,8 +2567,8 @@ export const Data = [
     //editArea
 
     let RxInterval, RxTimer_Throw, RxRetryWhen;
-    RxTimer_Throw=Rx.Observable.timer(0,200).map(n=>{if(n===3){throw 'err'};return n});
-    RxInterval = Rx.Observable.interval(1000).takeWhile(x=>x<3);
+    RxTimer_Throw=Rx.Observable.timer(0,100).map(n=>{if(n===3){throw 'err'};return n});
+    RxInterval = Rx.Observable.interval(1000).take(5);
     RxRetryWhen =RxTimer_Throw.retryWhen(()=>RxInterval);
 
     //editArea
@@ -2235,10 +2582,19 @@ export const Data = [
      `},
     {
         name: 'repeatWhen',
-        title: 'repeatWhen:重复发射源，直到内部源(条件源)发出complete或者error',
-        caption: '说明：' + '在重复条件下，repeatWhen总是能重复发射源的镜像，但不包括complete；此处条件为interval值>=3则发出complete，此处第一行为发射源' +
-        '虽然很快complete，但是complete并不影响repeatWhen，第二行为重复的条件，即条件发射源一旦触发并且符合重复的条件（未complete，未error），' +
-        '立刻开始重复一次发射源的镜像 ',
+        title: 'repeatWhen(notifier: function(notifications: Observable): Observable): Observable',
+        caption: `
+        官方说明：
+        返回的 Observalbe 是源 Observable 的镜像，除了 complete 。如果源 Observable 调用了 complete，这个方法会发出给 notifier 返回的 Observable 。如果这个 Observale 调用了 complete 或 error，那么这个方法会在子 subscription 上调用 complete 或 error 。否则，此方法将重新订阅源 Observable。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        重复外部发射源(外部发射源的complete不会被重复)，直到内部发射源(参数1)发出complete或者error；<br>
+        此处第一行为外部发射源(每100ms发射一个小球)，complete并不影响repeatWhen；<br>
+        第二行为内部发射源，发出5个值后complete，每次内部源发射值都会触发repeat，重复一次外部发射源的镜像。
+        特别注意：
+        如果外部发射源出现error，重复停止，如果内部发射源出现error或者complete，重复也会停止。
+        `,
         hits: 915,
         useful: 612,
         //line: 3,
@@ -2247,128 +2603,170 @@ export const Data = [
 
     //editArea
 
-    let RxInterval_takeWhile, RxTimer0_100, RxRepeatWhen;
-    RxTimer0_100=Rx.Observable.timer(0,100).take(3);
-    RxInterval_takeWhile = Rx.Observable.interval(1000).takeWhile(x=>x<5);
-    RxRepeatWhen =RxTimer0_100.repeatWhen(()=>RxInterval_takeWhile);
+    let RxInterval, RxTimer, RxRepeatWhen;
+    RxTimer=Rx.Observable.timer(0,100).take(3);
+    RxInterval = Rx.Observable.interval(1000).take(5);
+    RxRepeatWhen =RxTimer.repeatWhen(()=>RxInterval);
 
     //editArea
 
 
-    marSub.RxTimer0_100 = RxTimer0_100.subscribe(NEC(showInMar, 1));
-    marSub.RxInterval_takeWhile = RxInterval_takeWhile.subscribe(NEC(showInMar, 2));
+    marSub.RxTimer = RxTimer.subscribe(NEC(showInMar, 1));
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 2));
     marSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInMar, 'last'));
      resSub.RxRepeatWhen = RxRepeatWhen.subscribe(NEC(showInRes));
      `,},
     {
         name: 'merge',
-        title: ' merge(other: ObservableInput, concurrent: number, scheduler: Scheduler): Observable',
-        caption: '说明：' + '创建一个输出 Observable ，它可以同时发出每个给定的输入 Observable 中的所有值。<br>'+
-        '操作说明：点击开始即可。<br>'+
-        '此处理解：不管发射源顺序，直接合并。',
+        title: 'merge(other: ObservableInput, concurrent: number, scheduler: Scheduler): Observable',
+        caption: `
+        官方说明：
+        创建一个输出 Observable ，它可以同时发出每个给定的输入 Observable 中的所有值。<br>
+        操作说明：
+        点击开始即可。<br>
+        此处理解：
+        不管发射源顺序，直接合并,concurrent(参数2)表示可以同时订阅的输入 Observables 的最大数量，默认infinite。
+        特别注意：
+        一旦其中一个error，整体都error。
+        `,
         hits: 985,
         useful: 612,
         //line: 3,
-        marbleText: 'merge',
+        marbleText: 'merge()',
         code: `
 
     //editArea
 
-    let RxInterval, RxTimer500_2000, RxMerge;
+    let RxInterval, RxTimer, RxMerge;
     RxInterval = Rx.Observable.interval(1500).take(3);
-    RxTimer500_2000 = Rx.Observable.timer(500, 2000).take(2);
-    RxMerge = Rx.Observable.merge(RxInterval, RxTimer500_2000);
+    RxTimer = Rx.Observable.timer(500, 2000).take(2);
+    RxMerge = Rx.Observable.merge(RxInterval, RxTimer);
 
     //editArea
 
 
     marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
-    marSub.RxTimer500_2000 = RxTimer500_2000.subscribe(NEC(showInMar, 2));
+    marSub.RxTimer = RxTimer.subscribe(NEC(showInMar, 2));
     marSub.RxMerge = RxMerge.subscribe(NEC(showInMar, 'last'));
      resSub.RxMerge = RxMerge.subscribe(NEC(showInRes));
      `,},
     {
         name: 'forkJoin',
-        title: 'forkJoin:将最终结果合并成1个数组',
-        caption: '说明：' + ' 第一个发射源执行显示1到6(几乎同时),第二个发射源每隔1s显示增加1,' +
-        'forkJoin会等全部发射源完成结束后，才将各自的最终结果合并成1个数组',
+        title: 'forkJoin(sources: ...SubscribableOrPromise, project: function): Observable',
+        caption: `
+        官方说明：
+        无。
+        操作说明：
+        点击开始即可。
+        此处理解：
+        sources(参数1)可以接收任意个Observable或者Observable数组，project(参数2)接收前面sources的最终值，可自定义传出值，如果未设置，则默认以数组合并。此处第一个发射源执行显示1到6(几乎同时),第二个发射源每隔1s显示增加1,最终为2，project将前2个发射源的最终值加起来。
+        特别注意：
+        project如果未设置，则默认以数组合并。
+        `,
         hits: 1524,
         useful: 912,
         //line: 3,
-        marbleText: 'forkJoin',
+        marbleText: 'forkJoin(s1,s2,(x,y)=>x+y)',
         code: `
 
     //editArea
 
-    let RxRange, RxTimer0_1000, RxForkJoin;
+    let RxRange, RxTimer, RxForkJoin;
     RxRange = Rx.Observable.range(1, 6);
-    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(3);
-    RxForkJoin = Rx.Observable.forkJoin(RxRange, RxTimer0_1000);
+    RxTimer = Rx.Observable.timer(0, 1000).take(3);
+    RxForkJoin = Rx.Observable.forkJoin(RxRange, RxTimer,(x,y)=>x+y);
 
     //editArea
 
 
     marSub.RxRange = RxRange.subscribe(NEC(showInMar, 1));
-    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
+    marSub.RxTimer = RxTimer.subscribe(NEC(showInMar, 2));
     marSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInMar, 'last'));
-      resSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInRes));
+    resSub.RxForkJoin = RxForkJoin.subscribe(NEC(showInRes));
+
      `,},
     {
         name: 'distinctUntilKeyChange',
-        title: 'distinctUntilKeyChange 只对比前一项，通过参数中的key值去比较value',
-        caption: '说明：' + ' 参数可以设定根据那一项进行去重，此处根据 x 值去重，可以在Result看到原来4组obj，' +
-        '对比前一项去重后剩下第1,3,4组',
+        title: 'distinctUntilKeyChanged(key: string, compare: function): Observable',
+        caption: `
+        官方说明：
+        返回 Observable，它发出源 Observable 发出的所有与前一项不相同的项，使用通过提供的 key 访问到的属性来检查两个项是否不同。
+        操作说明：
+        点击开始即可，需要拖拽查看。
+        此处理解：
+        只对比前一项，通过key(参数1)值去比较与前一项比较去重，compare(参数2)可自己设定比较函数，此处根据key值 x去重，可以看到原来4组obj，对比前一项去重后剩下第1,3,4组
+        特别注意：
+        如果compare参数不传，则使用'==='比较。
+        `,
         hits: 25,
         useful: 89,
         //line: 2,
-        marbleText: 'distinctUntilKeyChange',
+        marbleText: 'distinctUntilKeyChange(x,(p,n)=>p===n)',
         code: `
 
     //editArea
 
-    let RxFrom,RxDistinctUntilKeyChanged;
+    let RxFrom,RxDisUntKeyChanged;
     RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:3},{x:2,y:4},{x:1,y:6}]);
-    RxDistinctUntilKeyChanged = RxFrom.distinctUntilKeyChanged('x',(prevV,nextV)=>prevV===nextV);
+    RxDisUntKeyChanged = RxFrom.distinctUntilKeyChanged('x',(p,n)=>p===n);
 
     //editArea
 
 
     marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
-    marSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInMar, 'last'));
-    resSub.RxDistinctUntilKeyChanged = RxDistinctUntilKeyChanged.subscribe(NEC(showInRes));
+    marSub.RxDisUntKeyChanged = RxDisUntKeyChanged.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDisUntKeyChanged = RxDisUntKeyChanged.subscribe(NEC(showInRes));
      `,},
     {
         name: 'distinctUntilChange',
-        title: 'distinctUntilChange 只对比前一项',
-        caption: '说明：' + ' 参数可以设定根据那一项进行去重，此处根据当前项 x 和上一项 y 对比去重，可以在Result看到原来4组obj，' +
-        '对比前一项去重后剩下第1,2,4组',
+        title: 'distinctUntilChanged(compare: function): Observable',
+        caption: `
+        官方说明：
+        返回 Observable，它发出源 Observable 发出的所有与前一项不相同的项。
+        操作说明：
+        点击开始即可，需要拖拽查看。
+        此处理解：
+        只对比前一项，compare(参数)可以设定根据那一项进行去重，此处根据当前项 x 和上一项 y 对比去重，可以看到原来4组obj，
+        对比前一项去重后剩下第1,2,4组。
+        特别注意：
+        如果compare参数不传，则使用"==="比较。
+        `,
         hits: 273,
         useful: 425,
         //line: 2,
-        marbleText: 'distinctUntilChange',
+        marbleText: 'distinctUntilChange((prevO,nextO)=>prevO.y===nextO.y)',
         code: `
 
     //editArea
 
-    let RxFrom,RxDistinctUntilChange;
+    let RxFrom,RxDisUntChanged;
     RxFrom = Rx.Observable.from([{x:1,y:2},{x:1,y:2},{x:2,y:4},{x:1,y:6}]);
-    RxDistinctUntilChange = RxFrom.distinctUntilChanged((prevObj,nextObj)=>prevObj.y===nextObj.x);
+    RxDisUntChanged = RxFrom.distinctUntilChanged((prevO,nextO)=>prevO.y===nextO.x);
 
     //editArea
 
 
     marSub.RxFrom = RxFrom.subscribe(NEC(showInMar, 1));
-    marSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInMar, 'last'));
-    resSub.RxDistinctUntilChange = RxDistinctUntilChange.subscribe(NEC(showInRes));
+    marSub.RxDisUntChanged = RxDisUntChanged.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDisUntChanged = RxDisUntChanged.subscribe(NEC(showInRes));
      `,},
     {
         name: 'distinct',
-        title: 'distinct 全部对比并且去重复',
-        caption: '说明：' + ' 参数可以设定根据那一项进行去重，此处根据x值去重，可以在Result看到原来4组obj，去重后剩下2组',
+        title: 'distinct(keySelector: function, flushes: Observable): Observable',
+        caption: `
+        官方说明：
+        返回 Observable，它发出由源 Observable 所发出的所有与之前的项都不相同的项。
+        操作说明：
+        点击开始即可，需要拖拽查看。
+        此处理解：
+        全部对比并且去重复，keySelector(参数1)可以设定根据那一项进行去重，此处根据x值去重，可以看到原来4组obj，去重后剩下2组
+        特别注意：
+        即使是在新浏览器中，长时间运行的 distinct 操作也可能会导致内存泄露，flushes(参数2)可以清空操作符内部的 HashSet。
+        `,
         hits: 213,
         useful: 745,
         //line: 2,
-        marbleText: 'distinct',
+        marbleText: 'distinct(obj=>obj.x)',
         code: `
 
     //editArea
@@ -2386,8 +2784,17 @@ export const Data = [
      `,},
     {
         name: 'delayWhen',
-        title: 'delayWhen：根据另一个源来执行延迟',
-        caption: '说明：' + ' 源RxOf根据RxClick触发后才触发，此处点击屏幕后才会显示start',
+        title: 'delayWhen(delayDurationSelector: function(value: T): Observable, subscriptionDelay: Observable): Observable',
+        caption: `
+        官方说明：
+        在给定的时间范围内，延迟源 Observable 所有数据项的发送，该时间段由另一个 Observable 的发送决定。
+        操作说明：
+        点击开始后，使用click触发。
+        此处理解：
+        源RxOf根据RxClick触发后才触发，此处点击屏幕后才会显示start。
+        特别注意：
+        就像是delay, 但是延时的时间间隔由第二个Observable决定。
+        `,
         hits: 78,
         useful: 527,
         //line: 2,
@@ -2410,8 +2817,17 @@ export const Data = [
      `,},
     {
         name: 'delay',
-        title: 'delay：参数为延迟的时间（毫秒）',
-        caption: '说明：' + '点击后第一行为当前点击，最后一行为实际输出（此处延迟1秒），点击5次后complete',
+        title: 'delay(delay: number | Date, scheduler: Scheduler): Observable',
+        caption: `
+        官方说明：
+        通过给定的超时或者直到一个给定的时间来延迟源 Observable 的发送。
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        每次点击后延迟1秒，发出。<br>
+        特别注意：
+        无。
+        `,
         hits: 42,
         useful: 128,
         //line: 2,
@@ -2421,7 +2837,7 @@ export const Data = [
     //editArea
 
     let RxClick,RxDelay;
-    RxClick = Rx.Observable.fromEvent(document,'click');
+    RxClick = Rx.Observable.fromEvent(document,'click').take(12);
     RxDelay = RxClick.delay(1000);
 
     //editArea
@@ -2432,9 +2848,17 @@ export const Data = [
      `,},
     {
         name: 'audit',
-        title: 'audit:等待时间由另一个observable决定，不会立刻发送第一个源',
-        caption: '说明：' + '点击后会立刻输出最新值，此处是1秒内任意多次点击也只发出1次值，<font color="#8d8d8d">跟debounce很像，暂时未弄清楚区别?</font>' +
-        '第二行为timer的行动（可以忽略），第三行为结果数据输出行，结合第二行可以更清楚的看出结果数据来源',
+        title: 'audit(durationSelector: function(value: T): SubscribableOrPromise): Observable<T>',
+        caption: `
+        官方说明：
+        在另一个 Observable 决定的时间段里忽略源数据，然后发出源 Observable 中最新发出的值， 然后重复此过程。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        点击后不会立刻输出第一个值，等待内部源interval$发出值(这里是间隔1秒)。<br>
+        特别注意：
+        参考auditTime理解audit。
+        `,
         hits: 762,
         useful: 875,
         //line: 3,
@@ -2443,24 +2867,30 @@ export const Data = [
 
     //editArea
 
-    let RxClick, RxTimer0_1000, RxAudit;
+    let RxClick, RxAudit, interval$;
+    interval$ = Rx.Observable.interval(1000);
     RxClick = Rx.Observable.fromEvent(document, 'click');
-    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
-    RxAudit = RxTimer0_1000.audit(()=>RxClick);
+    RxAudit = RxClick.audit(()=>interval$);
 
     //editArea
 
     marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
     marSub.RxAudit = RxAudit.subscribe(NEC(showInMar, 'last'));
     resSub.RxAudit = RxAudit.subscribe(NEC(showInRes));
      `,},
     {
         name: 'debounce',
-        title: ' debounce(durationSelector: function(value: T): SubscribableOrPromise): Observable',
-        caption: '说明：' + '只有在另一个 Observable 决定的一段特定时间经过后并且没有发出另一个源值之后，才从源 Observable 中发出一个值。<br>' +
-        '此处理解：当接受到第一个值，不会立刻发送。后续点击后立刻发出当前值，而不像throttle等待下一次的最新值，此处是1秒内任意多次点击也只发出1次值，' +
-        '第二行为timer的行动（可以忽略），第三行为结果数据输出行，结合第二行可以更清楚的看出结果数据来源',
+        title: 'debounce(durationSelector: function(value: T): SubscribableOrPromise): Observable',
+        caption: `
+        官方说明：
+        只有在另一个 Observable 决定的一段特定时间经过后并且没有发出另一个源值之后，才从源 Observable 中发出一个值。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        点击后不会立刻输出第一个值，等待内部源interval$发出值(这里是间隔1秒)，这之间如果没有点击事件，发出最新值。<br>
+        特别注意：
+        参考debounceTime理解debounce。
+        `,
         hits: 762,
         useful: 875,
         //line: 3,
@@ -2469,51 +2899,64 @@ export const Data = [
 
     //editArea
 
-    let RxTimer0_1000, RxClick, RxDebounce;
-    RxTimer0_1000 = Rx.Observable.timer(0, 1000).take(10);
+    let RxClick, RxDebounce, interval$;
+    interval$ = Rx.Observable.interval(1000);
     RxClick = Rx.Observable.fromEvent(document, 'click');
-    RxDebounce = RxTimer0_1000.debounce(()=>RxClick);
+    RxDebounce = RxClick.debounce(()=>interval$);
 
     //editArea
 
 
     marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
     marSub.RxDebounce = RxDebounce.subscribe(NEC(showInMar, 'last'));
     resSub.RxDebounce = RxDebounce.subscribe(NEC(showInRes));
      `,},
     {
         name: 'throttle',
-        title: ' throttle(durationSelector: function(value: T): SubscribableOrPromise, config: Object): Observable\<\T\>',
-        caption: '说明：' + '从源 Observable 中发出一个值，然后在由另一个 Observable 决定的期间内忽略 随后发出的源值，然后重复此过程。<br>' +
-        '此处理解：当收到第一个值，不等待直接立刻发出，后续点击后不立刻发出，而是会等下一个发射源，再发射出去，此处是1秒内任意多次点击也只发出1次值，' +
-        '第二行为timer的行动（可以忽略），第三行为结果数据输出行，结合第二行可以更清楚的看出结果数据来源',
+        title: 'throttle(durationSelector: function(value: T): SubscribableOrPromise, config: Object): Observable\<\T\>',
+        caption: `
+        官方说明：
+        从源 Observable 中发出一个值，然后在由另一个 Observable 决定的期间内忽略 随后发出的源值，然后重复此过程。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        点击后立刻输出第一个值，等待内部源interval$发出值(这里是间隔1秒)，过了这个间隔之后，才能继续发出值。<br>
+        特别注意：
+        参考throttleTime，理解throttle。
+        `,
         hits: 762,
         useful: 875,
         //line: 3,
         marbleText: 'throttle',
         code: `
 
-    //editArea
+   //editArea
 
-    let RxTimer0_1000,RxClick,RxThrottle;
-    RxTimer0_1000 =  Rx.Observable.timer(0,1000);
-    RxClick =Rx.Observable.fromEvent(document,'click');
-    RxThrottle = RxTimer0_1000.throttle(()=>RxClick);
+    let RxClick, RxThrottle, interval$;
+    interval$ = Rx.Observable.interval(1000);
+    RxClick = Rx.Observable.fromEvent(document, 'click');
+    RxThrottle = RxClick.throttle(()=>interval$);
 
     //editArea
 
 
     marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
-    marSub.RxTimer0_1000 = RxTimer0_1000.subscribe(NEC(showInMar, 2));
     marSub.RxThrottle = RxThrottle.subscribe(NEC(showInMar, 'last'));
     resSub.RxThrottle = RxThrottle.subscribe(NEC(showInRes));
      `,},
     {
         name: 'auditTime',
         title: 'auditTime(duration: number, scheduler: Scheduler): Observable\<\T\>',
-        caption: '说明：' + 'duration 毫秒内忽略源值，然后发出源 Observable 的最新值， 并且重复此过程。<br>' +
-        '此处理解：收到第一个源不会立刻发送最新值，而是等待间隔时间后发送最新值，此处最后一行不论点击多少次会等1秒才会发送最新值',
+        caption: `
+        官方说明：
+        duration 毫秒内忽略源值，然后发出源 Observable 的最新值， 并且重复此过程。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        收到第一个源不会立刻发送最新值，而是等待间隔时间后发送最新值，此处最后一行不论点击多少次会等1秒才会发送最新值。<br>
+        特别注意：
+        就像每一次输入需要1秒钟的审核才允许发出，最后发出最新的值。
+        `,
         hits: 762,
         useful: 875,
         //line: 2,
@@ -2536,8 +2979,16 @@ export const Data = [
     {
         name: 'throttleTime',
         title: 'throttleTime(duration: number, scheduler: Scheduler): Observable\<\T\>',
-        caption: '说明：' + '从源 Observable 中发出一个值，然后在 duration 毫秒内忽略随后发出的源值， 然后重复此过程。<br>' +
-        '此处理解：收到第一个源立刻发送此处，有click就取消上一次的，这里间隔时间最多1秒',
+        caption: `
+        官方说明：
+        从源 Observable 中发出一个值，然后在 duration 毫秒内忽略随后发出的源值， 然后重复此过程。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        收到第一个click立刻发送，这里间隔时间1秒，这1秒内忽略其他任何点击。<br>
+        特别注意：
+        就像游戏里的技能CD，需要冷却，冷却时按键无反应，最后发射的不一定是最新值。
+        `,
         hits: 762,
         useful: 875,
         //line: 2,
@@ -2562,8 +3013,16 @@ export const Data = [
     {
         name: 'debounceTime',
         title: 'debounceTime(dueTime: number, scheduler: Scheduler): Observable',
-        caption: '说明：' + '只有在特定的一段时间经过后并且没有发出另一个源值，才从源 Observable 中发出一个值。<br>' +
-        '此处理解：有click就取消上一次的，间隔时间可超过1秒，最后发送最新值',
+        caption: `
+        官方说明：
+        只有在特定的一段时间经过后并且没有发出另一个源值，才从源 Observable 中发出一个值。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        有click就取消上一次的，间隔时间可超过1秒，最后发送最新值。<br>
+        特别注意：
+        就像相机不能被抖动，一旦有抖动，丢弃之前的对焦结果重新对焦，最后发出的最新值。
+        `,
         hits: 762,
         useful: 875,
         //line: 2,
@@ -2588,10 +3047,14 @@ export const Data = [
         name: 'concatMap',
         title: ' concatMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any): Observable',
         caption: `
-        官方说明：将源值投射为一个合并到输出 Observable 的 Observable,以串行的方式等待前一个完成再合并下一个 Observable。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：先转换成高阶observable（map），再转换成一阶observable，此处累计click的次数，然后按顺序依次执行。<br>
-        特别注意：其实内部就是先map，再concatAll。
+        官方说明：
+        将源值投射为一个合并到输出 Observable 的 Observable,以串行的方式等待前一个完成再合并下一个 Observable。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        先转换成高阶observable（map），再转换成一阶observable，此处累计click的次数，然后按顺序依次执行。<br>
+        特别注意：
+        其实内部就是先map，再concatAll。
         `,
         hits: 762,
         useful: 875,
@@ -2619,10 +3082,14 @@ export const Data = [
         name: 'concatAll',
         title: 'concatAll(): Observable',
         caption: `
-        官方说明：通过顺序地连接内部 Observable，将高阶 Observable 转化为一阶 Observable 。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：将高阶observable(类似obs1$.map(obs2$))转换成一阶observable，此处所展示效果相当于使用了concatMap，此处用的是先map，后concatAll。<br>
-        特别注意：无。
+        官方说明：
+        通过顺序地连接内部 Observable，将高阶 Observable 转化为一阶 Observable 。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        将高阶observable(类似obs1$.map(obs2$))转换成一阶observable，此处所展示效果相当于使用了concatMap，此处用的是先map，后concatAll。<br>
+        特别注意：
+        无。
         `,
         hits: 762,
         useful: 875,
@@ -2651,10 +3118,14 @@ export const Data = [
         name: 'concat',
         title: 'concat(other: ObservableInput, scheduler: Scheduler): Observable',
         caption: `
-        官方说明：创建一个输出 Observable，它在当前 Observable 之后顺序地发出每个给定的输入 Observable 中的所有值。<br>
-        操作说明：点击开始后，使用click触发。<br>
-        此处理解：将2个源按顺序合并，点击3次鼠标后开始interval，这两个发射源结果是合并的。<br>
-        特别注意：会等第一个源结束后才开始第二个源值合并。
+        官方说明：
+        创建一个输出 Observable，它在当前 Observable 之后顺序地发出每个给定的输入 Observable 中的所有值。<br>
+        操作说明：
+        点击开始后，使用click触发。<br>
+        此处理解：
+        将2个源按顺序合并，点击3次鼠标后开始interval，这两个发射源结果是合并的。<br>
+        特别注意：
+        会等第一个源结束后才开始第二个源值合并。
         `,
         hits: 1235,
         useful: 451,
