@@ -99,12 +99,189 @@ export const Data = [
 
          `},
     {
+        name: 'switchMapTo',
+        title: 'switchMapTo(innerObservable: ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any): Observable',
+        caption: `
+        官方说明：将每个源值投射成同一个 Observable ，该 Observable 会使用 switch 多次被打平 到输出 Observable 中。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：每次click，会触发一个新的interval$，如果触发之前已经存在interval$，则会先取消订阅原来的interval$，再订阅新的interval$。<br>
+        特别注意：与switchMap相比，内部源是同一个，不会因外部源数值变化而变化(不是function)。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'switchMapTo()',
+        code: `
+
+    //editArea
+
+    let RxClick,interval$,RxSwitchMapTo;
+    RxClick=Rx.Observable.fromEvent(document,'click').take(5);
+    interval$=Rx.Observable.interval(1000).take(4);
+    RxSwitchMapTo=RxClick.switchMapTo(interval$);
+    
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxSwitchMapTo = RxSwitchMapTo.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSwitchMapTo = RxSwitchMapTo.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'switchMap',
+        title: 'switchMap(project: function(value: T, ?index: number): ObservableInput, resultSelector: function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any): Observable',
+        caption: `
+        官方说明：将每个源值投射成 Observable，该 Observable 会合并到输出 Observable 中， 并且只发出最新投射的 Observable 中的值。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：每次click，会触发一个新的interval$，如果触发之前已经存在interval$，则会先取消订阅原来的interval$，再订阅新的interval$。<br>
+        特别注意：其实就是先map，再switch（和switch查看比较）。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'switchMap()',
+        code: `
+
+    //editArea
+
+    let RxClick,interval$,RxSwitchMap;
+    RxClick=Rx.Observable.fromEvent(document,'click').take(5);
+    interval$=Rx.Observable.interval(1000).take(4);
+    RxSwitchMap=RxClick.switchMap(n=>interval$);
+    
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxSwitchMap = RxSwitchMap.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSwitchMap = RxSwitchMap.subscribe(NEC(showInRes));
+
+         `},
+     {
+        name: 'switch',
+        title: 'switch(): Observable<T>',
+        caption: `
+        官方说明：通过只订阅最新发出的内部 Observable ，将高阶 Observable 转换成一阶 Observable 。<br>
+        操作说明：点击开始后，使用click触发。<br>
+        此处理解：每次click，会触发一个新的interval$，如果触发之前已经存在interval$，则会先取消订阅原来的interval$，再订阅新的interval$。<br>
+        特别注意：switch会将高阶发射源打平。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'switch()',
+        code: `
+
+    //editArea
+
+    let RxClick,interval$,RxSwitch;
+    RxClick=Rx.Observable.fromEvent(document,'click').take(5);
+    interval$=Rx.Observable.interval(1000).take(4);
+    RxSwitch=RxClick.map(n=>interval$).switch();
+    
+    //editArea
+
+    marSub.RxClick = RxClick.subscribe(NEC(showInMar, 1));
+    marSub.RxSwitch = RxSwitch.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSwitch = RxSwitch.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'subscribeOn',
+        title: 'subscribeOn(scheduler: Scheduler): Observable<T>',
+        caption: `
+        官方说明：使用指定的 IScheduler 异步地订阅此 Observable 的观察者。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：第一行的from$未使用scheduler，同步执行，结果是13。<br>
+        第二行的fromSubOn$使用了asap的scheduler，异步执行，结果是12和13。<br>
+        特别注意：更多scheduler属性看这里。("https://cn.rx.js.org/typedef/index.html#static-typedef-Rx.Scheduler")。
+        `,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'subscribeOn()',
+        code: `
+
+    //editArea
+
+    let from$,of$,fromSubOn$,RxComLat,RxComLatSub;
+    from$=Rx.Observable.from([10,11]);
+    of$=Rx.Observable.of(2);
+    fromSubOn$=from$.subscribeOn(Rx.Scheduler.asap);
+    RxComLat=Rx.Observable.combineLatest(from$,of$,(a,b)=>a+b)
+    RxComLatSub=Rx.Observable.combineLatest(fromSubOn$,of$,(a,b)=>a+b)
+    
+    //editArea
+
+    marSub.RxComLat = RxComLat.subscribe(NEC(showInMar, 1));
+    marSub.RxComLatSub = RxComLatSub.subscribe(NEC(showInMar, 'last'));
+    resSub.RxComLat = RxComLat.subscribe(NEC(showInRes));
+    resSub.RxComLatSub = RxComLatSub.subscribe(NEC(showInRes));
+
+         `},
+       {
+        name: 'startWith',
+        title: 'startWith(values: ...T, scheduler: Scheduler): Observable',
+        caption: `
+        官方说明：返回的 Observable 会先发出作为参数指定的项，然后再发出由源 Observable 所发出的项。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：先发出指定项，此处先发出'a'。<br>
+        特别注意：predicate必须写，否则会发出error。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'startWith()',
+        code: `
+
+    //editArea
+
+    let interval$,RxStartWith;
+    interval$=Rx.Observable.interval(1000).take(4);
+    RxStartWith=interval$.startWith('a');
+    //editArea
+
+    marSub.RxStartWith = RxStartWith.subscribe(NEC(showInMar, 'last'));
+    resSub.RxStartWith = RxStartWith.subscribe(NEC(showInRes));
+
+         `},
+    {
+        name: 'skipWhile',
+        title: 'skipWhile(predicate: Function): Observable<T>',
+        caption: `
+        官方说明：返回一个 Observable， 该 Observable 会跳过由源 Observable 发出的所有满足指定条件的数据项， 但是一旦出现了不满足条件的项，则发出在此之后的所有项。<br>
+        操作说明：点击开始即可。<br>
+        此处理解：忽略符合predicate条件的所有发射值，此处忽略小于3的发射值。<br>
+        特别注意：predicate必须写，否则会发出error。`,
+        hits: 152,
+        useful: 562,
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'skipWhile()',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxSkipWhile;
+    RxInterval=Rx.Observable.interval(1000).take(5);
+    RxSkipWhile=RxInterval.skipWhile(n=>n<3);
+    //editArea
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxSkipWhile = RxSkipWhile.subscribe(NEC(showInMar, 'last'));
+    resSub.RxSkipWhile = RxSkipWhile.subscribe(NEC(showInRes));
+
+         `},
+    {
         name: 'skipUntil',
         title: 'skipUntil(notifier: Observable): Observable<T>',
         caption: `
         官方说明：返回一个 Observable，该 Observable 会跳过源 Observable 发出的值直到第二个 Observable 开始发送。<br>
         操作说明：点击开始即可。<br>
-        此处理解：忽略初始发射源，知道内部发射源发出值。<br>
+        此处理解：忽略初始发射源，直到内部发射源发出值。<br>
         特别注意：无`,
         hits: 152,
         useful: 562,
