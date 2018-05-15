@@ -56,7 +56,7 @@ export default class MarbleBallContainer extends React.PureComponent{
         document.addEventListener(this.currentEventName.move,this.dragging)
         document.addEventListener(this.currentEventName.end,this.dragOver)
         this.setState({
-            opacity:0.5
+            opacity:0.7
         })
     }
     dragOver(e){

@@ -1,7 +1,7 @@
 import React from 'react'
 import NavCore from './nav-core'
-import Search from '../Search'
-import {Consumer} from '../index'
+// import Search from '../Search'
+// import {Consumer} from '../index'
 
 export default class WebNav extends React.PureComponent {
     render() {

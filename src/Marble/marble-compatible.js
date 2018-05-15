@@ -1,5 +1,5 @@
 import React from 'react';
-import {clearFunc,checkDidAllunSub} from '../tools'
+import {clearFunc} from '../tools'
 import MarbleBallContainer from './marble-ball-container'
 import ShowSubscribeStatus from './../Widget/show-subscribe-status';
 import ShowExampleMarbleBall from './show-example-marbleball';

@@ -45,7 +45,8 @@ button {
     /*background-color: #c6c6c6*/
 /*}*/
 button:hover{
-    background-color: #c6c6c6
+    background-color: #c6c6c6;
+    cursor:pointer;
 }
 
 button:active {
@@ -132,19 +133,25 @@ button:focus {
 }
 .restore-pos:disabled:hover{
     background-color: #55b94e;
+    cursor:not-allowed;
 }
 
 /*-----/Marble/marble-ball-----*/
 .complete-ball{
-    background-color:#00810e;
-    width: 3px;
+    /*background-color:#00810e;*/
+    width: 20px;
     height:20px;
     position:absolute;
     top:0;
-    color:transparent;
+    color:#00810e;
     transform:translate3d(0,0,0);
     transition: top 0.2s linear;
     cursor:-webkit-grab;
+     font-weight:bold;
+    text-align: center;
+    font-size:1.5rem;
+    line-height:1rem;
+    vertical-align: middle;
 }
 .error-ball{
     width: 20px;
@@ -152,14 +159,16 @@ button:focus {
     position:absolute;
     top:0;
     color:#cd0002;
+    font-weight:bold;
+    text-align: center;
+    font-size:2rem;
     line-height:1rem;
     vertical-align: middle;
     transform:translate3d(0,0,0);
     transition: top 0.2s linear;
     cursor:-webkit-grab;
-    font-weight:bold;
-    text-align: center;
-    font-size:2rem;
+    
+    
 }
 .colorBall {
     width: 20px;
@@ -194,7 +203,7 @@ button:focus {
 .special-status-ball{
     position:static;
     display: inline-block;
-    margin:0 0.2rem 0 0.5rem;
+    /*margin:0 0.2rem 0 0.5rem;*/
     cursor:auto;
 }
 
@@ -533,9 +542,15 @@ button:focus {
     letter-spacing: 1px;
 }
 .section-description strong{
-    color:#ccc;
+    color:#21d3dc;
     font-style:normal;
 }
+.section-description a{
+    color:#fff;
+    text-decoration:underline;
+    
+}
+
 /*-----/Widget/choose-show-position-example-----*/
 .choose-show-position-example{
     margin:0.2rem 0.5rem;

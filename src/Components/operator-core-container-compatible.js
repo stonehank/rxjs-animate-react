@@ -264,7 +264,7 @@ export default class OperatorsCoreContainerCompatible extends React.Component{
     NEC(showInWhere, whichLine){
         return {
             next: (v)=> {showInWhere(v, whichLine)},
-            error: ()=> {showInWhere('error', whichLine)},
+            error: (e)=> {showInWhere('error', whichLine)},
             complete: ()=> {showInWhere('complete', whichLine)}
         }
     }

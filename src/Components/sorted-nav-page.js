@@ -1,6 +1,6 @@
 import React from 'react';
-import {getPath,deepEqual} from '../tools'
-import {Consumer} from '../index'
+import {deepEqual} from '../tools'
+// import {Consumer} from '../index'
 import {ReuseNavLink} from '../Widget'
 
 

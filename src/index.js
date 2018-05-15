@@ -6,7 +6,7 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/fromEvent'
 import 'rxjs/add/operator/debounceTime'
 
-import {ReuseButton} from './Widget'
+
 import './Css/index.css'
 import Nav from './Nav'
 import Routes from './Routes/routes'
@@ -98,7 +98,7 @@ class App extends React.Component{
         // console.log('app')
         const {isFetchingNav,smallScreen}=this.state
         const {sortDeepList,shallowList,sortNavDeepList}=this
-        const compatibleShallowList=smallScreen && shallowList?shallowList.slice(0,1):shallowList
+        // const compatibleShallowList=smallScreen && shallowList?shallowList.slice(0,1):shallowList
         const curPathname=this.props.location.pathname.substr(1)
         const contextProps={sortDeepList,sortNavDeepList,shallowList,curPathname,smallScreen}
         return(

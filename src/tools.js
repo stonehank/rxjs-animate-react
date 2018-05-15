@@ -272,15 +272,25 @@ function getArgument(v,curTimeGap,isSmallScreen){
     if(v==="complete") {
         obj={
             data:v,
-            text:'com',
+            text:'|',
             left:left+20,
+            color:'#00810e',
+            fontWeight:'bold',
+            // textAlign: 'left',
+            fontSize:'1.5rem',
+            lineHeight:'1rem',
         }
         // obj.data=v;obj.text='com';obj.left=left+20;
     } else if(v==="error") {
         obj={
             data:v,
-            text:'err',
+            text:'×',
             left:left+20,
+            color:'#cd0002',
+            fontWeight:'bold',
+            // textAlign: 'left',
+            fontSize:'2rem',
+            lineHeight:'1rem',
         }
         // obj.data=v;obj.text='err';obj.left=left+20;
     } else if(typeof v==='number') {
@@ -503,7 +513,7 @@ export function getSubPositionFromCode(code,allShow){
         reCalc=false;
         variables.forEach((e,i)=>{
             let obj={};
-            const subArr=finalCode.match(new RegExp('(mar|res)Sub.'+e+'\\b\\s*=.+?'+'.subscribe.*','g')) ||[];
+            const subArr=finalCode.match(new RegExp('(mar|res)Sub.'+e+'\\b\\s*=.+?.subscribe.*','g')) ||[];
             const subStr=subArr.join('');
             const matchArr=subStr.match(/^(?:mar|res)Sub.(Rx[^.;=(),+\s]+\b)\s*=.*?showInMar\s*,?\s*'?(\d|last)?'?/) || [];
             obj.name=matchArr[1] || e;

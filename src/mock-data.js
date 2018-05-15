@@ -74,6 +74,43 @@ export const EDITRULES=`
 
 
 export const Data = [
+    {
+        name: 'throw',
+        title: 'throw(error: any, scheduler: Scheduler): Observable',
+
+        gfsm:`
+        创建一个不发送数据给观察者并且立马发出错误通知的 Observable。
+        `,
+        czsm:`
+        点击开始即可。
+        `,
+        cclj:`
+        当interval$的数字为5时，抛出错误。
+        `,
+        tbzy:`
+        无。
+        `,
+        hits: 152,
+        useful: 562,
+        categories:'Creation Operators',
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'throw()',
+        code: `
+
+    //editArea
+
+    let RxMergeMapThrow, interval$ ,throw$;
+    interval$ = Rx.Observable.interval(1000);
+    throw$=Rx.Observable.throw();
+    RxMergeMapThrow = interval$.mergeMap(n=>n===5 ? throw$: Rx.Observable.of(n));
+   
+    //editArea
+
+    marSub.RxMergeMapThrow=RxMergeMapThrow.subscribe(NEC(showInMar,'last'));
+    resSub.RxMergeMapThrow=RxMergeMapThrow.subscribe(NEC(showInRes));
+
+         `},
    
     {
         name: 'withLatestFrom',
@@ -93,6 +130,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Combination Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'withLatestFrom()',
@@ -139,6 +177,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'windowWhen()',
@@ -186,6 +225,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'windowToggle()',
@@ -230,6 +270,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'windowCount()',
@@ -268,6 +309,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'window()',
@@ -307,6 +349,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Utility Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'timeInterval()',
@@ -343,6 +386,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'takeLast()',
@@ -379,6 +423,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'take()',
@@ -415,6 +460,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'switchMapTo()',
@@ -452,6 +498,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'switchMap()',
@@ -489,6 +536,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Combination Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'switch()',
@@ -527,6 +575,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Utility Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'subscribeOn()',
@@ -567,6 +616,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Combination Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'startWith()',
@@ -601,6 +651,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'skipWhile()',
@@ -625,14 +676,17 @@ export const Data = [
         gfsm:`
         返回一个 Observable，该 Observable 会跳过源 Observable 发出的值直到第二个 Observable 开始发送。
         `,
-        czsm:`        点击开始即可。
+        czsm:`
+        点击开始即可。
         `,
-        cclj:`        忽略初始发射源，直到内部发射源发出值。
+        cclj:`
+        忽略初始发射源，直到内部发射源发出值。
         `,
         tbzy:`
         无`,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'skipUntil()',
@@ -670,6 +724,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'skipLast()',
@@ -704,6 +759,7 @@ export const Data = [
         无`,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'skip()',
@@ -738,6 +794,7 @@ export const Data = [
         无`,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'single()',
@@ -763,24 +820,25 @@ export const Data = [
         无。
         `,
              czsm:`
-        点击开始即可。
+        点击开始即可，需要拖拽查看。
         `,
              cclj:`
         共享数据，不过会先返回上一个发射源的前N(参数1，此处是2)个值。<br>
         此处前3行发射源是"shaReplay$"，后2行发射源是"shaReplay2$"。<br>
         第1行为立即订阅；<br>
         第2行隔2.5秒后订阅，订阅时第1行还在继续订阅，返回前2个数据(0,1)，数据共享；<br>
-        第3行隔5秒订阅，此时之前发射源状态是complete，返回前2个数据(2,3)(并不受complete影响)，<strong>complete</strong>；<br>
+        第3行隔5秒订阅，此时之前发射源状态是complete，返回前2个数据(2,3)(并不受complete影响)，complete；<br>
         第4行隔6秒重新订阅（新的发射源），并且在第7.5秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
-        第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回前2个数据(0,1)(并不受unsubscribe影响)，<strong>共享数据</strong>；<br>
-        结论:(和publishReplay.connect一致)<br>
-        前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。
+        第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回前2个数据(0,1)(并不受unsubscribe影响)，共享数据；<br>
+        <strong>结论:(和publishReplay.connect一致)</strong><br>
+        <strong>共享数据，不过会先返回上一个发射源的前N个值；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。</strong>
         `,
         tbzy:`
         需要拖拽查看，不管上一个源是什么状态(包括error)，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
         `,
         hits: 152,
         useful: 562,
+        categories:'',
         doNotNeedAuto:true,
         //line: 3,
         marbleText: 'shareReplay()',
@@ -821,6 +879,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'sequenceEqual()',
@@ -859,6 +918,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'sampleTime()',
@@ -896,6 +956,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'sample()',
@@ -934,6 +995,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Error Handling Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'retry()',
@@ -969,6 +1031,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Creation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'repeat()',
@@ -1005,6 +1068,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Combination Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'race()',
@@ -1042,16 +1106,17 @@ export const Data = [
         第2行隔4秒订阅，此时之前发射源状态是complete，返回最后值和complete；<br>
         第3行隔5秒重新订阅（新的发射源），并且在第6.5秒的时候unsubscribe，让它状态进入unsubscribe，没有返回值；<br>
         第4行隔7.5秒订阅，此时之前发射源状态是unsubscribe，返回最后值和complete。<br>
-        connect():<br>
-        前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
-        refCount():<br>
-        前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。
+        <strong>结论：使用connect()</strong><br>
+        <strong>共享数据，只返回最后的值和complete；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。</strong><br>
+        <strong>结论：使用refCount()</strong><br>
+        <strong>共享数据，只返回最后的值和complete；前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。</strong>
         `,
         tbzy:`
         不管上一个源是complete还是unsubscribe，直接返回最后值和complete，如果error则只返回error。
         `,
         hits: 152,
         useful: 562,
+        categories:'Multicasting Operators',
         doNotNeedAuto:true,
         //line: 3,
         marbleText: 'publishLast()',
@@ -1089,19 +1154,20 @@ export const Data = [
         此处前3行发射源是"pubReplay$"，后2行发射源是"pubReplay2$"。<br>
         第1行为立即订阅；<br>
         第2行隔2.5秒后订阅，订阅时第1行还在继续订阅，返回前2个数据(0,1)，数据共享；<br>
-        第3行隔5秒订阅，此时之前发射源状态是complete，返回前2个数据(2,3)(并不受complete影响)，<strong>complete</strong>；<br>
+        第3行隔5秒订阅，此时之前发射源状态是complete，返回前2个数据(2,3)(并不受complete影响)，complete；<br>
         第4行隔6秒重新订阅（新的发射源），并且在第7.5秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
-        第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回前2个数据(0,1)(并不受unsubscribe影响)，<strong>共享数据</strong>；<br>
-        connect():<br>
-        前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
-        refCount():<br>
-        前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。
+        第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回前2个数据(0,1)(并不受unsubscribe影响)，共享数据；<br>
+        <strong>结论：使用connect()</strong><br>
+        <strong>共享数据，会先返回上一个发射源的前N个值；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。</strong><br>
+        <strong>结论：使用refCount()</strong><br>
+        <strong>共享数据，会先返回上一个发射源的前N个值；前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。</strong>
         `,
         tbzy:`
         需要拖拽查看，不管上一个源是什么状态(包括error)，都会先发出上一个源的最后N个值（如果数据共享，则发出共享的最后N个值）。
         `,
         hits: 152,
         useful: 562,
+        categories:'Multicasting Operators',
         doNotNeedAuto:true,
         //line: 3,
         marbleText: 'publishReplay()',
@@ -1140,19 +1206,20 @@ export const Data = [
         此处前3行发射源是"pubBehavior$"，后2行发射源是"pubBehavior2$"。<br>
         第1行为立即订阅；<br>
         第2行隔2.5秒后订阅，订阅时第1行还在继续订阅，返回上一个最新值1，数据共享；<br>
-        第3行隔5秒订阅，此时之前发射源状态是complete，不返回上一个最新值，<strong>直接进入complete</strong>；<br>
+        第3行隔5秒订阅，此时之前发射源状态是complete，不返回上一个最新值，直接进入complete；<br>
         第4行隔6秒重新订阅（新的发射源），并且在第7.5秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
-        第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回上一个最新值1(并不受unsubscribe影响)，<strong>共享数据</strong>；<br>
-        connect():<br>
-        前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。<br>
-        refCount():<br>
-        前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。
+        第5行隔8.5秒订阅，此时之前发射源状态是unsubscribe，返回上一个最新值1(并不受unsubscribe影响)，共享数据；<br>
+        <strong>结论：使用connect()</strong><br>
+        <strong>共享数据，先返回上一个发射源的最新值；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。</strong><br>
+        <strong>结论：使用refCount()</strong><br>
+        <strong>共享数据，先返回上一个发射源的最新值；前面数据complete，complete；前面数据unsubscribe，从头开始；前面数据error，error。</strong>
         `,
         tbzy:`
         上一个源是complete，直接进入complete；上一个源是unsubscribe，也会先发出上一个源的最新值(如果数据共享，则发出共享的最新值)，上一个源是error，返回error(不返回最新值)。
         `,
         hits: 152,
         useful: 562,
+        categories:'Multicasting Operators',
         doNotNeedAuto:true,
         //line: 3,
         marbleText: 'publishBehavior()',
@@ -1196,6 +1263,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Mathematical and Aggregate Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'min()',
@@ -1235,6 +1303,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Mathematical and Aggregate Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'max()',
@@ -1252,6 +1321,48 @@ export const Data = [
     marSub.RxOf = RxOf.subscribe(NEC(showInMar, 1));
     marSub.RxMax = RxMax.subscribe(NEC(showInMar, 'last'));
     resSub.RxMax = RxMax.subscribe(NEC(showInRes));
+
+
+         `},
+    {
+        name: 'dematerialize',
+        title: 'dematerialize(): Observable',
+
+        gfsm:`
+        将 Notification 对象的 Observable 转换成它们所代表的发送。
+        `,
+        czsm:`
+        点击开始即可，需要拖拽查看。
+        `,
+        cclj:`
+        将 Notification 对象拆开成实际的 next、 error 和 complete 发送。
+        kind：'N'代表next，'C'代表complete，'E'代表error。
+        `,
+        tbzy:`
+        无。
+        `,
+        hits: 152,
+        useful: 562,
+        categories:'Utility Operators',
+        doNotNeedAuto:false,
+        //line: 3,
+        marbleText: 'dematerialize()',
+        code: `
+
+
+    //editArea
+
+    let notifA$, notifB$,notifE$,RxOf,RxDematerialize;
+    notifA$ = new Rx.Notification('N', 'A');
+    notifB$ = new Rx.Notification('N', 'B');
+    notifE$ = new Rx.Notification('E', 0, new TypeError('error'));
+    RxOf=Rx.Observable.of(notifA$, notifB$,notifE$);
+    RxDematerialize=RxOf.dematerialize();
+
+    //editArea
+    marSub.RxOf = RxOf.subscribe(NEC(showInMar, 1));
+    marSub.RxDematerialize = RxDematerialize.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDematerialize = RxDematerialize.subscribe(NEC(showInRes));
 
 
          `},
@@ -1274,6 +1385,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Utility Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'materialize()',
@@ -1310,6 +1422,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'mapTo()',
@@ -1346,6 +1459,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'map()',
@@ -1382,6 +1496,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'last()',
@@ -1418,6 +1533,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'ignoreElements()',
@@ -1455,6 +1571,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Conditional and Boolean Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'isEmpty()',
@@ -1495,6 +1612,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Creation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'interval()',
@@ -1531,6 +1649,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Creation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'empty()',
@@ -1563,13 +1682,14 @@ export const Data = [
         点击开始即可。
         `,
          cclj:`
-        点击开始后计算随机数，随机数>0.5则订阅click事件，否则订阅interval。
+        当且仅当它被订阅的时候才创建。点击开始后计算随机数，随机数>0.5则订阅click事件，否则订阅interval。
         `,
         tbzy:`
         无。
         `,
         hits: 152,
         useful: 562,
+        categories:'Creation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'defer()',
@@ -1616,6 +1736,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'groupBy()',
@@ -1663,6 +1784,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'first()',
@@ -1700,6 +1822,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Conditional and Boolean Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'findIndex(n=>n%2===0)',
@@ -1737,6 +1860,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Conditional and Boolean Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'find(n=>n%2===0)',
@@ -1774,6 +1898,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Filtering Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'filter(n=>n%2===0)',
@@ -1811,6 +1936,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'expand()',
@@ -1850,6 +1976,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'pluck()',
@@ -1887,6 +2014,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'partition()',
@@ -1927,6 +2055,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'pairwise()',
@@ -1964,6 +2093,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'onErrorResumeNext()',
@@ -1996,17 +2126,20 @@ export const Data = [
         点击开始即可。
         `,
          cclj:`
+        共享数据；<br>
         第1行为立即订阅；<br>
         第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>
-        第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>
+        第3行隔4秒订阅，此时之前发射源状态是complete，直接进入complete；<br>
         第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
-        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>共享数据</strong>；<br>
-        <strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error</strong>
+        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，共享数据；<br>
+        <strong>结论：</strong><br>
+        <strong>共享数据；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。</strong>
         `,
         tbzy:`无。
         `,
         hits: 152,
         useful: 562,
+        categories:'Multicasting Operators',
         doNotNeedAuto:true,
         //line: 3,
         marbleText: 'multicast()',
@@ -2036,6 +2169,7 @@ export const Data = [
 
         gfsm:`
         在源 Observable 上应用 accumulator 函数，其中 accumulator 函数本身返回 Observable ，然后每个返回的中间 Observable 会被合并到输出 Observable 中。
+        它很像 scan，但 accumulator 函数返回的 Observables 会被合并到外部 Observalbe 中。
         `,
          czsm:`
         点击开始后，使用click触发。
@@ -2048,6 +2182,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'mergeScan()',
@@ -2084,6 +2219,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'mergeMapTo()',
@@ -2122,6 +2258,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'mergeMap()',
@@ -2161,6 +2298,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Combination Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'mergeAll()',
@@ -2202,6 +2340,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Combination Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'combineLatest()',
@@ -2249,6 +2388,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Combination Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'combineAll()',
@@ -2287,6 +2427,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'bufferWhen()',
@@ -2326,6 +2467,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'bufferToggle()',
@@ -2371,6 +2513,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'bufferTime(2200,3300)',
@@ -2412,6 +2555,7 @@ export const Data = [
         `,
         hits: 152,
         useful: 562,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'bufferCount(3,4)',
@@ -2447,6 +2591,7 @@ export const Data = [
         `,
         hits: 0,
         useful: 0,
+        categories:'Transformation Operators',
         doNotNeedAuto:false,
         //line: 3,
         marbleText: 'buffer',
@@ -2480,15 +2625,17 @@ export const Data = [
         不需要connect，共享数据，此处前3行发射源是"publish$"，后2行发射源是"publish2$"；<br>
         第1行为立即订阅；<br>
         第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>
-        第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>
+        第3行隔4秒订阅，此时之前发射源状态是complete，直接进入complete；<br>
         第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
-        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>直接进入complete</strong>；<br>
-        <strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，complete；前面数据error，error</strong>
+        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，直接进入complete；<br>
+        <strong>结论：</strong><br>
+        <strong>共享数据；前面数据complete，complete；前面数据unsubscribe，complete；前面数据error，error。</strong>
         `,
         tbzy:`无。
         `,
         hits: 452,
         useful: 842,
+        categories:'Multicasting Operators',
         doNotNeedAuto:true,
         //line: 3,
         marbleText: 'publish-refCount',
@@ -2525,16 +2672,18 @@ export const Data = [
         此处前3行发射源是"publish$"，后2行发射源是"publish2$"；<br>
         第1行为立即订阅；<br>
         第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>
-        第3行隔4秒订阅，此时之前发射源状态是complete，<strong>直接进入complete</strong>；<br>
+        第3行隔4秒订阅，此时之前发射源状态是complete，直接进入complete；<br>
         第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
-        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>共享数据</strong>；<br>
-        <strong>结论：共享数据；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error</strong>
+        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，共享数据；<br>
+        <strong>结论：</strong><br>
+        <strong>共享数据，需要手动调用connect方法；前面数据complete，complete；前面数据unsubscribe，共享数据；前面数据error，error。</strong>
         `,
         tbzy:`无。
         `,
 
         hits: 452,
         useful: 842,
+        categories:'Multicasting Operators',
         doNotNeedAuto:true,
         //line: 3,
         marbleText: 'publish-connect',
@@ -2571,15 +2720,17 @@ export const Data = [
         共享数据，此处前3行发射源是"share$"，后2行发射源是"share2$"；<br>
         第1行为立即订阅；<br>
         第2行隔2秒后订阅，订阅时第1行还在继续订阅，数据共享；<br>
-        第3行隔4秒订阅，此时之前发射源状态是complete，<strong>从头开始</strong>；<br>
+        第3行隔4秒订阅，此时之前发射源状态是complete，从头开始；<br>
         第4行隔6秒重新订阅（新的发射源），并且在第7秒的时候unsubscribe，让它状态进入unsubscribe而不是complete；<br>
-        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，<strong>从头开始</strong>；<br>
-        <strong>结论：共享数据；前面数据complete，从头开始；前面数据unsubscribe，从头开始；前面数据error，error</strong>
+        第5行隔8秒订阅，此时之前发射源状态是unsubscribe，从头开始；<br>
+        <strong>结论：</strong><br>
+        <strong>共享数据；前面数据complete，从头开始；前面数据unsubscribe，从头开始；前面数据error，error。</strong>
         `,
         tbzy:`无。
         `,
         hits: 452,
         useful: 842,
+        categories:'Multicasting Operators',
         doNotNeedAuto:true,
         //line: 3,
         marbleText: 'share',
@@ -2621,6 +2772,7 @@ export const Data = [
         `,
         hits: 715,
         useful: 412,
+        categories:'Transformation Operators',
         //line: 3,
         marbleText: 'scan',
         code: `
@@ -2657,6 +2809,7 @@ export const Data = [
         `,
         hits: 715,
         useful: 412,
+        categories:'Transformation Operators',
         //line: 3,
         marbleText: 'reduce',
         code: `
@@ -2690,6 +2843,7 @@ export const Data = [
         `,
         hits: 715,
         useful: 412,
+        categories:'Filtering Operators',
         //line: 3,
         marbleText: 'takeUntil',
         code: `
@@ -2725,6 +2879,7 @@ export const Data = [
         `,
         hits: 715,
         useful: 412,
+        categories:'Filtering Operators',
         //line: 2,
         marbleText: 'takeWhile(n=>n<4)',
         code: `
@@ -2761,6 +2916,7 @@ export const Data = [
          `,
         hits: 715,
         useful: 412,
+        categories:'Error Handling Operators',
         //line: 3,
         marbleText: 'retryWhen',
         code: `
@@ -2801,6 +2957,7 @@ export const Data = [
         `,
         hits: 915,
         useful: 612,
+        categories:'Creation Operators',
         //line: 3,
         marbleText: 'repeatWhen',
         code: `
@@ -2838,6 +2995,7 @@ export const Data = [
         `,
         hits: 985,
         useful: 612,
+        categories:'Combination Operators',
         //line: 3,
         marbleText: 'merge()',
         code: `
@@ -2876,6 +3034,7 @@ export const Data = [
         `,
         hits: 1524,
         useful: 912,
+        categories:'Combination Operators',
         //line: 3,
         marbleText: 'forkJoin(s1,s2,(x,y)=>x+y)',
         code: `
@@ -2914,8 +3073,9 @@ export const Data = [
         `,
         hits: 25,
         useful: 89,
+        categories:'Filtering Operators',
         //line: 2,
-        marbleText: 'distinctUntilKeyChange(x,(p,n)=>p===n)',
+        marbleText: 'distinctUntilKeyChange()',
         code: `
 
     //editArea
@@ -2950,8 +3110,9 @@ export const Data = [
         `,
         hits: 273,
         useful: 425,
+        categories:'Filtering Operators',
         //line: 2,
-        marbleText: 'distinctUntilChange((prevO,nextO)=>prevO.y===nextO.y)',
+        marbleText: 'distinctUntilChange()',
         code: `
 
     //editArea
@@ -2985,6 +3146,7 @@ export const Data = [
         `,
         hits: 213,
         useful: 745,
+        categories:'Filtering Operators',
         //line: 2,
         marbleText: 'distinct(obj=>obj.x)',
         code: `
@@ -3020,6 +3182,7 @@ export const Data = [
         `,
         hits: 78,
         useful: 527,
+        categories:'Utility Operators',
         //line: 2,
         marbleText: 'delayWhen',
         code: `
@@ -3054,6 +3217,7 @@ export const Data = [
         `,
         hits: 42,
         useful: 128,
+        categories:'Utility Operators',
         //line: 2,
         marbleText: 'delay',
         code: `
@@ -3084,10 +3248,11 @@ export const Data = [
         点击后不会立刻输出第一个值，等待内部源interval$发出值(这里是间隔1秒)。
         `,
         tbzy:`
-        参考auditTime理解audit。
+        参考<a href="./auditTime">auditTime</a>理解audit。
         `,
         hits: 762,
         useful: 875,
+        categories:'Filtering Operators',
         //line: 3,
         marbleText: 'audit',
         code: `
@@ -3119,10 +3284,11 @@ export const Data = [
         点击后不会立刻输出第一个值，等待内部源interval$发出值(这里是间隔1秒)，这之间如果没有点击事件，发出最新值。
         `,
         tbzy:`
-        参考debounceTime理解debounce。
+        参考<a href="./debounceTime">debounceTime</a>理解debounce。
         `,
         hits: 762,
         useful: 875,
+        categories:'Filtering Operators',
         //line: 3,
         marbleText: 'debounce',
         code: `
@@ -3155,10 +3321,11 @@ export const Data = [
         点击后立刻输出第一个值，等待内部源interval$发出值(这里是间隔1秒)，过了这个间隔之后，才能继续发出值。
         `,
         tbzy:`
-        参考throttleTime，理解throttle。
+        参考<a href="./throttleTime">throttleTime</a>，理解throttle。
         `,
         hits: 762,
         useful: 875,
+        categories:'Filtering Operators',
         //line: 3,
         marbleText: 'throttle',
         code: `
@@ -3195,6 +3362,7 @@ export const Data = [
         `,
         hits: 762,
         useful: 875,
+        categories:'Filtering Operators',
         //line: 2,
         marbleText: 'auditTime',
         code: `
@@ -3230,6 +3398,7 @@ export const Data = [
         `,
         hits: 762,
         useful: 875,
+        categories:'Filtering Operators',
         //line: 2,
         marbleText: 'throttleTime',
         code: `
@@ -3267,6 +3436,7 @@ export const Data = [
         `,
         hits: 762,
         useful: 875,
+        categories:'Filtering Operators',
         //line: 2,
         marbleText: 'debounceTime',
         code: `
@@ -3303,6 +3473,7 @@ export const Data = [
         `,
         hits: 762,
         useful: 875,
+        categories:'Transformation Operators',
         //line: 2,
         marbleText: 'concatMap',
         code: `
@@ -3341,6 +3512,7 @@ export const Data = [
         `,
         hits: 762,
         useful: 875,
+        categories:'Combination Operators',
         //line: 2,
         marbleText: 'concatAll',
         code: `
@@ -3362,6 +3534,86 @@ export const Data = [
 
 `,
     },
+       {
+        name: 'catch',
+        title: 'catch(selector: function): Observable',
+
+        gfsm:`
+        捕获 observable 中的错误，可以通过返回一个新的 observable 或者抛出错误对象来处理。
+        `,
+        czsm:`
+        点击开始即可。
+        `,
+        cclj:`
+        selector(参数)接受 err 参数，即错误对象，还接受 caught 参数，即源 Observable。<br>
+        这里当外部源数字到3，就会抛出错误，然后利用caught参数重复它本身。
+        `,
+        tbzy:`
+        无。
+        `,
+        hits: 1235,
+        useful: 451,
+        categories:'Error Handling Operators',
+        //line: 2,
+        marbleText: 'catch',
+        code: `
+
+    //editArea
+
+    let RxMergeMapThrow, interval$ ,throw$,RxCatch;
+    interval$ = Rx.Observable.interval(500);
+    throw$=Rx.Observable.throw();
+    RxMergeMapThrow = interval$.mergeMap(n=>n===3 ? throw$: Rx.Observable.of(n));
+    RxCatch=RxMergeMapThrow.catch((e,caught)=>caught).take(20);
+
+    //editArea
+
+
+    marSub.RxMergeMapThrow = RxMergeMapThrow.subscribe(NEC(showInMar, 1));
+    marSub.RxCatch = RxCatch.subscribe(NEC(showInMar, 'last'));
+    resSub.RxCatch = RxCatch.subscribe(NEC(showInRes));
+
+`,
+    },
+    {
+        name: 'do',
+        title: 'do(nextOrObserver: Observer | function, error: function, complete: function): Observable',
+
+        gfsm:`
+        为源 Observable 上的每次发送执行副作用，但返回的 Observable 与源 Observable 是相同的。
+        拦截源 Observable 上的每次发送并且运行一个函数，但返回的输出 Observable 与 源 Observable 是相同的，只要不发生错误即可。
+        `,
+        czsm:`
+        点击开始即可。
+        `,
+        cclj:`
+        3个参数，分别是next,error,complete，这里next设置为n=>n*5，但实际返回的源就是初始源。
+        `,
+        tbzy:`
+        无。
+        `,
+        hits: 1235,
+        useful: 451,
+        categories:'Utility Operators',
+        //line: 2,
+        marbleText: 'do',
+        code: `
+
+    //editArea
+
+    let RxInterval,RxDo;
+    RxInterval = Rx.Observable.interval(1000).take(5);
+    RxDo = RxInterval.do(n=>n*5);
+
+    //editArea
+
+
+    marSub.RxInterval = RxInterval.subscribe(NEC(showInMar, 1));
+    marSub.RxDo = RxDo.subscribe(NEC(showInMar, 'last'));
+    resSub.RxDo = RxDo.subscribe(NEC(showInRes));
+
+`,
+    },
     {
         name: 'concat',
         title: 'concat(other: ObservableInput, scheduler: Scheduler): Observable',
@@ -3380,6 +3632,7 @@ export const Data = [
         `,
         hits: 1235,
         useful: 451,
+        categories:'Combination Operators',
         //line: 2,
         marbleText: 'concat',
         code: `
@@ -3402,10 +3655,13 @@ export const Data = [
     }
 ]
 export const notFoundData = {
-    title: '无数据',
-    name: '无数据',
-    caption: '无数据',
-    code: '无数据',
+    title:  '无数据',
+    name:   '无数据',
+    gfsm:   '无数据',
+    czsm:   '无数据',
+    cclj:   '无数据',
+    tbzy:   '无数据',
+    code:   '无数据',
     //line: 0,
     marbleText: '无数据'
 }

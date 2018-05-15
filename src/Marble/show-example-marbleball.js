@@ -10,7 +10,7 @@ export default class ShowExampleMarbleBall extends React.Component{
         //console.log(ShowExampleMarbleBall)
         return(
             <div>
-                <span style={{fontSize:"0.8rem"}}><div className="special-status-ball complete-ball">√</div>complete</span>
+                <span style={{fontSize:"0.8rem"}}><div className="special-status-ball complete-ball">|</div>complete</span>
                 <span style={{fontSize:"0.8rem"}}><div className="special-status-ball error-ball">×</div>error</span>
                 <span style={{fontSize:"0.8rem"}}><div className="colorBallExample blueMarbleBall">1</div>number</span>
                 <span style={{fontSize:"0.8rem"}}><div className="colorBallExample greenMarbleBall">a</div>string</span>
