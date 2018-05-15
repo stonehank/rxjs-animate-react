@@ -3245,7 +3245,7 @@ export const Data = [
         点击开始后，使用click触发。
         `,
         cclj:`
-        点击后不会立刻输出第一个值，等待内部源interval$发出值(这里是间隔1秒)。
+        点击后不会立刻输出第一个值，等待内部源interval$发出值(这里是间隔2秒)。
         `,
         tbzy:`
         参考<a href="./auditTime">auditTime</a>理解audit。
@@ -3260,7 +3260,7 @@ export const Data = [
     //editArea
 
     let RxClick, RxAudit, interval$;
-    interval$ = Rx.Observable.interval(1000);
+    interval$ = Rx.Observable.interval(2000);
     RxClick = Rx.Observable.fromEvent(document, 'click');
     RxAudit = RxClick.audit(()=>interval$);
 
@@ -3281,7 +3281,7 @@ export const Data = [
         点击开始后，使用click触发。
         `,
         cclj:`
-        点击后不会立刻输出第一个值，等待内部源interval$发出值(这里是间隔1秒)，这之间如果没有点击事件，发出最新值。
+        点击后不会立刻输出第一个值，等待内部源interval$发出值(这里是间隔2秒)，这之间如果没有点击事件，发出最新值。
         `,
         tbzy:`
         参考<a href="./debounceTime">debounceTime</a>理解debounce。
@@ -3296,7 +3296,7 @@ export const Data = [
     //editArea
 
     let RxClick, RxDebounce, interval$;
-    interval$ = Rx.Observable.interval(1000);
+    interval$ = Rx.Observable.interval(2000);
     RxClick = Rx.Observable.fromEvent(document, 'click');
     RxDebounce = RxClick.debounce(()=>interval$);
 
@@ -3318,7 +3318,7 @@ export const Data = [
         点击开始后，使用click触发。
         `,
         cclj:`
-        点击后立刻输出第一个值，等待内部源interval$发出值(这里是间隔1秒)，过了这个间隔之后，才能继续发出值。
+        点击后立刻输出第一个值，等待内部源interval$发出值(这里是间隔2秒)，过了这个间隔之后，才能继续发出值。
         `,
         tbzy:`
         参考<a href="./throttleTime">throttleTime</a>，理解throttle。
@@ -3333,7 +3333,7 @@ export const Data = [
    //editArea
 
     let RxClick, RxThrottle, interval$;
-    interval$ = Rx.Observable.interval(1000);
+    interval$ = Rx.Observable.interval(2000);
     RxClick = Rx.Observable.fromEvent(document, 'click');
     RxThrottle = RxClick.throttle(()=>interval$);
 
@@ -3355,10 +3355,10 @@ export const Data = [
         点击开始后，使用click触发。
         `,
         cclj:`
-        收到第一个源不会立刻发送最新值，而是等待间隔时间后发送最新值，此处最后一行不论点击多少次会等1秒才会发送最新值。
+        收到第一个源不会立刻发送最新值，而是等待间隔时间后发送最新值，此处最后一行不论点击多少次会等2秒才会发送最新值。
         `,
         tbzy:`
-        就像每一次输入需要1秒钟的审核才允许发出，最后发出最新的值。
+        就像每一次输入需要2秒钟的审核才允许发出，最后发出最新的值。
         `,
         hits: 762,
         useful: 875,
@@ -3371,7 +3371,7 @@ export const Data = [
 
         let RxClick, RxAuditTime;
         RxClick = Rx.Observable.fromEvent(document, 'click');
-        RxAuditTime = RxClick.auditTime(1000)
+        RxAuditTime = RxClick.auditTime(2000);
 
     //editArea
 
@@ -3391,7 +3391,7 @@ export const Data = [
         点击开始后，使用click触发。
         `,
         cclj:`
-        收到第一个click立刻发送，这里间隔时间1秒，这1秒内忽略其他任何点击。
+        收到第一个click立刻发送，这里间隔时间2秒，这2秒内忽略其他任何点击。
         `,
         tbzy:`
         就像游戏里的技能CD，需要冷却，冷却时按键无反应，最后发射的不一定是最新值。
@@ -3407,7 +3407,7 @@ export const Data = [
 
     let RxClick, RxThrottleTime;
         RxClick = Rx.Observable.fromEvent(document, 'click');
-        RxThrottleTime = RxClick.throttleTime(1000)
+        RxThrottleTime = RxClick.throttleTime(2000);
 
     //editArea
 
@@ -3429,7 +3429,7 @@ export const Data = [
         点击开始后，使用click触发。
         `,
         cclj:`
-        有click就取消上一次的，间隔时间可超过1秒，最后发送最新值。
+        有click就取消上一次的，间隔时间可超过2秒，最后发送最新值。
         `,
         tbzy:`
         就像相机不能被抖动，一旦有抖动，丢弃之前的对焦结果重新对焦，最后发出的最新值。
@@ -3445,7 +3445,7 @@ export const Data = [
 
     let RxClick,RxDebounceTime;
     RxClick =Rx.Observable.fromEvent(document,'click');
-    RxDebounceTime = RxClick.debounceTime(1000);
+    RxDebounceTime = RxClick.debounceTime(2000);
 
     //editArea
 
