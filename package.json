@@ -2,6 +2,7 @@
   "name": "rxjs-react",
   "version": "0.1.0",
   "private": true,
+  "homepage":"https://stonehank.github.io/rxjs-animate-react",
   "dependencies": {
     "classnames": "^2.2.5",
     "lodash": "^4.17.5",
