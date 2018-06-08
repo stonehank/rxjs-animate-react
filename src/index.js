@@ -119,8 +119,9 @@ class App extends React.Component{
 }
 App=withRouter(App)
 
+// 此处basename用于demo演示
 ReactDOM.render(
-    <Router >
+    <Router  basename="/rxjs-animate-react">
         <App />
     </Router>,
     document.getElementById('root')
