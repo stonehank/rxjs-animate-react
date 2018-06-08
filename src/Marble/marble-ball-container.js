@@ -24,8 +24,8 @@ export default class MarbleBallContainer extends React.PureComponent{
         const {data,text,left,background,color,top}=marbleBallObj
         this.state={
             restorePositionKey,
-            opacity:1,
-            left,data,text,background,color,top:top-30,
+            opacity:0,
+            left,data,text,background,color,top:top,
             showPopText:false
         }
     }
@@ -118,10 +118,10 @@ export default class MarbleBallContainer extends React.PureComponent{
 
     componentDidMount(){
         const {marbleBallObj}=this.props
-        const {top}=marbleBallObj
+        // const {top}=marbleBallObj
         this.timer=setTimeout(()=>{
             this.setState({
-                top
+                opacity:1
             })
         },20)
     }

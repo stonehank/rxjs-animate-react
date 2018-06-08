@@ -74,6 +74,33 @@ export const EDITRULES=`
 
 
 export const Data = [
+  {
+    name: '测试性能',
+    title: '测试性能',
+    gfsm: '三行同时刷出小球 timer(0,30)',
+    czsm:'点击开始即可。',
+    cclj:'',
+    tbzy:'',
+    hits: 0,
+    useful: 0,
+    doNotNeedAuto:true,
+    //line: 3,
+    marbleText: '测试性能',
+    code: `
+
+    //editArea
+
+    let RxTimer1,RxTimer2,RxTimer3;
+    RxTimer1 = Rx.Observable.timer(0,30).take(100);
+    RxTimer2 = Rx.Observable.timer(0,30).take(100);
+    RxTimer3 = Rx.Observable.timer(0,30).take(100);
+    //editArea
+    let initTime=new Date().getTime();
+    marSub.RxTimer1 = RxTimer1.subscribe(NEC(showInMar, 1));
+    marSub.RxTimer2 = RxTimer2.subscribe(NEC(showInMar, 2));
+    marSub.RxTimer3 = RxTimer3.subscribe((v)=> {showInMar(v, 3)},()=> {},()=> {showInMar('complete', 3);alert('耗时(毫秒):'+(new Date().getTime()-initTime))});
+
+         `},
     {
         name: 'throw',
         title: 'throw(error: any, scheduler: Scheduler): Observable',

@@ -145,7 +145,7 @@ button:focus {
     top:0;
     color:#00810e;
     transform:translate3d(0,0,0);
-    transition: top 0.2s linear;
+    transition: opacity 0.5s linear;
     cursor:-webkit-grab;
      font-weight:bold;
     text-align: center;
@@ -165,7 +165,7 @@ button:focus {
     line-height:1rem;
     vertical-align: middle;
     transform:translate3d(0,0,0);
-    transition: top 0.2s linear;
+    transition: opacity 0.5s linear;
     cursor:-webkit-grab;
     
     
@@ -178,7 +178,7 @@ button:focus {
     position: absolute;
     top: 0;
     transform:translate3d(0,0,0);
-    transition: top 0.2s linear;
+    transition: opacity 0.5s linear;
     text-align: center;
     cursor:-webkit-grab;
 }
